@@ -13,7 +13,17 @@
 
   <body>
     <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
+      <header>
+        <nav>
+        </nav>
+      </header>
+
+      <main>
+        <p class="notice"><%= notice %></p>
+        <p class="alert"><%= alert %></p>
+        
+        <%= yield %>
+      </main>
     </main>
   </body>
 </html>
