@@ -4,4 +4,5 @@ class Product < ApplicationRecord
 
   validates :code, :name, presence: true
   validates :code, uniqueness: true
+  validates :weight, :width, :height, :depth, numericality: { only_integer: true, greater_than: 0 }
 end
