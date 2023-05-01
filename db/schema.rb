@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_30_214350) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_01_002357) do
   create_table "batches", force: :cascade do |t|
     t.string "code", null: false
     t.date "start_date", null: false
@@ -52,7 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_30_214350) do
     t.integer "width"
     t.integer "height"
     t.integer "depth"
-    t.integer "category_id", null: false
+    t.integer "category_id"
     t.integer "batch_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
