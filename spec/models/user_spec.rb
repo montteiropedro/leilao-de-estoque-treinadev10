@@ -90,7 +90,7 @@ RSpec.describe User, type: :model do
 
         user.valid?
 
-        expect(user.admin).to eq true
+        expect(user.is_admin).to eq true
       end
 
       it 'should set admin to false when email prefix does not equal to "@leilaodogalpao.com.br"' do
@@ -101,7 +101,7 @@ RSpec.describe User, type: :model do
 
         user.valid?
 
-        expect(user.admin).to eq false
+        expect(user.is_admin).to eq false
       end
 
       it 'should change admin from true to false when email prefix changes and is not equal to "@leilaodogalpao.com.br"' do
@@ -112,7 +112,7 @@ RSpec.describe User, type: :model do
 
         user.update!(email: 'john@email.com')
 
-        expect(user.admin).to eq false
+        expect(user.is_admin).to eq false
       end
     end
   end

@@ -15,16 +15,16 @@ class User < ApplicationRecord
   validates :cpf, length: { is: 11 }
 
   def can_make_a_bid?
-    self.admin ? false : true
+    self.is_admin ? false : true
   end
 
   private
 
   def set_admin
     if /\A[^@\s]+@leilaodogalpao.com.br\z/.match?(email)
-      self.admin = true
+      self.is_admin = true
     else
-      self.admin = false
+      self.is_admin = false
     end
   end
 end

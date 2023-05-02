@@ -208,4 +208,15 @@ RSpec.describe Batch, type: :model do
       end
     end
   end
+
+  describe '#set_approver' do
+    context 'non admin user' do
+      pending 'should return a message'
+    end
+
+    context 'admin user' do
+      pending 'should return a message when admin user is the batch creator'
+      pending 'should return true when admin user is not the batch creator'
+    end
+  end
 end
