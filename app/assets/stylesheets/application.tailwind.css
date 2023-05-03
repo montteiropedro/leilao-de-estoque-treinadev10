@@ -12,7 +12,11 @@
   }
 
   .view-title {
-    @apply text-xl font-semibold
+    @apply my-6 text-xl font-semibold
+  }
+
+  .errors {
+    @apply text-red-400
   }
 }
 

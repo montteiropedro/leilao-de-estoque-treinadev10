@@ -1,0 +1,13 @@
+pt-BR:
+  activerecord:
+    models:
+      batch:
+        one: Lote
+        other: Lotes
+    attributes:
+      batch:
+        code: Código
+        start_date: Data de Início
+        end_date: Data do Fim
+        minimum_bid: Lance Mínimo
+        minimum_difference_between_bids: Diferença Mínima Entre Lances

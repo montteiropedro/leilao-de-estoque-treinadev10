@@ -1,1 +1,11 @@
-<h1 class='view-title'>Lotes</h1>
+<h1 class='view-title'><%= t '.title' %></h1>
+
+<div class='flex flex-col gap-4'>
+  <% @batches.each do |b| %>
+    <%= link_to batch_path(b) do %>
+      <div class='p-4 bg-neutral-300'>
+        <%= t '.prefix' %> <%= b.code %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

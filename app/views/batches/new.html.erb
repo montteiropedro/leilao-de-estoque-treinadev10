@@ -1,0 +1,60 @@
+<h1 class='view-title'><%= t '.title' %></h1>
+
+<% if @batch.errors.any? %>
+  <p>Verifique os erros abaixo:</p>
+  
+  <% @batch.errors.full_messages.each do |message| %>
+    <ul>
+      <li><%= message %></li>
+    </ul>
+  <% end %>
+<% end %>
+
+<%= form_with model: @batch do |f| %>
+  <div>
+    <%= f.label :code %>
+    <%= f.text_field :code %>
+
+    <% if @batch.errors[:code].any? %>
+      <span class='errors'><%= @batch.errors[:code].join(', ') %></span>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :start_date %>
+    <%= f.date_field :start_date %>
+
+    <% if @batch.errors[:start_date].any? %>
+      <span class='errors'><%= @batch.errors[:start_date].join(', ') %></span>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :end_date %>
+    <%= f.date_field :end_date %>
+
+    <% if @batch.errors[:end_date].any? %>
+      <span class='errors'><%= @batch.errors[:end_date].join(', ') %></span>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :minimum_bid %>
+    <%= f.text_field :minimum_bid %>
+
+    <% if @batch.errors[:minimum_bid].any? %>
+      <span class='errors'><%= @batch.errors[:minimum_bid].join(', ') %></span>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :minimum_difference_between_bids %>
+    <%= f.text_field :minimum_difference_between_bids %>
+
+    <% if @batch.errors[:minimum_difference_between_bids].any? %>
+      <span class='errors'><%= @batch.errors[:minimum_difference_between_bids].join(', ') %></span>
+    <% end %>
+  </div>
+
+  <%= f.submit t '.submit' %>
+<% end %>
