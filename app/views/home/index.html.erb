@@ -1,0 +1,20 @@
+<% if user_signed_in? && current_user.is_admin? %>
+  <h1 class="text-lg font-semibold">Admin Menu</h1>
+
+  <div class="m-auto w-[532px] flex flex-col gap-4">
+    <%= link_to 'Aprovar Lotes', {}, class: 'px-2 py-4 text-lg bg-gray-100 rounded' %> <!-- yet to implement -->
+    <%= link_to 'Cadastrar Lotes', new_batch_path, class: 'px-2 py-4 text-lg bg-gray-100 rounded' %>
+    <%= link_to 'Cadastrar Produtos', new_product_path, class: 'px-2 py-4 text-lg bg-gray-100 rounded' %>
+    <%= link_to 'Cadastrar Categorias', new_category_path, class: 'px-2 py-4 text-lg bg-gray-100 rounded' %>
+  </div>
+<% else %>
+  <h1 class="text-lg font-semibold">Menu</h1>
+
+  <div class="m-auto w-[532px] flex flex-col gap-4">
+    <%= link_to 'Lotes em Leilão', batches_path, class: 'px-2 py-4 text-lg bg-gray-100 rounded' %>
+  </div>
+<% end %>
+
+
+
+

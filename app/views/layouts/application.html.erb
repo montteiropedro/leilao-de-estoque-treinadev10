@@ -12,18 +12,29 @@
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <header>
-        <nav>
-        </nav>
-      </header>
+    <header class="py-6 flex items-center justify-between gap-4 bg-neutral-300">
+      <%= link_to root_path do %>
+        <h1 class="btn-primary text-xl font-bold">Leilão do Estoque</h1>
+      <% end %>
 
-      <main>
-        <p class="notice"><%= notice %></p>
-        <p class="alert"><%= alert %></p>
-        
-        <%= yield %>
-      </main>
+      <nav>
+        <% if user_signed_in? %>
+          <div id='user-menu'>
+            <span><%= current_user.name %></span>
+            <%= link_to 'Sair', destroy_user_session_path, data: { turbo_method: :delete }, class: "btn-primary" %>
+          </div>
+        <% else %>
+          <%= link_to 'Inscrever-se', new_user_registration_path, class: "btn-primary" %>
+          <%= link_to 'Entrar', new_user_session_path, class: "btn-primary" %>
+        <% end %>
+      </nav>
+    </header>
+
+    <main class="container m-auto py-6">
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
+      
+      <%= yield %>
     </main>
   </body>
 </html>
