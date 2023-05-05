@@ -9,7 +9,7 @@ describe 'Admin registers a batch' do
 
     login_as(admin_user)
     visit root_path
-    within('div.menu') do
+    within('#batch-menu') do
       click_on 'Cadastrar Lotes'
     end
 
@@ -31,9 +31,7 @@ describe 'Admin registers a batch' do
   
       login_as(admin_user)
       visit root_path
-      within('div.menu') do
-        click_on 'Cadastrar Lotes'
-      end
+      click_on 'Cadastrar Lotes'
       fill_in 'Código', with: 'COD123456'
       fill_in 'Data de Início', with: '10/10/2023'
       fill_in 'Data do Fim', with: '01/12/2023'
@@ -53,9 +51,7 @@ describe 'Admin registers a batch' do
   
       login_as(admin_user)
       visit root_path
-      within('div.menu') do
-        click_on 'Cadastrar Lotes'
-      end
+      click_on 'Cadastrar Lotes'
       fill_in 'Código', with: ''
       fill_in 'Data de Início', with: ''
       fill_in 'Data do Fim', with: ''
