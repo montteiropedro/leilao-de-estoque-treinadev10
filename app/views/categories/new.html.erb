@@ -1,0 +1,14 @@
+<h1 class='view-title'><%= t '.title' %></h1>
+
+<%= form_with model: @category do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+
+    <% if @category.errors[:name].any? %>
+      <span class='errors'><%= @category.errors[:name].join(', ') %></span>
+    <% end %>
+  </div>
+
+  <%= f.submit t '.submit' %>
+<% end %>

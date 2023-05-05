@@ -6,4 +6,10 @@ class ApplicationController < ActionController::Base
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :cpf])
   end
+
+  private
+
+  def is_admin?
+    redirect_to root_path unless current_user.is_admin
+  end
 end

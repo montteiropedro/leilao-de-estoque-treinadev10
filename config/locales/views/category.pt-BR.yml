@@ -1,0 +1,13 @@
+pt-BR:
+  categories:
+    index:
+      title: Categorias
+      not_found_message: Não existem categorias cadastradas.
+    show:
+      remove_button_text: Remover Categoria
+      linked_products: Produtos Vinculados
+      not_found_message: Não existem produtos vinculados a esta categoria.
+    new:
+      title: Cadastrar Nova Categoria
+      submit: Cadastrar
+

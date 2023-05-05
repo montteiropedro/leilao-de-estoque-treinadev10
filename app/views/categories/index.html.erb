@@ -1,1 +1,11 @@
-<h1 class='view-title'>Categorias</h1>
+<h1 class='view-title'><%= t '.title' %></h1>
+
+<div class='flex flex-col gap-4'>
+  <% @categories.each do |c| %>
+    <%= link_to category_path(c) do %>
+      <div class='p-4 bg-black hover:scale-105'>
+        <span class='text-white'><%= c.name %></span>
+      </div>
+    <% end %>
+  <% end %>
+</div>

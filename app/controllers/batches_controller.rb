@@ -33,8 +33,4 @@ class BatchesController < ApplicationController
   def batch_params
     params.require(:batch).permit(:code, :start_date, :end_date, :minimum_bid, :minimum_difference_between_bids)
   end
-
-  def is_admin?
-    redirect_to root_path unless current_user.is_admin
-  end
 end

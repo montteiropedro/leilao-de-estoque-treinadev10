@@ -1,0 +1,24 @@
+<div class='my-6 flex items-center justify-between'>
+  <h1 class='view-title my-0'><%= @category.name %></h1>
+
+  <% if current_user.present? && current_user.is_admin %>
+    <%= button_to t('.remove_button_text'), false, class: 'p-2 bg-red-400 text-white rounded' %>
+  <% end %>
+</div>
+
+<div>
+  <h2 class='mb-4 py-2 text-neutral-600 text-lg text-center font-semibold'>
+    <%= t '.linked_products' %>
+  </h2>
+
+  <% if @category.products.any? %>
+    <% @category.products.each do |p| %>
+      <%= link_to product_path(p), class: 'p-4 flex flex-col gap-2 bg-black hover:scale-105 rounded' do %>
+        <span class='text-white'><%= p.name %></span>
+        <span class='text-white text-xs italic'><%= p.code %></span>
+      <% end %>
+    <% end %>
+  <% else %>
+    <p class='my-4 text-center'><%= t '.not_found_message' %></p>
+  <% end %>
+</div>
