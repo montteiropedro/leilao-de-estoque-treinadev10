@@ -5,11 +5,13 @@ pt-BR:
       prefix: Lote
     show:
       title: Lote
+      subtitle: Administrado por
       code: Código
       start_date: Data de Início
       end_date: Data do Fim
       minimum_bid: Lance Mínimo
-      minimum_difference_between_bid: Diferença Mínima Entre Lances
+      minimum_difference_between_bids: Diferença Mínima Entre Lances
+      approve_button_text: Aprovar Lote
     new:
       title: Cadastrar Novo Lote
       submit: 'Cadastrar'

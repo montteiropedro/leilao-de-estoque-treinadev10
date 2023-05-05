@@ -3,220 +3,121 @@ require 'rails_helper'
 
 RSpec.describe Batch, type: :model do
   describe '#valid?' do
-    context 'presence validation' do
-      it 'should return false when code is empty' do
-        admin = User.create!(
-          name: 'John Doe', cpf: '41760209031',
-          email: 'john@leilaodogalpao.com.br', password: 'password123'
-        )
+    context 'code' do
+      it 'should not be empty' do
+        batch = Batch.new(code: '')
+        
+        batch.valid?
 
-        batch = Batch.new(
-          code: '', start_date: '2023-10-05', end_date: '2023-12-20',
-          minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
-          creator: admin
-        )
-
-        result = batch.valid?
-
-        expect(result).to eq false
+        expect(batch.errors.include? :code).to eq true
+        expect(batch.errors[:code].include? 'não pode ficar em branco').to eq true
       end
 
-      it 'should return false when start_date is empty' do
-        admin = User.create!(
-          name: 'John Doe', cpf: '41760209031',
-          email: 'john@leilaodogalpao.com.br', password: 'password123'
-        )
+      it 'should have 3 letters followed by 6 numbers' do
+        batch = Batch.new(code: 'A123B456C')
+        
+        batch.valid?
 
-        batch = Batch.new(
-          code: 'COD123456', start_date: '', end_date: '2023-12-20',
-          minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
-          creator: admin
-        )
-
-        result = batch.valid?
-
-        expect(result).to eq false
+        expect(batch.errors.include? :code).to eq true
+        expect(batch.errors[:code].include? 'deve iniciar com 3 letras maiúsculas e terminar com 6 números').to eq true
       end
 
-      it 'should return false when end_date is empty' do
-        admin = User.create!(
-          name: 'John Doe', cpf: '41760209031',
-          email: 'john@leilaodogalpao.com.br', password: 'password123'
-        )
-
-        batch = Batch.new(
-          code: 'COD123456', start_date: '2023-10-05', end_date: '',
-          minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
-          creator: admin
-        )
-
-        result = batch.valid?
-
-        expect(result).to eq false
-      end
-
-      it 'should return false when minimum_bid is empty' do
-        admin = User.create!(
-          name: 'John Doe', cpf: '41760209031',
-          email: 'john@leilaodogalpao.com.br', password: 'password123'
-        )
-
-        batch = Batch.new(
-          code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          minimum_bid: '', minimum_difference_between_bids: 5_000,
-          creator: admin
-        )
-
-        result = batch.valid?
-
-        expect(result).to eq false
-      end
-
-      it 'should return false when minimum_difference_between_bids is empty' do
-        admin = User.create!(
-          name: 'John Doe', cpf: '41760209031',
-          email: 'john@leilaodogalpao.com.br', password: 'password123'
-        )
-
-        batch = Batch.new(
-          code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          minimum_bid: 10_000, minimum_difference_between_bids: '',
-          creator: admin
-        )
-
-        result = batch.valid?
-
-        expect(result).to eq false
-      end
-
-      it 'should return false when creator is empty' do
-        admin = User.create!(
-          name: 'John Doe', cpf: '41760209031',
-          email: 'john@leilaodogalpao.com.br', password: 'password123'
-        )
-
-        batch = Batch.new(
-          code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
-          creator: nil
-        )
-
-        result = batch.valid?
-
-        expect(result).to eq false
-      end
-
-      pending 'should return false when creator references a non admin user'
-    end
-
-    context 'uniqueness validation' do
-      it 'should return false when code is not unique' do
-        admin = User.create!(
-          name: 'John Doe', cpf: '41760209031',
-          email: 'john@leilaodogalpao.com.br', password: 'password123'
-        )
-
-        first_batch = Batch.create!(
-          code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
-          creator: admin
-        )
-
-        second_batch = Batch.new(
-          code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
-          creator: admin
-        )
-
-        result = second_batch.valid?
-
-        expect(result).to eq false
+      it 'should be unique' do
+        first_batch = Batch.new(code: Batch.generate_code_suggestion)
+        second_batch = Batch.new(code: Batch.generate_code_suggestion)
+        
+        expect(second_batch.code).not_to eq first_batch.code
       end
     end
 
-    context 'format validation' do
-      it 'should return false when code does not match de specified format' do
-        admin = User.create!(
-          name: 'John Doe', cpf: '41760209031',
-          email: 'john@leilaodogalpao.com.br', password: 'password123'
-        )
+    context 'start_date' do
+      it 'should not be empty' do
+        batch = Batch.new(start_date: '')
 
-        batch = Batch.new(
-          code: '123456COD', start_date: '2023-10-05', end_date: '2023-12-20',
-          minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
-          creator: admin
-        )
+        batch.valid?
 
-        result = batch.valid?
+        expect(batch.errors.include? :start_date).to eq true
+        expect(batch.errors[:start_date].include? 'não pode ficar em branco').to eq true
+      end
 
-        expect(result).to eq false
+      it 'should not be in the past' do
+        batch = Batch.new(start_date: Date.today - 1.day)
+
+        batch.valid?
+
+        expect(batch.errors.include? :start_date).to eq true
+        expect(batch.errors[:start_date].include? 'não pode estar no passado').to eq true
       end
     end
 
-    context 'comparison validation' do
-      it 'should return false when start_date is not before the end_date' do
-        admin = User.create!(
-          name: 'John Doe', cpf: '41760209031',
-          email: 'john@leilaodogalpao.com.br', password: 'password123'
-        )
+    context 'end_date' do
+      it 'should not be empty' do
+        batch = Batch.new(end_date: '')
 
-        batch = Batch.new(
-          code: 'COD123456', start_date: '2023-12-20', end_date: '2023-10-05',
-          minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
-          creator: admin
-        )
+        batch.valid?
 
-        result = batch.valid?
+        expect(batch.errors.include? :end_date).to eq true
+        expect(batch.errors[:end_date].include? 'não pode ficar em branco').to eq true
+      end
 
-        expect(result).to eq false
+      it 'should be after start_date' do
+        batch = Batch.new(start_date: Date.today + 1.day, end_date: Date.today)
+
+        batch.valid?
+
+        expect(batch.errors.include? :end_date).to eq true
+        expect(batch.errors[:end_date].include? 'deve ser depois da data de início').to eq true
       end
     end
 
-    context 'numericality validation' do
-      it 'should return false when minimum_bid a integer less than or equal to 0' do
-        admin = User.create!(
-          name: 'John Doe', cpf: '41760209031',
-          email: 'john@leilaodogalpao.com.br', password: 'password123'
-        )
+    context 'minimum_bid' do
+      it 'should not be empty' do
+        batch = Batch.new(minimum_bid: '')
 
-        batch = Batch.new(
-          code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          minimum_bid: -10_000, minimum_difference_between_bids: 5_000,
-          creator: admin
-        )
+        batch.valid?
+
+        expect(batch.errors.include? :minimum_bid).to eq true
+        expect(batch.errors[:minimum_bid].include? 'não pode ficar em branco').to eq true
+      end
+
+      it 'should be a positive integer' do
+        batch = Batch.new(minimum_bid: -1_000)
+
+        batch.valid?
+
+        expect(batch.errors.include? :minimum_bid).to eq true
+        expect(batch.errors[:minimum_bid].include? 'deve ser um valor inteiro e positivo').to eq true
+      end
+    end
+
+    context 'minimum_difference_between_bids' do
+      it 'should not be empty' do
+        batch = Batch.new(minimum_difference_between_bids: '')
+
+        batch.valid?
+
+        expect(batch.errors.include? :minimum_difference_between_bids).to eq true
+        expect(batch.errors[:minimum_difference_between_bids].include? 'não pode ficar em branco').to eq true
+      end
+
+      it 'should be a positive integer' do
+        batch = Batch.new(minimum_difference_between_bids: -1_000)
+
+        batch.valid?
+
+        expect(batch.errors.include? :minimum_difference_between_bids).to eq true
+        expect(batch.errors[:minimum_difference_between_bids].include? 'deve ser um valor inteiro e positivo').to eq true
+      end
+    end
+
+    context 'creator' do
+      it 'should not be empty' do
+        batch = Batch.new
 
         result = batch.valid?
 
-        expect(result).to eq false
+        expect(batch.errors.include? :creator).to eq true
       end
-
-      it 'should return false when minimum_difference_between_bids is a integer less than or equal to 0' do
-        admin = User.create!(
-          name: 'John Doe', cpf: '41760209031',
-          email: 'john@leilaodogalpao.com.br', password: 'password123'
-        )
-
-        batch = Batch.new(
-          code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          minimum_bid: 10_000, minimum_difference_between_bids: -5_000,
-          creator: admin
-        )
-
-        result = batch.valid?
-
-        expect(result).to eq false
-      end
-    end
-  end
-
-  describe '#set_approver' do
-    context 'non admin user' do
-      pending 'should return a message'
-    end
-
-    context 'admin user' do
-      pending 'should return a message when admin user is the batch creator'
-      pending 'should return true when admin user is not the batch creator'
     end
   end
 end

@@ -3,7 +3,7 @@ class BatchesController < ApplicationController
   before_action :is_admin?, only: [:new, :create]
   
   def index
-    @batches = Batch.all
+    @batches = Batch.order(id: :desc)
   end
 
   def show
@@ -12,6 +12,7 @@ class BatchesController < ApplicationController
 
   def new
     @batch = Batch.new
+    @code_suggestion = Batch.generate_code_suggestion
   end
 
   def create
@@ -21,6 +22,7 @@ class BatchesController < ApplicationController
     if @batch.save
       redirect_to @batch, notice: 'Lote cadastrado com sucesso.'
     else
+      @code_suggestion = batch_params[:code]
       flash.now[:notice] = 'Falha ao cadastrar o lote.'
       render :new, status: :unprocessable_entity
     end

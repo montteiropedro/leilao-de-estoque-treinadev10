@@ -1,8 +1,19 @@
-<h1 class='view-title'><%= t '.title' %> <%= @batch.code %></h1>
+<div class='my-6 flex items-center justify-between'>
+  <div>
+    <h1 class='view-title my-0'><%= t '.title' %> <%= @batch.code %></h1>
+    <span><%= t '.subtitle' %> <%= @batch.get_creator_description %></span>
+  </div>
+
+  <% if current_user.present? %>
+    <% if current_user.is_admin && (@batch.creator != current_user) %>
+      <%= button_to t('.approve_button_text'), false, class: "p-2 bg-black text-white rounded" %>
+    <% end %>
+  <% end %>
+</div>
 
 <div class='flex flex-col gap-2'>
-  <span><strong><%= t '.start_date' %>:</strong> <%= @batch.start_date %></span>
-  <span><strong><%= t '.end_date' %>:</strong> <%= @batch.end_date %></span>
-  <span><strong><%= t '.minimum_bid' %>:</strong> <%= @batch.minimum_bid %></span>
-  <span><strong><%= t '.minimum_difference_between_bids' %>:</strong> <%= @batch.minimum_difference_between_bids %></span>
+  <span><strong><%= t '.start_date' %>:</strong> <%= l(@batch.start_date) %></span>
+  <span><strong><%= t '.end_date' %>:</strong> <%= l(@batch.end_date) %></span>
+  <span><strong><%= t '.minimum_bid' %>:</strong> <%= @batch.minimum_bid %> centavos</span>
+  <span><strong><%= t '.minimum_difference_between_bids' %>:</strong> <%= @batch.minimum_difference_between_bids %> centavos</span>
 </div>

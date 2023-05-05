@@ -15,7 +15,7 @@ describe 'Admin registers a batch' do
 
     expect(current_path).to eq new_batch_path
     expect(page).to have_content 'Cadastrar Novo Lote'
-    expect(page).to have_field 'Código' # todo: generate a code suggestion to the user
+    expect(page).to have_field 'Código'
     expect(page).to have_field 'Data de Início'
     expect(page).to have_field 'Data do Fim'
     expect(page).to have_field 'Lance Mínimo'
@@ -68,6 +68,14 @@ describe 'Admin registers a batch' do
     end
   end
 
+  context 'visitant' do
+    it 'should be redirected to homepage' do
+      visit new_batch_path
+  
+      expect(current_path).to eq new_user_session_path
+    end
+  end
+
   context 'non admin user' do
     it 'should be redirected to homepage' do
       user = User.create!(
@@ -79,14 +87,6 @@ describe 'Admin registers a batch' do
       visit new_batch_path
   
       expect(current_path).to eq root_path
-    end
-  end
-
-  context 'visitant' do
-    it 'should be redirected to homepage' do
-      visit new_batch_path
-  
-      expect(current_path).to eq new_user_session_path
     end
   end
 end

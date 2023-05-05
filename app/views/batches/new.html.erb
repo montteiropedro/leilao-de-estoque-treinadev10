@@ -1,19 +1,9 @@
 <h1 class='view-title'><%= t '.title' %></h1>
 
-<% if @batch.errors.any? %>
-  <p>Verifique os erros abaixo:</p>
-  
-  <% @batch.errors.full_messages.each do |message| %>
-    <ul>
-      <li><%= message %></li>
-    </ul>
-  <% end %>
-<% end %>
-
 <%= form_with model: @batch do |f| %>
   <div>
     <%= f.label :code %>
-    <%= f.text_field :code %>
+    <%= f.text_field :code, value: @code_suggestion %>
 
     <% if @batch.errors[:code].any? %>
       <span class='errors'><%= @batch.errors[:code].join(', ') %></span>
