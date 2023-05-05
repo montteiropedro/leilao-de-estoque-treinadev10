@@ -13,7 +13,7 @@ describe 'User visits a batch details page' do
     )
 
     visit root_path
-    within('div.menu') do
+    within('#batch-menu') do
       click_on 'Lotes em Leilão'
     end
     click_on "Lote COD123456"

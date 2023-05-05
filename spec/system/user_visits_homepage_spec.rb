@@ -7,16 +7,31 @@ describe 'User visits homepage' do
     expect(page).to have_link 'Leilão do Estoque', href: root_path
   end
 
-  context 'visitant or non admin user' do
+  context 'and is a visitant' do
     it 'should see the user menu' do
       visit root_path
 
-      expect(page).to have_content 'Menu'
+      expect(page).to have_content 'Lotes'
       expect(page).to have_link 'Lotes em Leilão', href: batches_path
     end
   end
 
-  context 'admin user' do
+  context 'and is not a admin' do
+    it 'should see the user menu' do
+      user = User.create!(
+        name: 'Peter Parker', cpf: '73046259026',
+        email: 'peter@email.com', password: 'password123'
+      )
+
+      login_as(user)
+      visit root_path
+
+      expect(page).to have_content 'Lotes'
+      expect(page).to have_link 'Lotes em Leilão', href: batches_path
+    end
+  end
+
+  context 'and is a admin' do
     it 'should see the admin menu' do
       admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
