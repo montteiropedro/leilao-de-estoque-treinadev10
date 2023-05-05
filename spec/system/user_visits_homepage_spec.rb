@@ -26,11 +26,21 @@ describe 'User visits homepage' do
       login_as(admin_user)
       visit root_path
 
-      expect(page).to have_content 'Admin Menu'
-      expect(page).to have_link 'Aprovar Lotes' # todo: yet to implement
-      expect(page).to have_link 'Cadastrar Lotes', href: new_batch_path
-      expect(page).to have_link 'Cadastrar Produtos', href: new_product_path
-      expect(page).to have_link 'Cadastrar Categorias', href: new_category_path
+      within('#batch-menu') do
+        expect(page).to have_content 'Lotes'
+        expect(page).to have_link 'Aprovar Lotes', href: batches_path
+        expect(page).to have_link 'Cadastrar Lotes', href: new_batch_path
+      end
+      within('#product-menu') do
+        expect(page).to have_content 'Produtos'
+        expect(page).to have_link 'Listar Produtos', href: products_path
+        expect(page).to have_link 'Cadastrar Produtos', href: new_product_path
+      end
+      within('#category-menu') do
+        expect(page).to have_content 'Categorias'
+        expect(page).to have_link 'Listar Categorias', href: categories_path
+        expect(page).to have_link 'Cadastrar Categorias', href: new_category_path
+      end
     end
   end
 end
