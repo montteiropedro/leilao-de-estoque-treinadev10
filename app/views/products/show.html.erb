@@ -1,18 +1,40 @@
 <div class='my-6 flex items-center justify-between'>
-  <h1 class='view-title my-0'><%= @product.name %></h1>
+  <div>
+    <h1 class='view-title my-0'><%= @product.name %></h1>
+    <span class='italic'><%= @product.description %></span>
+  </div>
 
   <% if current_user.present? && current_user.is_admin %>
     <%= button_to t('.remove_product'), false, class: 'p-2 bg-red-400 text-white rounded' %>
   <% end %>
 </div>
 
-<div>
-  <% if @product.batch.present? %>
-    <span>
-      <%= t '.linked_to_batch' %> <%= link_to @product.batch.code, @product.batch %>
-      <%= button_to t('.remove_product_from_batch'), false, class: 'p-2 bg-black text-white rounded' %>
-    </span>
+<div class='flex flex-col gap-2'>
+  <% if @product.category.present? %>
+    <span><strong><%= t '.category' %>:</strong> <%= @product.category.name %></span>
   <% else %>
-    <%= button_to t('.add_product_to_batch'), false, class: 'p-2 bg-black text-white rounded' %>
+    <span><strong><%= t '.category' %>:</strong> <%= t '.without_category' %></span>
+  <%end%>
+  <span><strong><%= t '.weight' %>:</strong> <%= @product.weight %>g</span>
+  <span><strong><%= t '.width' %>:</strong> <%= @product.width %>cm</span>
+  <span><strong><%= t '.height' %>:</strong> <%= @product.height %>cm</span>
+  <span><strong><%= t '.depth' %>:</strong> <%= @product.depth %>cm</span>
+
+  <% if current_user.present? && current_user.is_admin %>
+    <% if @product.batch.present? %>
+      <div class='flex items-center gap-4'>
+        <strong><%= t '.batch' %>:</strong> <%= link_to @product.batch.code, @product.batch %>
+        <%= button_to t('.remove_product_from_batch'), false, class: 'p-2 bg-black text-white rounded' %>
+      </div>
+    <% else %>
+      <div class='flex items-center gap-4'>
+        <strong><%= t '.batch' %>:</strong> <%= t '.without_batch' %>
+        <%= button_to t('.add_product_to_batch'), false, class: 'p-2 bg-black text-white rounded' %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class='flex items-center gap-4'>
+      <strong><%= t '.batch' %>:</strong> <%= t '.without_batch' %>
+    </div>
   <% end %>
 </div>
