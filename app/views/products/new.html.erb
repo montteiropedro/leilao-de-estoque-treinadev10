@@ -1,0 +1,68 @@
+<h1 class='view-title'><%= t '.title' %></h1>
+
+<%= form_with model: @product do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+
+    <% if @product.errors[:name].any? %>
+      <span class='errors'><%= @product.errors[:name].join(', ') %></span>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+
+    <% if @product.errors[:description].any? %>
+      <span class='errors'><%= @product.errors[:description].join(', ') %></span>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :weight %>
+    <%= f.number_field :weight %>
+
+    <% if @product.errors[:weight].any? %>
+      <span class='errors'><%= @product.errors[:weight].join(', ') %></span>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :width %>
+    <%= f.number_field :width %>
+
+    <% if @product.errors[:width].any? %>
+      <span class='errors'><%= @product.errors[:width].join(', ') %></span>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :height %>
+    <%= f.number_field :height %>
+
+    <% if @product.errors[:height].any? %>
+      <span class='errors'><%= @product.errors[:height].join(', ') %></span>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :depth %>
+    <%= f.number_field :depth %>
+
+    <% if @product.errors[:depth].any? %>
+      <span class='errors'><%= @product.errors[:depth].join(', ') %></span>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :category_id %>
+    <%= f.collection_select :category_id, @categories, :id, :name, prompt: true %>
+
+    <% if @product.errors[:category_id].any? %>
+      <span class='errors'><%= @product.errors[:category_id].join(', ') %></span>
+    <% end %>
+  </div>
+
+  <%= f.submit t '.submit' %>
+<% end %>

@@ -1,0 +1,18 @@
+<div class='my-6 flex items-center justify-between'>
+  <h1 class='view-title my-0'><%= @product.name %></h1>
+
+  <% if current_user.present? && current_user.is_admin %>
+    <%= button_to t('.remove_product'), false, class: 'p-2 bg-red-400 text-white rounded' %>
+  <% end %>
+</div>
+
+<div>
+  <% if @product.batch.present? %>
+    <span>
+      <%= t '.linked_to_batch' %> <%= link_to @product.batch.code, @product.batch %>
+      <%= button_to t('.remove_product_from_batch'), false, class: 'p-2 bg-black text-white rounded' %>
+    </span>
+  <% else %>
+    <%= button_to t('.add_product_to_batch'), false, class: 'p-2 bg-black text-white rounded' %>
+  <% end %>
+</div>
