@@ -6,7 +6,8 @@ pt-BR:
       not_found_message: Não existem lotes cadastrados.
     show:
       title: Lote
-      subtitle: Administrado por
+      creator_description: Administrado por
+      approver_description: Aprovado por
       code: Código
       start_date: Data de Início
       end_date: Data do Fim

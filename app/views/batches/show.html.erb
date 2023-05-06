@@ -1,15 +1,19 @@
 <div class='my-6 flex items-center justify-between'>
   <div>
     <h1 class='view-title my-0'><%= t '.title' %> <%= @batch.code %></h1>
-    <span><%= t '.subtitle' %> <%= @batch.get_creator_description %></span>
+    <div class='flex flex-col'>
+      <span><%= t '.creator_description' %> <%= @batch.get_creator_description %></span>
+    </div>
   </div>
 
-  <% if current_user.present? %>
-    <% if current_user.is_admin && (@batch.creator != current_user) %>
-      <%= button_to false, class: "px-4 py-2 flex items-center gap-2 bg-black text-white hover:scale-105 transition-all rounded" do %>
-        <%= t '.approve_button_text' %>
-        <i class="fa-regular fa-circle text-sm animate-pulse"></i>
-      <% end %>
+  <% if @batch.approver.present? %>
+    <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-emerald-300 rounded'>
+      <%= t '.approver_description' %> <%= @batch.approver.name %>
+    </div>
+  <% elsif (current_user.present? && current_user.is_admin) && (current_user != @batch.creator) %>
+    <%= button_to approve_batch_path, class: "px-4 py-2 flex items-center gap-2 bg-black text-white hover:scale-105 transition-all rounded" do %>
+      <%= t '.approve_button_text' %>
+      <i class="fa-regular fa-circle text-sm animate-pulse"></i>
     <% end %>
   <% end %>
 </div>

@@ -1,6 +1,6 @@
 class BatchesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
-  before_action :is_admin?, only: [:new, :create]
+  before_action :authenticate_user!, only: [:new, :create, :approve]
+  before_action :is_admin?, only: [:new, :create, :approve]
   
   def index
     @batches = Batch.order(id: :desc)
@@ -26,6 +26,12 @@ class BatchesController < ApplicationController
       flash.now[:notice] = 'Falha ao cadastrar o lote.'
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def approve
+    @batch = Batch.find(params[:id])
+
+    redirect_to @batch, notice: 'Lote aprovado com sucesso.' if @batch.update!(approver: current_user)
   end
 
   private

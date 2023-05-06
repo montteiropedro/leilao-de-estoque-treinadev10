@@ -1,3 +1,5 @@
+# Users and Admins
+
 first_admin_user = User.create!(
   name: 'John Doe', cpf: '41760209031',
   email: 'john@leilaodogalpao.com.br', password: 'password123'
@@ -32,16 +34,16 @@ product_with_category = Product.create!(
   category: electronics_category
 )
 
-# Batch
+# Batches
 
 batch = Batch.create!(
-  code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-  minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
+  code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.month,
+  min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
   creator: first_admin_user
 )
 
 batch = Batch.create!(
-  code: 'BTC334509', start_date: '2023-11-10', end_date: '2023-12-01',
-  minimum_bid: 15_000, minimum_difference_between_bids: 10_000,
+  code: 'BTC334509', start_date: Date.today, end_date: Date.today + 1.month,
+  min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
   creator: first_admin_user, approver: second_admin_user
 )

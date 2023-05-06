@@ -9,6 +9,13 @@ class Batch < ApplicationRecord
   validates :start_date, comparison: { greater_than_or_equal_to: Date.today, message: 'não pode estar no passado' }
   validates :end_date, comparison: { greater_than: :start_date, message: 'deve ser depois da data de início' }
   validates :min_bid_in_centavos, :min_diff_between_bids_in_centavos, numericality: { only_integer: true, greater_than: 0, message: 'deve ser um valor inteiro e positivo' }
+  validate :approver_cannot_be_creator
+
+  def approver_cannot_be_creator
+    if self.approver == self.creator
+      errors.add(:approver, 'não pode aprovar um lote criado por si mesmo')
+    end
+  end
 
   def get_creator_description
     "#{self.creator.name} <#{self.creator.email}>"
