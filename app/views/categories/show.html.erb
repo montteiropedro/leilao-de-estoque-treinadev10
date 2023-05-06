@@ -13,7 +13,7 @@
 
   <% if @category.products.any? %>
     <% @category.products.each do |p| %>
-      <%= link_to product_path(p), class: 'p-4 flex flex-col gap-2 bg-black hover:scale-105 rounded' do %>
+      <%= link_to product_path(p), class: 'p-4 flex flex-col gap-2 bg-secondary hover:scale-105 transition-all rounded' do %>
         <span class='text-white'><%= p.name %></span>
         <span class='text-white text-xs italic'><%= p.code %></span>
       <% end %>

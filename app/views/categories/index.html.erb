@@ -2,10 +2,8 @@
 
 <div class='flex flex-col gap-4'>
   <% @categories.each do |c| %>
-    <%= link_to category_path(c) do %>
-      <div class='p-4 bg-black hover:scale-105'>
-        <span class='text-white'><%= c.name %></span>
-      </div>
+    <%= link_to category_path(c), class: 'p-4 bg-secondary hover:scale-105 transition-all rounded' do %>
+      <%= c.name %>
     <% end %>
   <% end %>
 </div>

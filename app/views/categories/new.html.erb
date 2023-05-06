@@ -1,7 +1,7 @@
 <h1 class='view-title'><%= t '.title' %></h1>
 
-<%= form_with model: @category do |f| %>
-  <div>
+<%= form_with model: @category, class: 'm-auto' do |f| %>
+  <div class='form-field'>
     <%= f.label :name %>
     <%= f.text_field :name %>
 
@@ -10,5 +10,5 @@
     <% end %>
   </div>
 
-  <%= f.submit t '.submit' %>
+  <%= f.submit t('.submit'), class: 'form-submit' %>
 <% end %>

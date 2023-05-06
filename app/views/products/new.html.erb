@@ -1,7 +1,7 @@
 <h1 class='view-title'><%= t '.title' %></h1>
 
-<%= form_with model: @product do |f| %>
-  <div>
+<%= form_with model: @product, class: 'm-auto' do |f| %>
+  <div class='form-field'>
     <%= f.label :name %>
     <%= f.text_field :name %>
 
@@ -10,7 +10,7 @@
     <% end %>
   </div>
 
-  <div>
+  <div class='form-field'>
     <%= f.label :description %>
     <%= f.text_area :description %>
 
@@ -19,43 +19,47 @@
     <% end %>
   </div>
 
-  <div>
-    <%= f.label :weight %>
-    <%= f.number_field :weight %>
+  <div class='flex gap-4'>
+    <div class='form-field w-full'>
+      <%= f.label :weight %>
+      <%= f.number_field :weight %>
 
-    <% if @product.errors[:weight].any? %>
-      <span class='errors'><%= @product.errors[:weight].join(', ') %></span>
-    <% end %>
+      <% if @product.errors[:weight].any? %>
+        <span class='errors'><%= @product.errors[:weight].join(', ') %></span>
+      <% end %>
+    </div>
+
+    <div class='form-field w-full'>
+      <%= f.label :width %>
+      <%= f.number_field :width %>
+
+      <% if @product.errors[:width].any? %>
+        <span class='errors'><%= @product.errors[:width].join(', ') %></span>
+      <% end %>
+    </div>
   </div>
 
-  <div>
-    <%= f.label :width %>
-    <%= f.number_field :width %>
+  <div class='flex gap-4'>
+    <div class='form-field w-full'>
+      <%= f.label :height %>
+      <%= f.number_field :height %>
 
-    <% if @product.errors[:width].any? %>
-      <span class='errors'><%= @product.errors[:width].join(', ') %></span>
-    <% end %>
+      <% if @product.errors[:height].any? %>
+        <span class='errors'><%= @product.errors[:height].join(', ') %></span>
+      <% end %>
+    </div>
+
+    <div class='form-field w-full'>
+      <%= f.label :depth %>
+      <%= f.number_field :depth %>
+      
+      <% if @product.errors[:depth].any? %>
+        <span class='errors'><%= @product.errors[:depth].join(', ') %></span>
+      <% end %>
+    </div>
   </div>
 
-  <div>
-    <%= f.label :height %>
-    <%= f.number_field :height %>
-
-    <% if @product.errors[:height].any? %>
-      <span class='errors'><%= @product.errors[:height].join(', ') %></span>
-    <% end %>
-  </div>
-
-  <div>
-    <%= f.label :depth %>
-    <%= f.number_field :depth %>
-
-    <% if @product.errors[:depth].any? %>
-      <span class='errors'><%= @product.errors[:depth].join(', ') %></span>
-    <% end %>
-  </div>
-
-  <div>
+  <div class='form-field'>
     <%= f.label :category_id %>
     <%= f.collection_select :category_id, @categories, :id, :name, prompt: true %>
 
@@ -64,5 +68,5 @@
     <% end %>
   </div>
 
-  <%= f.submit t '.submit' %>
+  <%= f.submit t('.submit'), class: 'form-submit' %>
 <% end %>

@@ -1,41 +1,41 @@
 <% if user_signed_in? && current_user.is_admin? %>
   <div id='batch-menu' class='menu mx-auto mb-6 w-[532px] flex flex-col gap-2'>
-    <span class='text-lg font-semibold'>Lotes</span>
+    <span class='text-primary text-lg font-semibold'>Lotes</span>
 
-    <%= link_to 'Aprovar Lotes', batches_path, class: 'px-2 py-4 text-lg bg-gray-100 rounded' %>
-    <%= link_to 'Cadastrar Lotes', new_batch_path, class: 'px-2 py-4 text-lg bg-gray-100 rounded' %>
+    <%= link_to 'Aprovar Lotes', batches_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
+    <%= link_to 'Cadastrar Lotes', new_batch_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
   </div>
 
   <div id='product-menu' class='menu mx-auto mb-6 w-[532px] flex flex-col gap-2'>
-    <span class='text-lg font-semibold'>Produtos</span>
+    <span class='text-primary text-lg font-semibold'>Produtos</span>
 
-    <%= link_to 'Listar Produtos', products_path, class: 'px-2 py-4 text-lg bg-gray-100 rounded' %>
-    <%= link_to 'Cadastrar Produtos', new_product_path, class: 'px-2 py-4 text-lg bg-gray-100 rounded' %>
+    <%= link_to 'Listar Produtos', products_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
+    <%= link_to 'Cadastrar Produtos', new_product_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
   </div>
 
   <div id='category-menu' class='menu mx-auto mb-6 w-[532px] flex flex-col gap-2'>
-    <span class='text-lg font-semibold'>Categorias</span>
+    <span class='text-primary text-lg font-semibold'>Categorias</span>
 
-    <%= link_to 'Listar Categorias', categories_path, class: 'px-2 py-4 text-lg bg-gray-100 rounded' %>
-    <%= link_to 'Cadastrar Categorias', new_category_path, class: 'px-2 py-4 text-lg bg-gray-100 rounded' %>
+    <%= link_to 'Listar Categorias', categories_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
+    <%= link_to 'Cadastrar Categorias', new_category_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
   </div>
 <% else %>
   <div id='batch-menu' class='menu mx-auto mb-6 w-[532px] flex flex-col gap-2'>
-    <span class='text-lg font-semibold'>Lotes</span>
+    <span class='text-primary text-lg font-semibold'>Lotes</span>
 
-    <%= link_to 'Lotes em Leilão', batches_path, class: 'px-2 py-4 text-lg bg-gray-100 rounded' %>
+    <%= link_to 'Lotes em Leilão', batches_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
   </div>
 
   <div id='product-menu' class='menu mx-auto mb-6 w-[532px] flex flex-col gap-2'>
-    <span class='text-lg font-semibold'>Produtos</span>
+    <span class='text-primary text-lg font-semibold'>Produtos</span>
 
-    <%= link_to 'Listar Produtos', products_path, class: 'px-2 py-4 text-lg bg-gray-100 rounded' %>
+    <%= link_to 'Listar Produtos', products_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
   </div>
 
   <div id='category-menu' class='menu mx-auto mb-6 w-[532px] flex flex-col gap-2'>
-    <span class='text-lg font-semibold'>Categorias</span>
+    <span class='text-primary text-lg font-semibold'>Categorias</span>
 
-    <%= link_to 'Listar Categorias', categories_path, class: 'px-2 py-4 text-lg bg-gray-100 rounded' %>
+    <%= link_to 'Listar Categorias', categories_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
   </div>
 <% end %>
 

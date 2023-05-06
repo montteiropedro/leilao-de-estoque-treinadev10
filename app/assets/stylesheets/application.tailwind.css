@@ -2,21 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .btn-primary {
-    @apply py-2 px-4;
+@layer base {
+  body {
+    @apply text-white;
+  }
+  
+  nav {
+    @apply text-black;
   }
 
-  a {
-    @apply hover:text-blue-600
+  input {
+    @apply p-4 w-full text-black rounded-lg;
   }
 
-  .view-title {
-    @apply my-6 text-xl font-semibold
+  select {
+    @apply text-black;
   }
 
-  .errors {
-    @apply text-red-400
+  textarea {
+    @apply text-black;
+  }
+
+  form {
+    @apply max-w-[562px] flex flex-col;
   }
 }
 
+@layer components {
+  .btn-user-menu {
+    @apply px-4 py-2 border-2 rounded;
+  }
+
+  .view-title {
+    @apply my-6 text-primary text-xl font-semibold;
+  }
+
+  .form-field {
+    @apply mb-4 flex flex-col gap-2;
+  }
+
+  .form-submit {
+    @apply my-4 p-2 font-semibold bg-btn-primary cursor-pointer hover:scale-105 transition-all rounded;
+  }
+
+  .errors {
+    @apply text-red-400;
+  }
+}

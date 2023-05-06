@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>StockAuctionAppTreinadev10</title>
+    <title>Leilão do Estoque</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -9,24 +9,31 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    
+    <script src="https://kit.fontawesome.com/944f8aa2f6.js" crossorigin="anonymous"></script>
   </head>
 
-  <body>
-    <header class="py-6 flex items-center justify-between gap-4 bg-neutral-300">
-      <%= link_to root_path do %>
-        <h1 class="btn-primary text-xl font-bold">Leilão do Estoque</h1>
-      <% end %>
-
-      <nav>
-        <% if user_signed_in? %>
-          <div id='user-menu'>
-            <span><%= current_user.name %></span>
-            <%= link_to 'Sair', destroy_user_session_path, data: { turbo_method: :delete }, class: "btn-primary" %>
-          </div>
-        <% else %>
-          <%= link_to 'Inscrever-se', new_user_registration_path, class: "btn-primary" %>
-          <%= link_to 'Entrar', new_user_session_path, class: "btn-primary" %>
+  <body class="bg-primary">
+    <header class="py-6 bg-white">
+      <nav class="container m-auto flex items-center justify-between gap-4">
+        <%= link_to root_path, class: "flex items-center" do %>
+          <i class="fa-solid fa-warehouse text-xl"></i>
+          <h1 class="px-4 py-2 text-xl font-bold">Leilão do Estoque</h1>
         <% end %>
+
+        <div id="user-menu" class="flex items-center gap-4">
+          <% if user_signed_in? %>
+            <% if current_user.is_admin %>
+              <span class="p-2 text-white text-xs bg-black rounded">ADMIN</span>
+            <% end %>
+
+            <span class="italic"><%= current_user.name %></span>
+            <%= link_to "Sair", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn-user-menu" %>
+          <% else %>
+            <%= link_to "Inscrever-se", new_user_registration_path, class: "btn-user-menu" %>
+            <%= link_to "Entrar", new_user_session_path, class: "btn-user-menu" %>
+          <% end %>
+        </div>
       </nav>
     </header>
 
