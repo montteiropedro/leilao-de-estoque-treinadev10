@@ -17,6 +17,20 @@ describe 'User visits homepage' do
   end
 
   context 'and is not a admin' do
+    it 'should not see a admin tag in navigation menu' do
+      user = User.create!(
+        name: 'Peter Parker', cpf: '73046259026',
+        email: 'peter@email.com', password: 'password123'
+      )
+
+      login_as(user)
+      visit root_path
+      
+      within('nav') do
+        expect(page).not_to have_content 'ADMIN'
+      end
+    end
+
     it 'should see the user menu' do
       user = User.create!(
         name: 'Peter Parker', cpf: '73046259026',
@@ -32,6 +46,20 @@ describe 'User visits homepage' do
   end
 
   context 'and is a admin' do
+    it 'should see a admin tag in navigation menu' do
+      admin_user = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+
+      login_as(admin_user)
+      visit root_path
+      
+      within('nav') do
+        expect(page).to have_content 'ADMIN'
+      end
+    end
+
     it 'should see the admin menu' do
       admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
