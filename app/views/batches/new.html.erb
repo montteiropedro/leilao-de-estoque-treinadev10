@@ -32,20 +32,20 @@
 
   <div class='flex gap-4'>
     <div class='form-field w-full'>
-      <%= f.label :minimum_bid %>
-      <%= f.text_field :minimum_bid %>
+      <%= f.label :min_bid_in_centavos %>
+      <%= f.text_field :min_bid_in_centavos %>
 
-      <% if @batch.errors[:minimum_bid].any? %>
-        <span class='errors'><%= @batch.errors[:minimum_bid].join(', ') %></span>
+      <% if @batch.errors[:min_bid_in_centavos].any? %>
+        <span class='errors'><%= @batch.errors[:min_bid_in_centavos].join(', ') %></span>
       <% end %>
     </div>
 
     <div class='form-field w-full'>
-      <%= f.label :minimum_difference_between_bids %>
-      <%= f.text_field :minimum_difference_between_bids %>
+      <%= f.label :min_diff_between_bids_in_centavos %>
+      <%= f.text_field :min_diff_between_bids_in_centavos %>
 
-      <% if @batch.errors[:minimum_difference_between_bids].any? %>
-        <span class='errors'><%= @batch.errors[:minimum_difference_between_bids].join(', ') %></span>
+      <% if @batch.errors[:min_diff_between_bids_in_centavos].any? %>
+        <span class='errors'><%= @batch.errors[:min_diff_between_bids_in_centavos].join(', ') %></span>
       <% end %>
     </div>
   </div>

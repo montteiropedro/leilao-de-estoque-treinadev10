@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_02_140200) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_06_002828) do
   create_table "batches", force: :cascade do |t|
     t.string "code", null: false
     t.date "start_date", null: false
     t.date "end_date", null: false
-    t.integer "minimum_bid", null: false
-    t.integer "minimum_difference_between_bids", null: false
+    t.integer "min_bid_in_centavos", null: false
+    t.integer "min_diff_between_bids_in_centavos", null: false
     t.integer "creator_id", null: false
     t.integer "approver_id"
     t.datetime "created_at", null: false
@@ -27,14 +27,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_02_140200) do
   end
 
   create_table "bids", force: :cascade do |t|
-    t.integer "value", null: false
+    t.integer "value_in_centavos", null: false
     t.integer "user_id", null: false
     t.integer "batch_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["batch_id"], name: "index_bids_on_batch_id"
     t.index ["user_id"], name: "index_bids_on_user_id"
-    t.index ["value"], name: "index_bids_on_value", unique: true
+    t.index ["value_in_centavos"], name: "index_bids_on_value_in_centavos", unique: true
   end
 
   create_table "categories", force: :cascade do |t|

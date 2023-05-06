@@ -9,5 +9,5 @@ pt-BR:
         code: Código
         start_date: Data de Início
         end_date: Data do Fim
-        minimum_bid: Lance Mínimo
-        minimum_difference_between_bids: Diferença Mínima Entre Lances
+        min_bid_in_centavos: Lance Mínimo
+        min_diff_between_bids_in_centavos: Diferença Mínima Entre Lances

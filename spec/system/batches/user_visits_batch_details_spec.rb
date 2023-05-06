@@ -8,7 +8,7 @@ describe 'User visits a batch details page' do
     )
     batch = Batch.create!(
       code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
-      minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
+      min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
       creator: admin_user
     )
 
@@ -28,7 +28,7 @@ describe 'User visits a batch details page' do
     )
     batch = Batch.create!(
       code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
-      minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
+      min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
       creator: admin_user
     )
 
@@ -52,7 +52,7 @@ describe 'User visits a batch details page' do
       )
       batch = Batch.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
-        minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
+        min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: admin_user
       )
 
@@ -76,7 +76,7 @@ describe 'User visits a batch details page' do
       )
       batch = Batch.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
-        minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
+        min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: admin_user
       )
 
@@ -101,7 +101,7 @@ describe 'User visits a batch details page' do
       )
       batch = Batch.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
-        minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
+        min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: second_admin_user
       )
 
@@ -124,7 +124,7 @@ describe 'User visits a batch details page' do
       )
       batch = Batch.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
-        minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
+        min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: second_admin_user
       )
 

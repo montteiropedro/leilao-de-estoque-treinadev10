@@ -31,6 +31,6 @@ class BatchesController < ApplicationController
   private
 
   def batch_params
-    params.require(:batch).permit(:code, :start_date, :end_date, :minimum_bid, :minimum_difference_between_bids)
+    params.require(:batch).permit(:code, :start_date, :end_date, :min_bid_in_centavos, :min_diff_between_bids_in_centavos)
   end
 end

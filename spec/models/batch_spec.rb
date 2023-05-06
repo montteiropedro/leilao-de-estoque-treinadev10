@@ -70,43 +70,43 @@ RSpec.describe Batch, type: :model do
       end
     end
 
-    context 'minimum_bid' do
+    context 'min_bid_in_centavos' do
       it 'should not be empty' do
-        batch = Batch.new(minimum_bid: '')
+        batch = Batch.new(min_bid_in_centavos: '')
 
         batch.valid?
 
-        expect(batch.errors.include? :minimum_bid).to eq true
-        expect(batch.errors[:minimum_bid].include? 'não pode ficar em branco').to eq true
+        expect(batch.errors.include? :min_bid_in_centavos).to eq true
+        expect(batch.errors[:min_bid_in_centavos].include? 'não pode ficar em branco').to eq true
       end
 
       it 'should be a positive integer' do
-        batch = Batch.new(minimum_bid: -1_000)
+        batch = Batch.new(min_bid_in_centavos: -1)
 
         batch.valid?
 
-        expect(batch.errors.include? :minimum_bid).to eq true
-        expect(batch.errors[:minimum_bid].include? 'deve ser um valor inteiro e positivo').to eq true
+        expect(batch.errors.include? :min_bid_in_centavos).to eq true
+        expect(batch.errors[:min_bid_in_centavos].include? 'deve ser um valor inteiro e positivo').to eq true
       end
     end
 
-    context 'minimum_difference_between_bids' do
+    context 'min_diff_between_bids_in_centavos' do
       it 'should not be empty' do
-        batch = Batch.new(minimum_difference_between_bids: '')
+        batch = Batch.new(min_diff_between_bids_in_centavos: '')
 
         batch.valid?
 
-        expect(batch.errors.include? :minimum_difference_between_bids).to eq true
-        expect(batch.errors[:minimum_difference_between_bids].include? 'não pode ficar em branco').to eq true
+        expect(batch.errors.include? :min_diff_between_bids_in_centavos).to eq true
+        expect(batch.errors[:min_diff_between_bids_in_centavos].include? 'não pode ficar em branco').to eq true
       end
 
       it 'should be a positive integer' do
-        batch = Batch.new(minimum_difference_between_bids: -1_000)
+        batch = Batch.new(min_diff_between_bids_in_centavos: -1)
 
         batch.valid?
 
-        expect(batch.errors.include? :minimum_difference_between_bids).to eq true
-        expect(batch.errors[:minimum_difference_between_bids].include? 'deve ser um valor inteiro e positivo').to eq true
+        expect(batch.errors.include? :min_diff_between_bids_in_centavos).to eq true
+        expect(batch.errors[:min_diff_between_bids_in_centavos].include? 'deve ser um valor inteiro e positivo').to eq true
       end
     end
 

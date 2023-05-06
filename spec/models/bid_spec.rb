@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Bid, type: :model do
   describe '#valid?' do
     context 'presence validation' do
-      it 'should return false when value is empty' do
+      it 'should return false when value_in_centavos is empty' do
         user = User.create!(
           name: 'Peter Parker', cpf: '73046259026',
           email: 'peter@email.com', password: 'mypass45678'
@@ -16,11 +16,11 @@ RSpec.describe Bid, type: :model do
 
         batch = Batch.new(
           code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
+          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
           creator: admin
         )
         
-        bid = Bid.new(value: '', user: user, batch: batch)
+        bid = Bid.new(value_in_centavos: '', user: user, batch: batch)
 
         result = bid.valid?
 
@@ -40,11 +40,11 @@ RSpec.describe Bid, type: :model do
 
         batch = Batch.new(
           code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
+          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
           creator: admin
         )
         
-        bid = Bid.new(value: 1_000, user: nil, batch: batch)
+        bid = Bid.new(value_in_centavos: 1_000, user: nil, batch: batch)
 
         result = bid.valid?
 
@@ -64,11 +64,11 @@ RSpec.describe Bid, type: :model do
 
         batch = Batch.new(
           code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
+          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
           creator: admin
         )
         
-        bid = Bid.new(value: 1_000, user: user, batch: nil)
+        bid = Bid.new(value_in_centavos: 1_000, user: user, batch: nil)
 
         result = bid.valid?
 
@@ -77,7 +77,7 @@ RSpec.describe Bid, type: :model do
     end
 
     context 'numericality validation' do
-      it 'should return false when value is less than or equal to 0' do
+      it 'should return false when value_in_centavos is less than or equal to 0' do
         user = User.create!(
           name: 'Peter Parker', cpf: '73046259026',
           email: 'peter@email.com', password: 'mypass45678'
@@ -90,11 +90,11 @@ RSpec.describe Bid, type: :model do
 
         batch = Batch.new(
           code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          minimum_bid: 10_000, minimum_difference_between_bids: 5_000,
+          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
           creator: admin
         )
         
-        bid = Bid.new(value: -1_000, user: user, batch: batch)
+        bid = Bid.new(value_in_centavos: -1_000, user: user, batch: batch)
 
         result = bid.valid?
 
