@@ -6,14 +6,34 @@
 
   <% if current_user.present? %>
     <% if current_user.is_admin && (@batch.creator != current_user) %>
-      <%= button_to t('.approve_button_text'), false, class: "p-2 bg-black text-white rounded" %>
+      <%= button_to false, class: "px-4 py-2 flex items-center gap-2 bg-black text-white hover:scale-105 transition-all rounded" do %>
+        <%= t '.approve_button_text' %>
+        <i class="fa-regular fa-circle text-sm animate-pulse"></i>
+      <% end %>
     <% end %>
   <% end %>
 </div>
 
-<div class='flex flex-col gap-2'>
+<div class='mb-10 flex flex-col gap-2'>
   <span><strong><%= t '.start_date' %>:</strong> <%= l(@batch.start_date) %></span>
   <span><strong><%= t '.end_date' %>:</strong> <%= l(@batch.end_date) %></span>
   <span><strong><%= t '.min_bid_in_centavos' %>:</strong> <%= @batch.min_bid_in_centavos %> centavos</span>
   <span><strong><%= t '.min_diff_between_bids_in_centavos' %>:</strong> <%= @batch.min_diff_between_bids_in_centavos %> centavos</span>
+</div>
+
+<div class='mb-8 flex flex-col gap-4'>
+  <h2 class='view-subtitle'>
+    <%= t '.linked_products' %>
+  </h2>
+
+  <% if @batch.products.any? %>
+    <% @batch.products.each do |p| %>
+      <%= link_to product_path(p), class: 'p-4 flex flex-col gap-2 bg-secondary hover:scale-105 transition-all rounded' do %>
+        <span class='text-white'><%= p.name %></span>
+        <span class='text-white text-xs italic'><%= p.code %></span>
+      <% end %>
+    <% end %>
+  <% else %>
+    <p class='text-neutral-300'><%= t '.not_found_message' %></p>
+  <% end %>
 </div>

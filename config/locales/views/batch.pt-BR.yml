@@ -3,6 +3,7 @@ pt-BR:
     index:
       title: Lotes
       prefix: Lote
+      not_found_message: Não existem lotes cadastrados.
     show:
       title: Lote
       subtitle: Administrado por
@@ -12,6 +13,8 @@ pt-BR:
       min_bid_in_centavos: Lance Mínimo
       min_diff_between_bids_in_centavos: Diferença Mínima Entre Lances
       approve_button_text: Aprovar Lote
+      linked_products: Produtos do Lote
+      not_found_message: Este lote ainda não possuir nenhum produto.
     new:
       title: Cadastrar Novo Lote
       submit: 'Cadastrar'

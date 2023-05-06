@@ -1,6 +1,7 @@
 class Batch < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   belongs_to :approver, class_name: 'User', optional: true
+  has_many :products
 
   validates :code, :start_date, :end_date, :min_bid_in_centavos, :min_diff_between_bids_in_centavos, presence: true
   validates :code, uniqueness: true

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'User visits a batch details page' do
-  it 'from user menu' do
+  it 'from menu' do
     admin_user = User.create!(
       name: 'John Doe', cpf: '41760209031',
       email: 'john@leilaodogalpao.com.br', password: 'password123'
@@ -14,7 +14,7 @@ describe 'User visits a batch details page' do
 
     visit root_path
     within('#batch-menu') do
-      click_on 'Lotes em Leilão'
+      click_on 'Listar Lotes'
     end
     click_on "Lote COD123456"
 
@@ -33,7 +33,7 @@ describe 'User visits a batch details page' do
     )
 
     visit root_path
-    click_on 'Lotes em Leilão'
+    click_on 'Listar Lotes'
     click_on "Lote COD123456"
 
     expect(page).to have_content "Lote COD123456"
@@ -57,7 +57,7 @@ describe 'User visits a batch details page' do
       )
 
       visit root_path
-      click_on 'Lotes em Leilão'
+      click_on 'Listar Lotes'
       click_on "Lote COD123456"
   
       expect(page).not_to have_button 'Aprovar Lote'
@@ -82,7 +82,7 @@ describe 'User visits a batch details page' do
 
       login_as(user)
       visit root_path
-      click_on 'Lotes em Leilão'
+      click_on 'Listar Lotes'
       click_on "Lote COD123456"
   
       expect(page).not_to have_button 'Aprovar Lote'
@@ -107,7 +107,7 @@ describe 'User visits a batch details page' do
 
       login_as(first_admin_user)
       visit root_path
-      click_on 'Aprovar Lotes'
+      click_on 'Listar Lotes'
       click_on "Lote COD123456"
   
       expect(page).to have_button 'Aprovar Lote'
@@ -130,7 +130,7 @@ describe 'User visits a batch details page' do
 
       login_as(second_admin_user)
       visit root_path
-      click_on 'Aprovar Lotes'
+      click_on 'Listar Lotes'
       click_on "Lote COD123456"
   
       expect(page).not_to have_button 'Aprovar Lote'
