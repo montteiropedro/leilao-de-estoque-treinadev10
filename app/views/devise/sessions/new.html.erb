@@ -1,13 +1,13 @@
-<h2><%= I18n.t 'devise.sessions.new.sign_in' %></h2>
+<h2 class='view-title text-primary'><%= t '.sign_in' %></h2>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'm-auto' }) do |f| %>
+  <div class="field form-field">
+    <%= f.label :email %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
   </div>
 
-  <div class="field">
-    <%= f.label :password %><br />
+  <div class="field form-field">
+    <%= f.label :password %>
     <%= f.password_field :password, autocomplete: "current-password" %>
   </div>
 
@@ -19,7 +19,7 @@
   <% end %>
 
   <div class="actions">
-    <%= f.submit I18n.t 'devise.sessions.new.sign_in_button' %>
+    <%= f.submit t('.sign_in_button'), class: 'form-submit' %>
   </div>
 <% end %>
 
