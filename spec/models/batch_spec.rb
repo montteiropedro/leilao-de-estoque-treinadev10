@@ -119,5 +119,20 @@ RSpec.describe Batch, type: :model do
         expect(batch.errors.include? :creator).to eq true
       end
     end
+
+    context 'approver' do
+      it 'should not be the batch creator' do
+        admin_user = User.create!(
+          name: 'John Doe', cpf: '41760209031',
+          email: 'john@leilaodogalpao.com.br', password: 'password123'
+        )
+        batch = Batch.new(creator: admin_user, approver: admin_user)
+
+        batch.valid?
+
+        expect(batch.errors.include? :approver).to eq true
+        expect(batch.errors[:approver].include? 'não pode aprovar um lote criado por si mesmo').to eq true
+      end
+    end
   end
 end
