@@ -34,7 +34,7 @@ describe 'User views all registered batches' do
     expect(page).to have_link 'Lote BTC334509'
   end
 
-  it 'and should see a message when there is no supplier registered' do
+  it 'and should see a message when there is no batches registered' do
     visit root_path
     click_on 'Listar Lotes'
 

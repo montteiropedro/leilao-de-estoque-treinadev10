@@ -1,9 +1,13 @@
 <h1 class='view-title'><%= t '.title' %></h1>
 
 <div class='flex flex-col gap-4'>
-  <% @categories.each do |c| %>
-    <%= link_to category_path(c), class: 'p-4 bg-secondary hover:scale-105 transition-all rounded' do %>
-      <%= c.name %>
+  <% if @categories.any? %>
+    <% @categories.each do |c| %>
+      <%= link_to category_path(c), class: 'p-4 bg-secondary hover:scale-105 transition-all rounded' do %>
+        <%= c.name %>
+      <% end %>
     <% end %>
+  <% else %>
+    <p class='text-neutral-300'><%= t '.not_found_message' %></p>
   <% end %>
 </div>

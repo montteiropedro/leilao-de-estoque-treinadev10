@@ -1,10 +1,14 @@
 <h1 class='view-title'><%= t '.title' %></h1>
 
 <div class='flex flex-col gap-4'>
-  <% @products.each do |p| %>
-    <%= link_to product_path(p), class: 'p-4 flex flex-col gap-2 bg-secondary hover:scale-105 transition-all rounded' do %>
-      <span class='text-white'><%= p.name %></span>
-      <span class='text-white text-xs italic'><%= p.code %></span>
+  <% if @products.any? %>
+    <% @products.each do |p| %>
+      <%= link_to product_path(p), class: 'p-4 flex flex-col gap-2 bg-secondary hover:scale-105 transition-all rounded' do %>
+        <span class='text-white'><%= p.name %></span>
+        <span class='text-white text-xs italic'><%= p.code %></span>
+      <% end %>
     <% end %>
+  <% else %>
+    <p class='text-neutral-300'><%= t '.not_found_message' %></p>
   <% end %>
 </div>
