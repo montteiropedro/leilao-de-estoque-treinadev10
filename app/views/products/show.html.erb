@@ -23,7 +23,7 @@
   <% if current_user.present? && current_user.is_admin %>
     <% if @product.batch.present? %>
       <div class='flex items-center gap-4'>
-        <strong><%= t '.batch' %>:</strong> <%= link_to @product.batch.code, @product.batch %>
+        <strong><%= t '.batch' %>:</strong> <%= link_to @product.batch.code, @product.batch, class: 'underline hover:text-primary' %>
         <%= button_to t('.remove_product_from_batch'), false, class: 'p-2 bg-black text-white rounded' %>
       </div>
     <% else %>

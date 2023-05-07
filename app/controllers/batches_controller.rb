@@ -1,6 +1,6 @@
 class BatchesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :approve]
-  before_action :is_admin?, only: [:new, :create, :approve]
+  before_action :authenticate_user!, only: [:new, :create, :approve, :add_product]
+  before_action :is_admin?, only: [:new, :create, :approve, :add_product]
   
   def index
     @batches = Batch.order(id: :desc)
@@ -8,6 +8,7 @@ class BatchesController < ApplicationController
 
   def show
     @batch = Batch.find(params[:id])
+    @products = Product.where(batch: nil).order(:name)
   end
 
   def new
@@ -32,6 +33,19 @@ class BatchesController < ApplicationController
     @batch = Batch.find(params[:id])
 
     redirect_to @batch, notice: 'Lote aprovado com sucesso.' if @batch.update!(approver: current_user)
+  end
+
+  def add_product
+    return if params[:product_id]
+
+    @batch = Batch.find(params[:id])
+    @product = Product.find(params[:product_id])
+
+    if @product.update(batch: @batch)
+      redirect_to @batch, notice: 'Produto vinculado com sucesso.'
+    else
+      render :show, status: :unprocessable_entity
+    end
   end
 
   private

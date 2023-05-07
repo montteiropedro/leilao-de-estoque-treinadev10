@@ -12,6 +12,6 @@ class Product < ApplicationRecord
   private
 
   def set_alphanumeric_code
-    self.code = SecureRandom.alphanumeric(10).upcase
+    self.code = SecureRandom.alphanumeric(10).upcase if self.code.nil?
   end
 end

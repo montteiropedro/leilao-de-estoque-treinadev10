@@ -121,6 +121,20 @@ RSpec.describe Product, type: :model do
 
         expect(second_product.code).not_to eq first_product.code
       end
+
+      it 'should not be updated' do
+        product = Product.new
+        
+        product.valid?
+        initial_code = product.code
+        product.update!(
+          name: 'Quadro', weight: 1_000,
+          width: 30, height: 50, depth: 5
+        )
+        after_update_code = product.code
+
+        expect(initial_code).to eq after_update_code
+      end
     end
   end
 end
