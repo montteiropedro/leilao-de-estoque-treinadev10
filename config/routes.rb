@@ -8,6 +8,11 @@ Rails.application.routes.draw do
       patch 'add_product'
     end
   end
-  resources :products, only: [:index, :show, :new, :create, :update]
+  resources :products, only: [:index, :show, :new, :create, :update] do
+    member do
+      patch 'link_batch'
+      patch 'unlink_batch'
+    end
+  end
   resources :categories, only: [:index, :show, :new, :create]
 end

@@ -36,7 +36,7 @@ class BatchesController < ApplicationController
   end
 
   def add_product
-    return if params[:product_id]
+    return unless params[:product_id]
 
     @batch = Batch.find(params[:id])
     @product = Product.find(params[:product_id])
