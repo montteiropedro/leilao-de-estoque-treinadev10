@@ -13,8 +13,9 @@ pt-BR:
       batch: Lote
       without_batch: Não vinculado a um lote
       remove_product: Remover Produto
-      add_product_to_batch: Vincular Produto a um Lote
-      remove_product_from_batch: Remover Vínculo
+      link_batch: Vincular Produto a um Lote
+      link_batch_button_text: Vincular
+      unlink_batch_button_text: Remover Vínculo
     new:
       title: Cadastrar Novo Produto
       submit: Cadastrar

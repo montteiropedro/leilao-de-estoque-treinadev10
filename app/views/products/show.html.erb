@@ -20,21 +20,24 @@
   <span><strong><%= t '.height' %>:</strong> <%= @product.height %>cm</span>
   <span><strong><%= t '.depth' %>:</strong> <%= @product.depth %>cm</span>
 
-  <% if current_user.present? && current_user.is_admin %>
+  <div class='flex items-center gap-4'>
+    <strong><%= t '.batch' %>:</strong>
+
     <% if @product.batch.present? %>
-      <div class='flex items-center gap-4'>
-        <strong><%= t '.batch' %>:</strong> <%= link_to @product.batch.code, @product.batch, class: 'underline hover:text-primary' %>
-        <%= button_to t('.remove_product_from_batch'), false, class: 'p-2 bg-black text-white rounded' %>
-      </div>
+      <%= link_to @product.batch.code, @product.batch, class: 'underline hover:text-primary' %>
+
+      <% if current_user.present? && current_user.is_admin %>
+        <%= button_to t('.unlink_batch_button_text'), false, class: 'p-2 bg-black text-white rounded' %>
+      <% end %>
     <% else %>
-      <div class='flex items-center gap-4'>
-        <strong><%= t '.batch' %>:</strong> <%= t '.without_batch' %>
-        <%= button_to t('.add_product_to_batch'), false, class: 'p-2 bg-black text-white rounded' %>
-      </div>
+      <%= t '.without_batch' %>
+
+      <% if current_user.present? && current_user.is_admin %>
+        <%= form_with url: false, method: :patch, class: 'flex flex-row' do |f| %>
+          <%= f.collection_select :batch_id, @batches, :id, :get_description, prompt: t('.link_batch') %>
+          <%= f.submit t('.link_batch_button_text'), class: 'form-submit m-0' %>
+        <% end %>
+      <% end %>
     <% end %>
-  <% else %>
-    <div class='flex items-center gap-4'>
-      <strong><%= t '.batch' %>:</strong> <%= t '.without_batch' %>
-    </div>
-  <% end %>
+  </div>
 </div>

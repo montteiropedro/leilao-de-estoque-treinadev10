@@ -3,11 +3,12 @@ class ProductsController < ApplicationController
   before_action :is_admin?, only: [:new, :create]
 
   def index
-    @products = Product.all
+    @products = Product.order(created_at: :desc)
   end
 
   def show
     @product = Product.find(params[:id])
+    @batches = Batch.order(created_at: :desc)
   end
 
   def new
