@@ -1,7 +1,7 @@
 class Batch < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   belongs_to :approver, class_name: 'User', optional: true
-  has_many :products
+  has_many :products, dependent: :nullify
 
   validates :code, :start_date, :end_date, :min_bid_in_centavos, :min_diff_between_bids_in_centavos, presence: true
   validates :code, uniqueness: true
@@ -9,7 +9,7 @@ class Batch < ApplicationRecord
   validates :start_date, comparison: { greater_than_or_equal_to: Date.today, message: 'não pode estar no passado' }
   validates :end_date, comparison: { greater_than: :start_date, message: 'deve ser depois da data de início' }
   validates :min_bid_in_centavos, :min_diff_between_bids_in_centavos, numericality: { only_integer: true, greater_than: 0, message: 'deve ser um valor inteiro e positivo' }
-  validate :approver_cannot_be_creator
+  validate :approver_is_valid?
 
   def get_description
     "Lote #{self.code}"
@@ -19,7 +19,13 @@ class Batch < ApplicationRecord
     "#{self.creator.name} <#{self.creator.email}>"
   end
 
-  def approver_cannot_be_creator
+  def approver_is_valid?
+    return if self.approver.blank?
+
+    if self.approver.is_admin == false
+      errors.add(:approver, 'apenas administradores podem aprovar um lote')
+    end
+
     if self.approver == self.creator
       errors.add(:approver, 'não pode aprovar um lote criado por si mesmo')
     end

@@ -8,36 +8,221 @@ describe 'User views all registered batches' do
     end
 
     expect(current_path).to eq batches_path
-    expect(page).to have_content('Lotes')
   end
 
-  it 'should be successful' do
-    admin_user = User.create!(
-      name: 'John Doe', cpf: '41760209031',
-      email: 'john@leilaodogalpao.com.br', password: 'password123'
-    )
-    Batch.create!(
-      code: 'COD123456', start_date: Date.today, end_date: Date.today + 1,
-      min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-      creator: admin_user
-    )
-    Batch.create!(
-      code: 'BTC334509', start_date: Date.today, end_date: Date.today + 1,
-      min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
-      creator: admin_user
-    )
+  context 'and is a visitant' do
+    it 'should see approved batches' do
+      first_admin_user = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      second_admin_user = User.create!(
+        name: 'Steve Gates', cpf: '35933681024',
+        email: 'steve@leilaodogalpao.com.br', password: 'password123'
+      )
+      Batch.create!(
+        code: 'COD123456', start_date: Date.today, end_date: Date.today + 1,
+        min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+        creator: first_admin_user, approver: second_admin_user
+      )
+  
+      visit root_path
+      click_on 'Listar Lotes'
+  
+      expect(page).to have_content('Lotes Aprovados')
+      expect(page).to have_link 'Lote COD123456'
+    end
 
-    visit root_path
-    click_on 'Listar Lotes'
+    it 'should see a message when there is no approved batches registered' do
+      visit root_path
+      click_on 'Listar Lotes'
+  
+      expect(page).to have_content 'Não existem lotes cadastrados/aprovados.'
+    end
+    
+    it 'should not see batches awaiting approval' do
+      first_admin_user = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      second_admin_user = User.create!(
+        name: 'Steve Gates', cpf: '35933681024',
+        email: 'steve@leilaodogalpao.com.br', password: 'password123'
+      )
+      Batch.create!(
+        code: 'BTC334509', start_date: Date.today, end_date: Date.today + 1,
+        min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
+        creator: first_admin_user
+      )
+  
+      visit root_path
+      click_on 'Listar Lotes'
+  
+      expect(page).not_to have_content('Lotes Aguardando Aprovação')
+      expect(page).not_to have_link 'Lote BTC334509'
+    end
 
-    expect(page).to have_link 'Lote COD123456'
-    expect(page).to have_link 'Lote BTC334509'
+    it 'should not see a message when there is no batches awaiting approval registered' do
+      visit root_path
+      click_on 'Listar Lotes'
+  
+      expect(page).not_to have_content 'Não existem lotes cadastrados/aguardando aprovação.'
+    end
   end
 
-  it 'and should see a message when there is no batches registered' do
-    visit root_path
-    click_on 'Listar Lotes'
+  context 'and is not a admin' do
+    it 'should see approved batches' do
+      user = User.create!(
+        name: 'Peter Parker', cpf: '73046259026',
+        email: 'peter@email.com', password: 'password123'
+      )
+      first_admin_user = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      second_admin_user = User.create!(
+        name: 'Steve Gates', cpf: '35933681024',
+        email: 'steve@leilaodogalpao.com.br', password: 'password123'
+      )
+      Batch.create!(
+        code: 'COD123456', start_date: Date.today, end_date: Date.today + 1,
+        min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+        creator: first_admin_user, approver: second_admin_user
+      )
+  
+      login_as(user)
+      visit root_path
+      click_on 'Listar Lotes'
+      
+      expect(page).to have_content('Lotes Aprovados')
+      expect(page).to have_link 'Lote COD123456'
+    end
 
-    expect(page).to have_content 'Não existem lotes cadastrados.'
+    it 'should see a message when there is no approved batches registered' do
+      user = User.create!(
+        name: 'Peter Parker', cpf: '73046259026',
+        email: 'peter@email.com', password: 'password123'
+      )
+
+      login_as(user)
+      visit root_path
+      click_on 'Listar Lotes'
+  
+      expect(page).to have_content 'Não existem lotes cadastrados/aprovados.'
+    end
+    
+    it 'should not see batches awaiting approval' do
+      user = User.create!(
+        name: 'Peter Parker', cpf: '73046259026',
+        email: 'peter@email.com', password: 'password123'
+      )
+      first_admin_user = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      second_admin_user = User.create!(
+        name: 'Steve Gates', cpf: '35933681024',
+        email: 'steve@leilaodogalpao.com.br', password: 'password123'
+      )
+      Batch.create!(
+        code: 'BTC334509', start_date: Date.today, end_date: Date.today + 1,
+        min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
+        creator: first_admin_user
+      )
+  
+      login_as(user)
+      visit root_path
+      click_on 'Listar Lotes'
+
+      expect(page).not_to have_content('Lotes Aguardando Aprovação')
+      expect(page).not_to have_link 'Lote BTC334509'
+    end
+
+    it 'should not see a message when there is no batches awaiting approval registered' do
+      user = User.create!(
+        name: 'Peter Parker', cpf: '73046259026',
+        email: 'peter@email.com', password: 'password123'
+      )
+
+      login_as(user)
+      visit root_path
+      click_on 'Listar Lotes'
+  
+      expect(page).not_to have_content 'Não existem lotes cadastrados/aguardando aprovação.'
+    end
+  end
+
+  context 'and is a admin' do
+    it 'should see approved batches' do
+      first_admin_user = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      second_admin_user = User.create!(
+        name: 'Steve Gates', cpf: '35933681024',
+        email: 'steve@leilaodogalpao.com.br', password: 'password123'
+      )
+      Batch.create!(
+        code: 'COD123456', start_date: Date.today, end_date: Date.today + 1,
+        min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+        creator: first_admin_user, approver: second_admin_user
+      )
+  
+      login_as(first_admin_user)
+      visit root_path
+      click_on 'Listar Lotes'
+  
+      expect(page).to have_content('Lotes Aprovados')
+      expect(page).to have_link 'Lote COD123456'
+    end
+
+    it 'should see a message when there is no approved batches registered' do
+      first_admin_user = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+
+      login_as(first_admin_user)
+      visit root_path
+      click_on 'Listar Lotes'
+  
+      expect(page).to have_content 'Não existem lotes cadastrados/aprovados.'
+    end
+    
+    it 'should see batches awaiting approval' do
+      first_admin_user = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      second_admin_user = User.create!(
+        name: 'Steve Gates', cpf: '35933681024',
+        email: 'steve@leilaodogalpao.com.br', password: 'password123'
+      )
+      Batch.create!(
+        code: 'BTC334509', start_date: Date.today, end_date: Date.today + 1,
+        min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
+        creator: first_admin_user
+      )
+  
+      login_as(first_admin_user)
+      visit root_path
+      click_on 'Listar Lotes'
+      
+      expect(page).to have_content('Lotes Aguardando Aprovação')
+      expect(page).to have_link 'Lote BTC334509'
+    end
+
+    it 'should see a message when there is no batches awaiting approval registered' do
+      first_admin_user = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+
+      login_as(first_admin_user)
+      visit root_path
+      click_on 'Listar Lotes'
+  
+      expect(page).to have_content 'Não existem lotes cadastrados/aguardando aprovação.'
+    end
   end
 end

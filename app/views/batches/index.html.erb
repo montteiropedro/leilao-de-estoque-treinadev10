@@ -1,13 +1,29 @@
-<h1 class='view-title'><%= t '.title' %></h1>
+<% if user_signed_in? && current_user.is_admin %>
+  <h1 class='view-title'><%= t '.awaiting_approval_title' %></h1>
+
+  <div class='flex flex-col gap-4'>
+    <% if @awaiting_approval_batches.present? %>
+      <% @awaiting_approval_batches.each do |b| %>
+        <%= link_to batch_path(b), class: 'p-4 bg-secondary hover:scale-105 transition-all rounded' do %>
+          <%= t '.prefix' %> <%= b.code %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <p class='text-neutral-300'><%= t '.awaiting_approval_not_found_message' %></p>
+    <% end %>
+  </div>
+<% end %>
+
+<h1 class='view-title'><%= t '.approved_title' %></h1>
 
 <div class='flex flex-col gap-4'>
-  <% if @batches.any? %>
-    <% @batches.each do |b| %>
+  <% if @approved_batches.present? %>
+    <% @approved_batches.each do |b| %>
       <%= link_to batch_path(b), class: 'p-4 bg-secondary hover:scale-105 transition-all rounded' do %>
         <%= t '.prefix' %> <%= b.code %>
       <% end %>
     <% end %>
   <% else %>
-    <p class='text-neutral-300'><%= t '.not_found_message' %></p>
+    <p class='text-neutral-300'><%= t '.approved_not_found_message' %></p>
   <% end %>
 </div>

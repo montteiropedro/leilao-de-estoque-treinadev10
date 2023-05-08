@@ -12,6 +12,7 @@ describe 'User visits a batch details page' do
       creator: admin_user
     )
 
+    login_as(admin_user)
     visit root_path
     within('#batch-menu') do
       click_on 'Listar Lotes'
@@ -32,6 +33,7 @@ describe 'User visits a batch details page' do
       creator: admin_user
     )
 
+    login_as(admin_user)
     visit root_path
     click_on 'Listar Lotes'
     click_on 'Lote COD123456'
@@ -60,6 +62,7 @@ describe 'User visits a batch details page' do
       batch: batch
     )
 
+    login_as(admin_user)
     visit root_path
     click_on 'Listar Lotes'
     click_on 'Lote COD123456'
@@ -78,6 +81,7 @@ describe 'User visits a batch details page' do
       creator: admin_user
     )
 
+    login_as(admin_user)
     visit root_path
     click_on 'Listar Lotes'
     click_on 'Lote COD123456'
@@ -85,26 +89,31 @@ describe 'User visits a batch details page' do
     expect(page).to have_content 'Não existem produtos vinculados a este lote.'
   end
 
-  context 'and is a visitant' do
-    it 'should not see the button to approve the batch' do
-      admin_user = User.create!(
+  context 'when is a visitant' do
+    it 'should be able to visit a approved batch' do
+      john_admin = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      steve_admin = User.create!(
+        name: 'Steve Gates', cpf: '35933681024',
+        email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
       batch = Batch.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-        creator: admin_user
+        creator: john_admin, approver: steve_admin
       )
-
+  
       visit root_path
       click_on 'Listar Lotes'
       click_on 'Lote COD123456'
-  
-      expect(page).not_to have_button 'Aprovar Lote'
+      
+      expect(current_path).to eq batch_path(batch)
+      expect(page).to have_content 'Aprovado por Steve Gates'
     end
 
-    it 'should not see the button to add a product to the batch' do
+    it 'should not be able to visit a batch awaiting approval' do
       admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
@@ -113,6 +122,26 @@ describe 'User visits a batch details page' do
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: admin_user
+      )
+  
+      visit batch_path(batch)
+      
+      expect(current_path).not_to eq batch_path(batch)
+    end
+
+    it 'should not see the button to add a product to the batch' do
+      john_admin = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      steve_admin = User.create!(
+        name: 'Steve Gates', cpf: '35933681024',
+        email: 'steve@leilaodogalpao.com.br', password: 'password123'
+      )
+      batch = Batch.create!(
+        code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
+        min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+        creator: john_admin, approver: steve_admin
       )
 
       visit root_path
@@ -124,41 +153,74 @@ describe 'User visits a batch details page' do
     end
   end
 
-  context 'and is not a admin' do
-    it 'should not see the button to approve the batch' do
-      user = User.create!(
+  context 'when is not a admin' do
+    it 'should be able to visit a approved batch' do
+      peter = User.create!(
         name: 'Peter Parker', cpf: '73046259026',
         email: 'peter@email.com', password: 'password123'
       )
-      admin_user = User.create!(
+      john_admin = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      steve_admin = User.create!(
+        name: 'Steve Gates', cpf: '35933681024',
+        email: 'steve@leilaodogalpao.com.br', password: 'password123'
+      )
+      batch = Batch.create!(
+        code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
+        min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+        creator: john_admin, approver: steve_admin
+      )
+  
+      login_as(peter)
+      visit batch_path(batch)
+      
+      expect(current_path).to eq batch_path(batch)
+      expect(page).to have_content 'Aprovado por Steve Gates'
+    end
+
+    it 'should not be able to visit a batch awaiting approval' do
+      peter = User.create!(
+        name: 'Peter Parker', cpf: '73046259026',
+        email: 'peter@email.com', password: 'password123'
+      )
+      john_admin = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
       batch = Batch.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-        creator: admin_user
+        creator: john_admin
       )
-
-      login_as(user)
-      visit root_path
-      click_on 'Listar Lotes'
-      click_on 'Lote COD123456'
   
-      expect(page).not_to have_button 'Aprovar Lote'
+      login_as(peter)
+      visit batch_path(batch)
+      
+      expect(current_path).not_to eq batch_path(batch)
     end
 
     it 'should not see the button to add a product to the batch' do
-      admin_user = User.create!(
+      peter = User.create!(
+        name: 'Peter Parker', cpf: '73046259026',
+        email: 'peter@email.com', password: 'password123'
+      )
+      john_admin = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      steve_admin = User.create!(
+        name: 'Steve Gates', cpf: '35933681024',
+        email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
       batch = Batch.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-        creator: admin_user
+        creator: john_admin, approver: steve_admin
       )
 
+      login_as(peter)
       visit root_path
       click_on 'Listar Lotes'
       click_on 'Lote COD123456'
@@ -168,19 +230,62 @@ describe 'User visits a batch details page' do
     end
   end
 
-  context 'and is a admin' do
-    it 'should see the button to add a product to the batch' do
-      admin_user = User.create!(
+  context 'when is a admin' do
+    it 'should be able to visit a approved batch' do
+      john_admin = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      steve_admin = User.create!(
+        name: 'Steve Gates', cpf: '35933681024',
+        email: 'steve@leilaodogalpao.com.br', password: 'password123'
+      )
+      batch = Batch.create!(
+        code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
+        min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+        creator: john_admin, approver: steve_admin
+      )
+  
+      login_as(john_admin)
+      visit root_path
+      click_on 'Listar Lotes'
+      click_on 'Lote COD123456'
+      
+      expect(current_path).to eq batch_path(batch)
+      expect(page).to have_content 'Aprovado por Steve Gates'
+    end
+
+    it 'should be able to visit a batch awaiting approval' do
+      john_admin = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
       batch = Batch.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-        creator: admin_user
+        creator: john_admin
+      )
+  
+      login_as(john_admin)
+      visit root_path
+      click_on 'Listar Lotes'
+      click_on 'Lote COD123456'
+      
+      expect(current_path).to eq batch_path(batch)
+    end
+
+    it 'should see the button to add a product to the batch' do
+      john_admin = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      batch = Batch.create!(
+        code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
+        min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+        creator: john_admin
       )
 
-      login_as(admin_user)
+      login_as(john_admin)
       visit root_path
       click_on 'Listar Lotes'
       click_on 'Lote COD123456'
@@ -190,21 +295,21 @@ describe 'User visits a batch details page' do
     end
 
     it 'should see the button to approve the batch if it was not created by him' do
-      first_admin_user = User.create!(
+      john_admin = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
-      second_admin_user = User.create!(
+      steve_admin = User.create!(
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
       batch = Batch.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-        creator: second_admin_user
+        creator: steve_admin
       )
 
-      login_as(first_admin_user)
+      login_as(john_admin)
       visit root_path
       click_on 'Listar Lotes'
       click_on 'Lote COD123456'
@@ -213,21 +318,21 @@ describe 'User visits a batch details page' do
     end
 
     it 'should not see the button to approve the batch if it was created by him' do
-      first_admin_user = User.create!(
+      john_admin = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
-      second_admin_user = User.create!(
+      steve_admin = User.create!(
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
       batch = Batch.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-        creator: second_admin_user
+        creator: steve_admin
       )
 
-      login_as(second_admin_user)
+      login_as(steve_admin)
       visit root_path
       click_on 'Listar Lotes'
       click_on 'Lote COD123456'

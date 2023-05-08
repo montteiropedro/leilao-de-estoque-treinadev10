@@ -1,9 +1,11 @@
 pt-BR:
   batches:
     index:
-      title: Lotes
+      approved_title: Lotes Aprovados
+      awaiting_approval_title: Lotes Aguardando Aprovação
       prefix: Lote
-      not_found_message: Não existem lotes cadastrados.
+      approved_not_found_message: Não existem lotes cadastrados/aprovados.
+      awaiting_approval_not_found_message: Não existem lotes cadastrados/aguardando aprovação.
     show:
       title: Lote
       creator_description: Administrado por

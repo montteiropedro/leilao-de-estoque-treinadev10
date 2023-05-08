@@ -121,6 +121,23 @@ RSpec.describe Batch, type: :model do
     end
 
     context 'approver' do
+      it 'should not be a non admin user' do
+        user = User.create!(
+          name: 'Peter Parker', cpf: '73046259026',
+          email: 'peter@email.com', password: 'password123'
+        )
+        admin_user = User.create!(
+          name: 'John Doe', cpf: '41760209031',
+          email: 'john@leilaodogalpao.com.br', password: 'password123'
+        )
+        batch = Batch.new(creator: admin_user, approver: user)
+
+        batch.valid?
+
+        expect(batch.errors.include? :approver).to eq true
+        expect(batch.errors[:approver].include? 'apenas administradores podem aprovar um lote').to eq true
+      end
+
       it 'should not be the batch creator' do
         admin_user = User.create!(
           name: 'John Doe', cpf: '41760209031',

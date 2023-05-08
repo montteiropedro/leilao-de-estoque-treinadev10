@@ -3,11 +3,20 @@ class BatchesController < ApplicationController
   before_action :is_admin?, only: [:new, :create, :approve, :add_product]
   
   def index
-    @batches = Batch.order(id: :desc)
+    @approved_batches = Batch.where.not(approver: nil).order(created_at: :desc)
+
+    if user_signed_in? && current_user.is_admin
+      @awaiting_approval_batches = Batch.where(approver: nil).order(created_at: :desc)
+    end
   end
 
   def show
     @batch = Batch.find(params[:id])
+
+    if @batch.approver.blank?
+      return redirect_to root_path unless user_signed_in? && current_user.is_admin
+    end
+
     @products = Product.where(batch: nil).order(:name)
   end
 
