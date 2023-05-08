@@ -13,6 +13,7 @@ pt-BR:
       batch: Lote
       without_batch: Não vinculado a um lote
       product_image: Foto
+      awaiting_approval: Aguardando aprovação
       remove_product: Remover Produto
       link_batch: Vincular Produto a um Lote
       link_batch_button_text: Vincular

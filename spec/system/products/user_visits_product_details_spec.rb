@@ -37,30 +37,6 @@ describe 'User visits a product details page' do
     expect(page).to have_content 'Lote: Não vinculado a um lote'
   end
 
-  it 'and should see a link to the batch when connected to one' do
-    admin_user = User.create!(
-      name: 'John Doe', cpf: '41760209031',
-      email: 'john@leilaodogalpao.com.br', password: 'password123'
-    )
-    batch = Batch.create!(
-      code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
-      min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-      creator: admin_user
-    )
-    product = Product.create!(
-      name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
-      weight: 5_000, width: 100, height: 50, depth: 10,
-      batch: batch
-    )
-
-    visit root_path
-    click_on 'Listar Produtos'
-    click_on 'TV 32 Polegadas'
-
-    expect(page).to have_content 'Lote: COD123456'
-    expect(page).to have_link 'COD123456'
-  end
-
   context 'and is a visitant' do
     it 'should not see the button to remove the product' do
       product = Product.create!(
@@ -110,6 +86,60 @@ describe 'User visits a product details page' do
       click_on 'TV 32 Polegadas'
   
       expect(page).not_to have_button 'Remover Vínculo'
+    end
+
+    context 'and the product is connected to a batch' do
+      it 'should show a link to it if approved' do
+        john_admin = User.create!(
+          name: 'John Doe', cpf: '41760209031',
+          email: 'john@leilaodogalpao.com.br', password: 'password123'
+        )
+        steve_admin = User.create!(
+          name: 'Steve Gates', cpf: '35933681024',
+          email: 'steve@leilaodogalpao.com.br', password: 'password123'
+        )
+        batch = Batch.create!(
+          code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
+          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+          creator: john_admin, approver: steve_admin
+        )
+        product = Product.create!(
+          name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
+          weight: 5_000, width: 100, height: 50, depth: 10,
+          batch: batch
+        )
+    
+        visit root_path
+        click_on 'Listar Produtos'
+        click_on 'TV 32 Polegadas'
+    
+        expect(page).to have_content 'Lote: COD123456'
+        expect(page).to have_link 'COD123456'
+      end
+
+      it 'should not show a link to it if awaiting approval' do
+        john_admin = User.create!(
+          name: 'John Doe', cpf: '41760209031',
+          email: 'john@leilaodogalpao.com.br', password: 'password123'
+        )
+        batch = Batch.create!(
+          code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
+          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+          creator: john_admin
+        )
+        product = Product.create!(
+          name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
+          weight: 5_000, width: 100, height: 50, depth: 10,
+          batch: batch
+        )
+    
+        visit root_path
+        click_on 'Listar Produtos'
+        click_on 'TV 32 Polegadas'
+    
+        expect(page).to have_content 'Lote: COD123456 <Aguardando aprovação>'
+        expect(page).not_to have_link 'COD123456'
+      end
     end
   end
 
@@ -178,6 +208,70 @@ describe 'User visits a product details page' do
   
       expect(page).not_to have_button 'Remover Vínculo'
     end
+
+    context 'and the product is connected to a batch' do
+      it 'should show a link to it if approved' do
+        peter = User.create!(
+          name: 'Peter Parker', cpf: '73046259026',
+          email: 'peter@email.com', password: 'password123'
+        )
+        john_admin = User.create!(
+          name: 'John Doe', cpf: '41760209031',
+          email: 'john@leilaodogalpao.com.br', password: 'password123'
+        )
+        steve_admin = User.create!(
+          name: 'Steve Gates', cpf: '35933681024',
+          email: 'steve@leilaodogalpao.com.br', password: 'password123'
+        )
+        batch = Batch.create!(
+          code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
+          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+          creator: john_admin, approver: steve_admin
+        )
+        product = Product.create!(
+          name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
+          weight: 5_000, width: 100, height: 50, depth: 10,
+          batch: batch
+        )
+    
+        login_as(peter)
+        visit root_path
+        click_on 'Listar Produtos'
+        click_on 'TV 32 Polegadas'
+    
+        expect(page).to have_content 'Lote: COD123456'
+        expect(page).to have_link 'COD123456'
+      end
+
+      it 'should not show a link to it if awaiting approval' do
+        peter = User.create!(
+          name: 'Peter Parker', cpf: '73046259026',
+          email: 'peter@email.com', password: 'password123'
+        )
+        john_admin = User.create!(
+          name: 'John Doe', cpf: '41760209031',
+          email: 'john@leilaodogalpao.com.br', password: 'password123'
+        )
+        batch = Batch.create!(
+          code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
+          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+          creator: john_admin
+        )
+        product = Product.create!(
+          name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
+          weight: 5_000, width: 100, height: 50, depth: 10,
+          batch: batch
+        )
+    
+        login_as(peter)
+        visit root_path
+        click_on 'Listar Produtos'
+        click_on 'TV 32 Polegadas'
+    
+        expect(page).to have_content 'Lote: COD123456 <Aguardando aprovação>'
+        expect(page).not_to have_link 'COD123456'
+      end
+    end
   end
 
   context 'and is a admin' do
@@ -245,6 +339,62 @@ describe 'User visits a product details page' do
       click_on 'TV 32 Polegadas'
   
       expect(page).to have_button 'Remover Vínculo'
+    end
+
+    context 'and the product is connected to a batch' do
+      it 'should show a link to it if approved' do
+        john_admin = User.create!(
+          name: 'John Doe', cpf: '41760209031',
+          email: 'john@leilaodogalpao.com.br', password: 'password123'
+        )
+        steve_admin = User.create!(
+          name: 'Steve Gates', cpf: '35933681024',
+          email: 'steve@leilaodogalpao.com.br', password: 'password123'
+        )
+        batch = Batch.create!(
+          code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
+          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+          creator: john_admin, approver: steve_admin
+        )
+        product = Product.create!(
+          name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
+          weight: 5_000, width: 100, height: 50, depth: 10,
+          batch: batch
+        )
+    
+        login_as(john_admin)
+        visit root_path
+        click_on 'Listar Produtos'
+        click_on 'TV 32 Polegadas'
+    
+        expect(page).to have_content 'Lote: COD123456'
+        expect(page).to have_link 'COD123456'
+      end
+
+      it 'should show a link to it if awaiting approval' do
+        john_admin = User.create!(
+          name: 'John Doe', cpf: '41760209031',
+          email: 'john@leilaodogalpao.com.br', password: 'password123'
+        )
+        batch = Batch.create!(
+          code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
+          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+          creator: john_admin
+        )
+        product = Product.create!(
+          name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
+          weight: 5_000, width: 100, height: 50, depth: 10,
+          batch: batch
+        )
+    
+        login_as(john_admin)
+        visit root_path
+        click_on 'Listar Produtos'
+        click_on 'TV 32 Polegadas'
+    
+        expect(page).to have_content 'Lote: COD123456 <Aguardando aprovação>'
+        expect(page).to have_link 'COD123456'
+      end
     end
   end
 end

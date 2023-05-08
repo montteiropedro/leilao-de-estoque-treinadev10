@@ -24,7 +24,18 @@
     <strong><%= t '.batch' %>:</strong>
 
     <% if @product.batch.present? %>
-      <%= link_to @product.batch.code, @product.batch, class: 'underline hover:text-primary' %>
+      <% if @product.batch.approver.present? %>
+        <%= link_to @product.batch.code, @product.batch, class: 'underline hover:text-primary' %>
+      <% else %>
+        <% if user_signed_in? && current_user.is_admin %>
+          <span>
+            <%= link_to @product.batch.code, @product.batch, class: 'underline hover:text-primary' %>
+            <em class='text-neutral-300'>&lt;<%= t '.awaiting_approval' %>&gt;</em>
+          </span>
+        <% else %>
+          <span><%= @product.batch.code %> <em class='text-neutral-300'>&lt;<%= t '.awaiting_approval' %>&gt;</em></span>
+        <% end %>
+      <% end %>
 
       <% if current_user.present? && current_user.is_admin %>
         <%= button_to t('.unlink_batch_button_text'), unlink_batch_product_path, method: :patch, class: 'p-2 bg-black text-white rounded' %>
