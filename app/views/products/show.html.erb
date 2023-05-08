@@ -41,3 +41,13 @@
     <% end %>
   </div>
 </div>
+
+<div class='mb-8 flex flex-col gap-4'>
+  <h2 class='view-title'><%= t '.product_image' %></h2>
+
+  <% if @product.image.attached? %>
+    <%= image_tag @product.image, size: '250', title: @product.name, alt: "imagem #{@product.name}" %>
+  <% else %>
+    <p class='text-neutral-300'><%= t '.not_found_message' %></p>
+  <% end %>
+</div>

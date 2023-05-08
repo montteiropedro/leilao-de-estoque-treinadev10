@@ -68,5 +68,14 @@
     <% end %>
   </div>
 
+  <div class='form-field'>
+    <%= f.label :image %>
+    <%= f.file_field :image %>
+
+    <% if @product.errors[:image].any? %>
+      <span class='errors'><%= @product.errors[:image].join(', ') %></span>
+    <% end %>
+  </div>
+
   <%= f.submit t('.submit'), class: 'form-submit' %>
 <% end %>

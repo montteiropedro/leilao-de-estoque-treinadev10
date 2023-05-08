@@ -1,6 +1,7 @@
 class Product < ApplicationRecord
   belongs_to :category, optional: true
   belongs_to :batch, optional: true
+  has_one_attached :image
 
   before_validation :set_alphanumeric_code
 

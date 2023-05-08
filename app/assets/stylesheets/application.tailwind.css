@@ -15,6 +15,10 @@
     @apply p-4 w-full text-black rounded-lg;
   }
 
+  input[type='file'] {
+    @apply text-white;
+  }
+
   select {
     @apply text-black;
   }

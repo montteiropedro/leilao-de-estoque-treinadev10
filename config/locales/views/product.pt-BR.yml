@@ -12,10 +12,12 @@ pt-BR:
       without_category: Não especificado
       batch: Lote
       without_batch: Não vinculado a um lote
+      product_image: Foto
       remove_product: Remover Produto
       link_batch: Vincular Produto a um Lote
       link_batch_button_text: Vincular
       unlink_batch_button_text: Remover Vínculo
+      not_found_message: Este produto não possui uma foto.
     new:
       title: Cadastrar Novo Produto
       submit: Cadastrar
