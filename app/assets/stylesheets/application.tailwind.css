@@ -41,6 +41,10 @@
     @apply my-6 text-primary text-xl font-semibold;
   }
 
+  .view-subtitle {
+    @apply text-secondary text-lg font-semibold;
+  }
+
   .form-field {
     @apply mb-4 flex flex-col gap-2;
   }

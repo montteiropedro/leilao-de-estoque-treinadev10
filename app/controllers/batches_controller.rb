@@ -3,7 +3,8 @@ class BatchesController < ApplicationController
   before_action :is_admin?, only: [:new, :create, :approve, :add_product]
   
   def index
-    @approved_batches = Batch.where.not(approver: nil).order(created_at: :desc)
+    @approved_batches_in_progress = Batch.where.not(approver: nil).and(Batch.where("start_date <= ?", Date.today)).order(created_at: :desc)
+    @approved_batches_waiting_start = Batch.where.not(approver: nil).and(Batch.where("start_date > ?", Date.today)).order(created_at: :desc)
 
     if user_signed_in? && current_user.is_admin
       @awaiting_approval_batches = Batch.where(approver: nil).order(created_at: :desc)

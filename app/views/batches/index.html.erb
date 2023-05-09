@@ -16,14 +16,32 @@
 
 <h1 class='view-title'><%= t '.approved_title' %></h1>
 
-<div class='flex flex-col gap-4'>
-  <% if @approved_batches.present? %>
-    <% @approved_batches.each do |b| %>
-      <%= link_to batch_path(b), class: 'p-4 bg-secondary hover:scale-105 transition-all rounded' do %>
-        <%= t '.prefix' %> <%= b.code %>
+<div class='flex gap-12'>
+  <div id='batches-in-progress' class='w-1/2 flex flex-col gap-4'>
+    <h2 class='view-subtitle'><%= t '.approved_progress_subtitle' %></h2> <%# todo: passar para o I18n %>
+    
+    <% if @approved_batches_in_progress.present? %>
+      <% @approved_batches_in_progress.each do |b| %>
+        <%= link_to batch_path(b), class: 'p-4 bg-secondary hover:scale-105 transition-all rounded' do %>
+          <%= t '.prefix' %> <%= b.code %>
+        <% end %>
       <% end %>
+    <% else %>
+      <p class='text-neutral-300'><%= t '.approved_progress_not_found_message' %></p>
     <% end %>
-  <% else %>
-    <p class='text-neutral-300'><%= t '.approved_not_found_message' %></p>
-  <% end %>
+  </div>
+
+  <div id='batches-waiting-start' class='w-1/2 flex flex-col gap-4'>
+    <h2 class='view-subtitle'><%= t '.approved_waiting_subtitle' %></h2>
+  
+    <% if @approved_batches_waiting_start.present? %>
+      <% @approved_batches_waiting_start.each do |b| %>
+        <%= link_to batch_path(b), class: 'p-4 bg-secondary hover:scale-105 transition-all rounded' do %>
+          <%= t '.prefix' %> <%= b.code %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <p class='text-neutral-300'><%= t '.approved_waiting_not_found_message' %></p>
+    <% end %>
+  </div>
 </div>
