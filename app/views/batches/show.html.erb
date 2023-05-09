@@ -29,7 +29,7 @@
   <div class='flex items-center justify-between'>
     <h2 class='view-title'><%= t '.linked_products' %></h2>
 
-    <% if (current_user.present? && current_user.is_admin) %>
+    <% if @batch.approver.blank? && (user_signed_in? && current_user.is_admin) %>
       <%= form_with url: add_product_batch_path, method: :patch, class: 'flex flex-row' do |f| %>
         <%= f.collection_select :product_id, @products, :id, :name, prompt: t('.add_product') %>
         <%= f.submit t('.add_product_button_text'), class: 'form-submit m-0' %>

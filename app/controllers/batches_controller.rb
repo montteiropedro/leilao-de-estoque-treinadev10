@@ -15,9 +15,9 @@ class BatchesController < ApplicationController
 
     if @batch.approver.blank?
       return redirect_to root_path unless user_signed_in? && current_user.is_admin
-    end
 
-    @products = Product.where(batch: nil).order(:name)
+      @products = Product.where(batch: nil).order(:name)
+    end
   end
 
   def new

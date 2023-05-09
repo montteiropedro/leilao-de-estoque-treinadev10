@@ -8,7 +8,7 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find(params[:id])
-    @batches = Batch.order(created_at: :desc)
+    @batches = Batch.where(approver: nil).order(created_at: :desc)
   end
 
   def new
@@ -43,8 +43,9 @@ class ProductsController < ApplicationController
 
   def unlink_batch
     @product = Product.find(params[:id])
+    linked_batch = @product.batch
 
-    if @product.update!(batch: nil)
+    if linked_batch.approver.blank? && @product.update!(batch: nil)
       redirect_to @product, notice: 'Lote desvinculado com sucesso.'
     else
       render :show, status: :unprocessable_entity
