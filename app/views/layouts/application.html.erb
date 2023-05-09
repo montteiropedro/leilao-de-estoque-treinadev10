@@ -24,7 +24,7 @@
         <div id="user-menu" class="flex items-center gap-4">
           <% if user_signed_in? %>
             <% if current_user.is_admin %>
-              <span class="p-2 text-white text-xs bg-black rounded">ADMIN</span>
+              <span class="p-2 text-white text-xs uppercase bg-black rounded">ADMIN</span>
             <% end %>
 
             <span class="italic"><%= current_user.name %></span>

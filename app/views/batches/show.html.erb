@@ -27,7 +27,7 @@
 
 <div class='mb-8 flex flex-col gap-4'>
   <div class='flex items-center justify-between'>
-    <h2 class='view-title'><%= t '.linked_products' %></h2>
+    <h2 class='view-subtitle'><%= t '.linked_products' %></h2>
 
     <% if @batch.approver.blank? && (user_signed_in? && current_user.is_admin) %>
       <%= form_with url: add_product_batch_path, method: :patch, class: 'flex flex-row' do |f| %>
