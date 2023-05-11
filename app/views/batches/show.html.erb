@@ -25,6 +25,30 @@
   <span><strong><%= t '.min_diff_between_bids_in_centavos' %>:</strong> <%= @batch.min_diff_between_bids_in_centavos %> centavos</span>
 </div>
 
+<% if @batch.approver.present? && (user_signed_in? && !current_user.is_admin) %>
+  <% if @batch.auction_in_progress? %>
+    <div class='mb-10 flex flex-col gap-2'>
+      <h2 class='view-subtitle'><%= t '.bids' %></h2>
+
+      <div class='flex items-center justify-between'>
+        <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-emerald-300 hover:animate-pulse rounded'>
+          <%= t '.current_winning_bid' %>:
+          <% if @bids.present? %>
+            <%= @bids.first.value_in_centavos %> centavos
+          <% else %>
+            <%= t '.no_bid_value' %>
+          <% end %>
+        </div>
+
+        <%= form_with scope: :bid, url: batch_bids_path(@batch), class: 'flex flex-row' do |f| %>
+          <%= f.number_field :value_in_centavos, placeholder: 'Faça seu lance' %>
+          <%= f.submit t('.make_bid_button_text'), class: 'form-submit m-0' %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
 <div class='mb-8 flex flex-col gap-4'>
   <div class='flex items-center justify-between'>
     <h2 class='view-subtitle'><%= t '.linked_products' %></h2>

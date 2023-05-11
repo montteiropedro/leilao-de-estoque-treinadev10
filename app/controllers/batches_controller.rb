@@ -19,6 +19,10 @@ class BatchesController < ApplicationController
 
       @products = Product.where(batch: nil).order(:name)
     end
+
+    if @batch.approver.present? && @batch.auction_in_progress?
+      @bids = @batch.bids.order(value_in_centavos: :desc)
+    end
   end
 
   def new

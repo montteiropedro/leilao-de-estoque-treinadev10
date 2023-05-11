@@ -23,6 +23,10 @@ pt-BR:
       not_found_message: Não existem produtos vinculados a este lote.
       add_product: Adicionar Produto
       add_product_button_text: Adicionar
+      bids: Lances
+      current_winning_bid: Último lance
+      no_bid_value: '0 centavos' 
+      make_bid_button_text: Fazer Lance
     new:
       title: Cadastrar Novo Lote
       submit: 'Cadastrar'

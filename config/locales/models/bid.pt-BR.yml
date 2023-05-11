@@ -1,0 +1,13 @@
+pt-BR:
+  activerecord:
+    models:
+      bid:
+        one: Lance
+        other: Lances
+    attributes:
+      bid:
+        value_in_centavos: Lance
+        user_id: Usuário
+        user: Usuário
+        batch_id: Lote
+        batch: Lote

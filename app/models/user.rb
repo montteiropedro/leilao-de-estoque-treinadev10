@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :created_batches, class_name: 'Batch', foreign_key: 'batch_id'
   has_many :approved_batches, class_name: 'Batch', foreign_key: 'batch_id'
   has_many :bids
+  has_many :batches, through: :bids
 
   before_validation :set_admin
 

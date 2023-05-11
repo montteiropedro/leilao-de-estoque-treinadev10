@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   
   root "home#index"
   resources :batches, only: [:index, :show, :new, :create] do
+    resources :bids, only: [:create]
     member do
       post 'approve'
       patch 'add_product'

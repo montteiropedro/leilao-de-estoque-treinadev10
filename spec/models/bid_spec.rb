@@ -2,103 +2,70 @@ require 'rails_helper'
 
 RSpec.describe Bid, type: :model do
   describe '#valid?' do
-    context 'presence validation' do
-      it 'should return false when value_in_centavos is empty' do
-        user = User.create!(
-          name: 'Peter Parker', cpf: '73046259026',
-          email: 'peter@email.com', password: 'mypass45678'
-        )
+    context 'value_in_centavos' do
+      it 'should not be empty' do
+        bid = Bid.new(value_in_centavos: '')
 
-        admin = User.create!(
-          name: 'John Doe', cpf: '41760209031',
-          email: 'john@leilaodogalpao.com.br', password: 'password123'
-        )
+        bid.valid?
 
-        batch = Batch.new(
-          code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-          creator: admin
-        )
-        
-        bid = Bid.new(value_in_centavos: '', user: user, batch: batch)
-
-        result = bid.valid?
-
-        expect(result).to eq false
+        expect(bid.errors.include? :value_in_centavos).to eq true
+        expect(bid.errors[:value_in_centavos].include? 'não pode ficar em branco').to eq true
       end
 
-      it 'should return false when user is empty' do
-        user = User.create!(
-          name: 'Peter Parker', cpf: '73046259026',
-          email: 'peter@email.com', password: 'mypass45678'
-        )
+      it 'should not be less than or equal to 0' do
+        bid = Bid.new(value_in_centavos: -1)
 
-        admin = User.create!(
-          name: 'John Doe', cpf: '41760209031',
-          email: 'john@leilaodogalpao.com.br', password: 'password123'
-        )
+        bid.valid?
 
-        batch = Batch.new(
-          code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-          creator: admin
-        )
-        
-        bid = Bid.new(value_in_centavos: 1_000, user: nil, batch: batch)
-
-        result = bid.valid?
-
-        expect(result).to eq false
-      end
-
-      it 'should return false when batch is empty' do
-        user = User.create!(
-          name: 'Peter Parker', cpf: '73046259026',
-          email: 'peter@email.com', password: 'mypass45678'
-        )
-        
-        admin = User.create!(
-          name: 'John Doe', cpf: '41760209031',
-          email: 'john@leilaodogalpao.com.br', password: 'password123'
-        )
-
-        batch = Batch.new(
-          code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-          creator: admin
-        )
-        
-        bid = Bid.new(value_in_centavos: 1_000, user: user, batch: nil)
-
-        result = bid.valid?
-
-        expect(result).to eq false
+        expect(bid.errors.include? :value_in_centavos).to eq true
+        expect(bid.errors[:value_in_centavos].include? 'deve ser maior que 0').to eq true
       end
     end
 
-    context 'numericality validation' do
-      it 'should return false when value_in_centavos is less than or equal to 0' do
-        user = User.create!(
-          name: 'Peter Parker', cpf: '73046259026',
-          email: 'peter@email.com', password: 'mypass45678'
-        )
-        
-        admin = User.create!(
+    context 'user' do
+      it 'should not be a visitant (be empty)' do
+        bid = Bid.new(user: nil)
+
+        bid.valid?
+
+        expect(bid.errors.include? :user).to eq true
+        expect(bid.errors[:user].include? 'é obrigatório(a)').to eq true
+      end
+
+      it 'should not be a admin' do
+        admin_user = User.create!(
           name: 'John Doe', cpf: '41760209031',
           email: 'john@leilaodogalpao.com.br', password: 'password123'
         )
+        bid = Bid.new(user: admin_user)
 
-        batch = Batch.new(
-          code: 'COD123456', start_date: '2023-10-05', end_date: '2023-12-20',
-          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-          creator: admin
+        bid.valid?
+
+        expect(bid.errors.include? :user).to eq true
+        expect(bid.errors[:user].include? 'administradores não podem fazer lances').to eq true
+      end
+
+      it 'should be a non admin user' do
+        user = User.create!(
+          name: 'Peter Parker', cpf: '73046259026',
+          email: 'peter@email.com', password: 'password123'
         )
-        
-        bid = Bid.new(value_in_centavos: -1_000, user: user, batch: batch)
+        bid = Bid.new(user: user)
 
-        result = bid.valid?
+        bid.valid?
 
-        expect(result).to eq false
+        expect(bid.errors.include? :user).to eq false
+      end
+    end
+
+    context 'batch' do
+      it 'should not be empty' do
+        bid = Bid.new(batch: nil)
+
+        bid.valid?
+
+        expect(bid.errors.include? :batch).to eq true
+        expect(bid.errors[:batch].include? 'é obrigatório(a)').to eq true
       end
     end
   end
