@@ -152,4 +152,48 @@ RSpec.describe Batch, type: :model do
       end
     end
   end
+
+  describe '#waiting-start?' do
+    it 'should return true when today is before start_date' do
+      batch = Batch.new(start_date: Date.today + 1.day)
+
+      expect(batch.waiting_start?).to eq true
+    end
+
+    it 'should return false when today is not before start_date' do
+      batch = Batch.new(start_date: Date.today)
+
+      expect(batch.waiting_start?).to eq false
+    end
+  end
+
+  describe '#in-progress?' do
+    it 'should return true when today is between start_date (included) and end_date (included)' do
+      batch = Batch.new(start_date: Date.today, end_date: Date.today + 1.week)
+
+      expect(batch.in_progress?).to eq true
+    end
+
+    it 'should return false when today is not between start_date (included) and end_date (included)' do
+      waiting_start_batch = Batch.new(start_date: Date.today + 1.day, end_date: Date.today + 2.week)
+      expired_batch = Batch.new(start_date: Date.today - 2.weeks, end_date: Date.today - 1.day)
+
+      expect(waiting_start_batch.in_progress?).to eq false
+      expect(expired_batch.in_progress?).to eq false
+    end
+  end
+
+  describe '#expired?' do
+    it 'should return true when today is after end_date' do
+      batch = Batch.new(end_date: Date.today - 1.day)
+
+      expect(batch.expired?).to eq true
+    end
+
+    it 'should return false when today is not after end_date' do
+      batch = Batch.new(end_date: Date.today)
+
+      expect(batch.expired?).to eq false
+    end
+  end
 end
