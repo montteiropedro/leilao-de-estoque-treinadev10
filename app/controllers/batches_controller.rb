@@ -20,6 +20,7 @@ class BatchesController < ApplicationController
       @products = Product.where(batch: nil).order(:name)
     elsif @batch.expired?
       return redirect_to root_path unless user_signed_in? && current_user.is_admin
+      @bids = @batch.bids.order(value_in_centavos: :desc)
     elsif @batch.approver.present? && @batch.in_progress?
       @bids = @batch.bids.order(value_in_centavos: :desc)
     end
