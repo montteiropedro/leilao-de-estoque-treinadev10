@@ -114,7 +114,7 @@ describe 'User visits a batch details page' do
         expect(page).to have_content 'Aprovado por Steve Gates'
       end
 
-      context 'and the admin menu' do
+      context 'the admin menu' do
         it 'should not be displayed' do
           first_admin_user = User.create!(
             name: 'John Doe', cpf: '41760209031',
@@ -142,33 +142,7 @@ describe 'User visits a batch details page' do
         end
       end
 
-      context 'and the bids session' do
-        it 'should not be displayed when batch is in progress' do
-          first_admin_user = User.create!(
-            name: 'John Doe', cpf: '41760209031',
-            email: 'john@leilaodogalpao.com.br', password: 'password123'
-          )
-          second_admin_user = User.create!(
-            name: 'Steve Gates', cpf: '35933681024',
-            email: 'steve@leilaodogalpao.com.br', password: 'password123'
-          )
-          Batch.create!(
-            code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.week,
-            min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-            creator: first_admin_user, approver: second_admin_user
-          )
-    
-          visit root_path
-          click_on 'Listar Lotes'
-          within('div#batches-in-progress') do
-            click_on 'COD123456'
-          end
-    
-          expect(page).not_to have_css 'h2', text: 'Lances'
-          expect(page).not_to have_field 'Faça seu lance'
-          expect(page).not_to have_button 'Fazer Lance'
-        end
-  
+      context 'the bids session' do
         it 'should not be displayed when batch is waiting to start' do
           first_admin_user = User.create!(
             name: 'John Doe', cpf: '41760209031',
@@ -193,6 +167,35 @@ describe 'User visits a batch details page' do
           expect(page).not_to have_css 'h2', text: 'Lances'
           expect(page).not_to have_field 'Faça seu lance'
           expect(page).not_to have_button 'Fazer Lance'
+        end
+
+        it 'should be displayed without the form to make a bid when batch is in progress' do
+          first_admin_user = User.create!(
+            name: 'John Doe', cpf: '41760209031',
+            email: 'john@leilaodogalpao.com.br', password: 'password123'
+          )
+          second_admin_user = User.create!(
+            name: 'Steve Gates', cpf: '35933681024',
+            email: 'steve@leilaodogalpao.com.br', password: 'password123'
+          )
+          Batch.create!(
+            code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.week,
+            min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+            creator: first_admin_user, approver: second_admin_user
+          )
+    
+          visit root_path
+          click_on 'Listar Lotes'
+          within('div#batches-in-progress') do
+            click_on 'COD123456'
+          end
+    
+          within('div#bids-session') do
+            expect(page).to have_css 'h2', text: 'Lances'
+            expect(page).to have_content 'Último lance: 0 centavos'
+            expect(page).not_to have_field 'Faça seu lance'
+            expect(page).not_to have_button 'Fazer Lance'
+          end
         end
       end
     end
@@ -284,7 +287,7 @@ describe 'User visits a batch details page' do
         expect(page).to have_content 'Aprovado por Steve Gates'
       end
 
-      context 'and the admin menu' do
+      context 'the admin menu' do
         it 'should not be displayed' do
           user = User.create!(
             name: 'Peter Parker', cpf: '73046259026',
@@ -317,38 +320,7 @@ describe 'User visits a batch details page' do
         end
       end
 
-      context 'and the bids session' do
-        it 'should be displayed when batch is in progress' do
-          user = User.create!(
-            name: 'Peter Parker', cpf: '73046259026',
-            email: 'peter@email.com', password: 'password123'
-          )
-          first_admin_user = User.create!(
-            name: 'John Doe', cpf: '41760209031',
-            email: 'john@leilaodogalpao.com.br', password: 'password123'
-          )
-          second_admin_user = User.create!(
-            name: 'Steve Gates', cpf: '35933681024',
-            email: 'steve@leilaodogalpao.com.br', password: 'password123'
-          )
-          Batch.create!(
-            code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.week,
-            min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-            creator: first_admin_user, approver: second_admin_user
-          )
-    
-          login_as(user)
-          visit root_path
-          click_on 'Listar Lotes'
-          within('div#batches-in-progress') do
-            click_on 'COD123456'
-          end
-    
-          expect(page).to have_css 'h2', text: 'Lances'
-          expect(page).to have_field 'Faça seu lance'
-          expect(page).to have_button 'Fazer Lance'
-        end
-  
+      context 'the bids session' do
         it 'should not be displayed when batch is waiting to start' do
           user = User.create!(
             name: 'Peter Parker', cpf: '73046259026',
@@ -378,6 +350,42 @@ describe 'User visits a batch details page' do
           expect(page).not_to have_css 'h2', text: 'Lances'
           expect(page).not_to have_field 'Faça seu lance'
           expect(page).not_to have_button 'Fazer Lance'
+        end
+
+        it 'should be displayed with the form to make a bid when batch is in progress' do
+          user = User.create!(
+            name: 'Peter Parker', cpf: '73046259026',
+            email: 'peter@email.com', password: 'password123'
+          )
+          first_admin_user = User.create!(
+            name: 'John Doe', cpf: '41760209031',
+            email: 'john@leilaodogalpao.com.br', password: 'password123'
+          )
+          second_admin_user = User.create!(
+            name: 'Steve Gates', cpf: '35933681024',
+            email: 'steve@leilaodogalpao.com.br', password: 'password123'
+          )
+          Batch.create!(
+            code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.week,
+            min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+            creator: first_admin_user, approver: second_admin_user
+          )
+    
+          login_as(user)
+          visit root_path
+          click_on 'Listar Lotes'
+          within('div#batches-in-progress') do
+            click_on 'COD123456'
+          end
+    
+          within('div#bids-session') do
+            expect(page).to have_css 'h2', text: 'Lances'
+            expect(page).to have_content 'Último lance: 0 centavos'
+            within('form') do
+              expect(page).to have_field 'Faça seu lance'
+              expect(page).to have_button 'Fazer Lance'
+            end
+          end
         end
       end
     end
@@ -566,33 +574,6 @@ describe 'User visits a batch details page' do
       end
 
       context 'the bids session' do
-        it 'should not be displayed when batch is in progress' do
-          first_admin_user = User.create!(
-            name: 'John Doe', cpf: '41760209031',
-            email: 'john@leilaodogalpao.com.br', password: 'password123'
-          )
-          second_admin_user = User.create!(
-            name: 'Steve Gates', cpf: '35933681024',
-            email: 'steve@leilaodogalpao.com.br', password: 'password123'
-          )
-          Batch.create!(
-            code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.week,
-            min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-            creator: first_admin_user, approver: second_admin_user
-          )
-    
-          login_as(first_admin_user)
-          visit root_path
-          click_on 'Listar Lotes'
-          within('div#batches-in-progress') do
-            click_on 'COD123456'
-          end
-    
-          expect(page).not_to have_css 'h2', text: 'Lances'
-          expect(page).not_to have_field 'Faça seu lance'
-          expect(page).not_to have_button 'Fazer Lance'
-        end
-  
         it 'should not be displayed when batch is waiting to start' do
           first_admin_user = User.create!(
             name: 'John Doe', cpf: '41760209031',
@@ -618,6 +599,66 @@ describe 'User visits a batch details page' do
           expect(page).not_to have_css 'h2', text: 'Lances'
           expect(page).not_to have_field 'Faça seu lance'
           expect(page).not_to have_button 'Fazer Lance'
+        end
+
+        it 'should be displayed without the form to make a bid when batch is in progress' do
+          first_admin_user = User.create!(
+            name: 'John Doe', cpf: '41760209031',
+            email: 'john@leilaodogalpao.com.br', password: 'password123'
+          )
+          second_admin_user = User.create!(
+            name: 'Steve Gates', cpf: '35933681024',
+            email: 'steve@leilaodogalpao.com.br', password: 'password123'
+          )
+          Batch.create!(
+            code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.week,
+            min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+            creator: first_admin_user, approver: second_admin_user
+          )
+    
+          login_as(first_admin_user)
+          visit root_path
+          click_on 'Listar Lotes'
+          within('div#batches-in-progress') do
+            click_on 'COD123456'
+          end
+    
+          within('div#bids-session') do
+            expect(page).to have_css 'h2', text: 'Lances'
+            expect(page).to have_content 'Último lance: 0 centavos'
+            expect(page).not_to have_field 'Faça seu lance'
+            expect(page).not_to have_button 'Fazer Lance'
+          end
+        end
+
+        it 'should be displayed without the form to make a bid when batch is expired' do
+          first_admin_user = User.create!(
+            name: 'John Doe', cpf: '41760209031',
+            email: 'john@leilaodogalpao.com.br', password: 'password123'
+          )
+          second_admin_user = User.create!(
+            name: 'Steve Gates', cpf: '35933681024',
+            email: 'steve@leilaodogalpao.com.br', password: 'password123'
+          )
+          Batch.new(
+            code: 'COD123456', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
+            min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+            creator: first_admin_user, approver: second_admin_user
+          ).save!(validate: false)
+    
+          login_as(first_admin_user)
+          visit root_path
+          click_on 'Listar Lotes Expirados'
+          within('div#batches-expired') do
+            click_on 'COD123456'
+          end
+    
+          within('div#bids-session') do
+            expect(page).to have_css 'h2', text: 'Lances'
+            expect(page).to have_content 'Último lance: 0 centavos'
+            expect(page).not_to have_field 'Faça seu lance'
+            expect(page).not_to have_button 'Fazer Lance'
+          end
         end
       end
     end

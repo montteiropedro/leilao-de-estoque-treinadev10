@@ -9,6 +9,8 @@ class Bid < ApplicationRecord
 
   private
 
+  # todo: fazer uma verificação para ver se o lote está aprovado, lotes só podem receber um lance se estiverem aprovados
+
   def is_bid_valid?
     return if self.value_in_centavos.blank?
     return if self.batch.blank?
