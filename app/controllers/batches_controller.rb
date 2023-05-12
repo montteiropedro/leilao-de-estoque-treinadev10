@@ -1,5 +1,5 @@
 class BatchesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :approve, :add_product, :expired]
+  before_action :authenticate_user!, only: [:new, :create, :approve, :add_product, :expired, :won]
   before_action :is_admin?, only: [:new, :create, :approve, :add_product, :expired]
   
   def index
@@ -13,6 +13,12 @@ class BatchesController < ApplicationController
 
   def expired
     @expired_batches = Batch.where('end_date < ?', Date.today).order(created_at: :desc)
+  end
+  
+  def won
+    return redirect_to root_path if current_user.is_admin
+
+    @won_batches = current_user.won_batches
   end
 
   def show

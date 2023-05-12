@@ -13,6 +13,10 @@ pt-BR:
       prefix: Lote
       expired_title: Lotes Expirados
       expired_title_not_found_message: Não existem lotes expirados.
+    won:
+      prefix: Lote
+      won_title: Lotes Vencidos
+      won_title_not_found_message: Não existem lotes nos quais você foi o vencedor.
     show:
       title: Lote
       creator_description: Administrado por

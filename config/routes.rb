@@ -5,10 +5,12 @@ Rails.application.routes.draw do
   resources :batches, only: [:index, :show, :new, :create] do
     resources :bids, only: [:create]
     get 'expired', on: :collection
+    get 'won', on: :collection
     member do
       post 'approve'
-      patch 'add_product'
+      patch 'close'
       delete 'cancel'
+      patch 'add_product'
     end
   end
   resources :products, only: [:index, :show, :new, :create, :update] do

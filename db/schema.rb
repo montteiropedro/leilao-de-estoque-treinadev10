@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_10_225313) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_12_214509) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -49,7 +49,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_10_225313) do
     t.integer "approver_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "buyer_id"
     t.index ["approver_id"], name: "index_batches_on_approver_id"
+    t.index ["buyer_id"], name: "index_batches_on_buyer_id"
     t.index ["code"], name: "index_batches_on_code", unique: true
     t.index ["creator_id"], name: "index_batches_on_creator_id"
   end
@@ -107,6 +109,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_10_225313) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "batches", "users", column: "approver_id"
+  add_foreign_key "batches", "users", column: "buyer_id"
   add_foreign_key "batches", "users", column: "creator_id"
   add_foreign_key "bids", "batches"
   add_foreign_key "bids", "users"

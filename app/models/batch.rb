@@ -1,6 +1,7 @@
 class Batch < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   belongs_to :approver, class_name: 'User', optional: true
+  belongs_to :buyer, class_name: 'User', optional: true
   has_many :products, dependent: :nullify
   has_many :bids
   has_many :users, through: :bids
