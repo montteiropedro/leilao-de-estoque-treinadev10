@@ -72,6 +72,7 @@ describe 'User visits homepage' do
       within('#batch-menu') do
         expect(page).to have_content 'Lotes'
         expect(page).to have_link 'Listar Lotes', href: batches_path
+        expect(page).to have_link 'Listar Lotes Expirados', href: expired_batches_path
         expect(page).to have_link 'Cadastrar Lotes', href: new_batch_path
       end
       within('#product-menu') do

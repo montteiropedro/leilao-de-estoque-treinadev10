@@ -1,26 +1,26 @@
 class BatchesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :approve, :add_product]
-  before_action :is_admin?, only: [:new, :create, :approve, :add_product]
+  before_action :authenticate_user!, only: [:new, :create, :approve, :add_product, :expired]
+  before_action :is_admin?, only: [:new, :create, :approve, :add_product, :expired]
   
   def index
-    @approved_batches_in_progress = Batch.where.not(approver: nil).and(Batch.where("start_date <= ?", Date.today)).order(created_at: :desc)
-    @approved_batches_waiting_start = Batch.where.not(approver: nil).and(Batch.where("start_date > ?", Date.today)).order(created_at: :desc)
+    @approved_batches_in_progress = Batch.where.not(approver: nil).and(Batch.where('start_date <= ? AND end_date >= ?', Date.today, Date.today)).order(created_at: :desc)
+    @approved_batches_waiting_start = Batch.where.not(approver: nil).and(Batch.where('start_date > ?', Date.today)).order(created_at: :desc)
 
     if user_signed_in? && current_user.is_admin
-      @awaiting_approval_batches = Batch.where(approver: nil).order(created_at: :desc)
+      @awaiting_approval_batches = Batch.where(approver: nil).and(Batch.where('start_date >= ?', Date.today)).order(created_at: :desc)
     end
   end
 
   def show
     @batch = Batch.find(params[:id])
 
-    if @batch.approver.blank?
+    if @batch.approver.blank? && (@batch.waiting_start? || @batch.in_progress?)
       return redirect_to root_path unless user_signed_in? && current_user.is_admin
-
+    
       @products = Product.where(batch: nil).order(:name)
-    end
-
-    if @batch.approver.present? && @batch.auction_in_progress?
+    elsif @batch.expired?
+      return redirect_to root_path unless user_signed_in? && current_user.is_admin
+    elsif @batch.approver.present? && @batch.in_progress?
       @bids = @batch.bids.order(value_in_centavos: :desc)
     end
   end
@@ -60,6 +60,10 @@ class BatchesController < ApplicationController
     else
       render :show, status: :unprocessable_entity
     end
+  end
+
+  def expired
+    @expired_batches = Batch.where('end_date < ?', Date.today).order(created_at: :desc)
   end
 
   private

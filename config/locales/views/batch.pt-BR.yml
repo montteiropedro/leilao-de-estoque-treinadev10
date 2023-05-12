@@ -1,14 +1,18 @@
 pt-BR:
   batches:
     index:
+      prefix: Lote
       approved_title: Lotes Aprovados
       approved_progress_subtitle: Em Andamento
       approved_waiting_subtitle: Futuros
       awaiting_approval_title: Lotes Aguardando Aprovação
-      prefix: Lote
       approved_progress_not_found_message: Não existem lotes aprovados em andamento.
       approved_waiting_not_found_message: Não existem lotes aprovados preparados para o futuro.
       awaiting_approval_not_found_message: Não existem lotes cadastrados/aguardando aprovação.
+    expired:
+      prefix: Lote
+      expired_title: Lotes Expirados
+      expired_title_not_found_message: Não existem lotes expirados.
     show:
       title: Lote
       creator_description: Administrado por

@@ -12,7 +12,7 @@ class Bid < ApplicationRecord
   def is_bid_valid?
     return if self.value_in_centavos.blank?
     return if self.batch.blank?
-    return errors.add(:batch, 'não esta no periodo de leilão') unless self.batch.auction_in_progress?
+    return errors.add(:batch, 'não esta no periodo de leilão') unless self.batch.in_progress?
 
     if self.batch.bids.blank?
       return if self.value_in_centavos > self.batch.min_bid_in_centavos

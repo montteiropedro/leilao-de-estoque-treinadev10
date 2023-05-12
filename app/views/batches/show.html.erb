@@ -10,10 +10,12 @@
     <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-emerald-300 rounded'>
       <%= t '.approver_description' %> <%= @batch.approver.name %>
     </div>
-  <% elsif (current_user.present? && current_user.is_admin) && (current_user != @batch.creator) %>
-    <%= button_to approve_batch_path, class: "px-4 py-2 flex items-center gap-2 bg-black text-white hover:scale-105 transition-all rounded" do %>
-      <%= t '.approve_button_text' %>
-      <i class="fa-regular fa-circle text-sm animate-pulse"></i>
+  <% elsif (user_signed_in? && current_user.is_admin) && (current_user != @batch.creator) %>
+    <% if @batch.waiting_start? || @batch.in_progress? %>
+      <%= button_to approve_batch_path, class: "px-4 py-2 flex items-center gap-2 bg-black text-white hover:scale-105 transition-all rounded" do %>
+        <%= t '.approve_button_text' %>
+        <i class="fa-regular fa-circle text-sm animate-pulse"></i>
+      <% end %>
     <% end %>
   <% end %>
 </div>
@@ -26,8 +28,8 @@
 </div>
 
 <% if @batch.approver.present? && (user_signed_in? && !current_user.is_admin) %>
-  <% if @batch.auction_in_progress? %>
-    <div class='mb-10 flex flex-col gap-2'>
+  <% if @batch.in_progress? %>
+    <div id='bids-session' class='mb-10 flex flex-col gap-2'>
       <h2 class='view-subtitle'><%= t '.bids' %></h2>
 
       <div class='flex items-center justify-between'>
@@ -53,10 +55,12 @@
   <div class='flex items-center justify-between'>
     <h2 class='view-subtitle'><%= t '.linked_products' %></h2>
 
-    <% if @batch.approver.blank? && (user_signed_in? && current_user.is_admin) %>
-      <%= form_with url: add_product_batch_path, method: :patch, class: 'flex flex-row' do |f| %>
-        <%= f.collection_select :product_id, @products, :id, :name, prompt: t('.add_product') %>
-        <%= f.submit t('.add_product_button_text'), class: 'form-submit m-0' %>
+    <% if user_signed_in? && current_user.is_admin %>
+      <% if @batch.approver.blank? && (@batch.waiting_start? || @batch.in_progress?) %>
+        <%= form_with url: add_product_batch_path, method: :patch, class: 'flex flex-row' do |f| %>
+          <%= f.collection_select :product_id, @products, :id, :name, prompt: t('.add_product') %>
+          <%= f.submit t('.add_product_button_text'), class: 'form-submit m-0' %>
+        <% end %>
       <% end %>
     <% end %>
   </div>

@@ -29,8 +29,8 @@ describe 'User views all registered batches' do
       visit root_path
       click_on 'Listar Lotes'
   
-      expect(page).to have_content('Lotes Aprovados')
-      within('#batches-in-progress') do
+      expect(page).to have_content 'Lotes Aprovados'
+      within('div#batches-in-progress') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
@@ -74,8 +74,8 @@ describe 'User views all registered batches' do
       visit root_path
       click_on 'Listar Lotes'
   
-      expect(page).to have_content('Lotes Aprovados')
-      within('#batches-waiting-start') do
+      expect(page).to have_content 'Lotes Aprovados'
+      within('div#batches-waiting-start') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
@@ -106,12 +106,8 @@ describe 'User views all registered batches' do
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
-      second_admin_user = User.create!(
-        name: 'Steve Gates', cpf: '35933681024',
-        email: 'steve@leilaodogalpao.com.br', password: 'password123'
-      )
       Batch.create!(
-        code: 'BTC334509', start_date: Date.today, end_date: Date.today + 1,
+        code: 'BTC334509', start_date: Date.today, end_date: Date.today + 1.day,
         min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
         creator: first_admin_user
       )
@@ -119,7 +115,7 @@ describe 'User views all registered batches' do
       visit root_path
       click_on 'Listar Lotes'
   
-      expect(page).not_to have_content('Lotes Aguardando Aprovação')
+      expect(page).not_to have_content 'Lotes Aguardando Aprovação'
       expect(page).not_to have_link 'Lote BTC334509'
     end
 
@@ -128,6 +124,24 @@ describe 'User views all registered batches' do
       click_on 'Listar Lotes'
   
       expect(page).not_to have_content 'Não existem lotes cadastrados/aguardando aprovação.'
+    end
+
+    it 'should not see expired batches' do
+      first_admin_user = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      Batch.new(
+        code: 'BTC334509', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
+        min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
+        creator: first_admin_user
+      ).save!(validate: false)
+  
+      visit root_path
+      click_on 'Listar Lotes'
+  
+      expect(page).not_to have_content 'Lotes Expirados'
+      expect(page).not_to have_link 'Lote BTC334509'
     end
   end
 
@@ -155,8 +169,8 @@ describe 'User views all registered batches' do
       visit root_path
       click_on 'Listar Lotes'
       
-      expect(page).to have_content('Lotes Aprovados')
-      within('#batches-in-progress') do
+      expect(page).to have_content 'Lotes Aprovados'
+      within('div#batches-in-progress') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
@@ -210,8 +224,8 @@ describe 'User views all registered batches' do
       visit root_path
       click_on 'Listar Lotes'
       
-      expect(page).to have_content('Lotes Aprovados')
-      within('#batches-waiting-start') do
+      expect(page).to have_content 'Lotes Aprovados'
+      within('div#batches-waiting-start') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
@@ -265,7 +279,7 @@ describe 'User views all registered batches' do
       visit root_path
       click_on 'Listar Lotes'
 
-      expect(page).not_to have_content('Lotes Aguardando Aprovação')
+      expect(page).not_to have_content 'Lotes Aguardando Aprovação'
       expect(page).not_to have_link 'Lote BTC334509'
     end
 
@@ -280,6 +294,29 @@ describe 'User views all registered batches' do
       click_on 'Listar Lotes'
   
       expect(page).not_to have_content 'Não existem lotes cadastrados/aguardando aprovação.'
+    end
+
+    it 'should not see expired batches' do
+      user = User.create!(
+        name: 'Peter Parker', cpf: '73046259026',
+        email: 'peter@email.com', password: 'password123'
+      )
+      first_admin_user = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      Batch.new(
+        code: 'BTC334509', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
+        min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
+        creator: first_admin_user
+      ).save!(validate: false)
+  
+      login_as(user)
+      visit root_path
+      click_on 'Listar Lotes'
+  
+      expect(page).not_to have_content 'Lotes Expirados'
+      expect(page).not_to have_link 'Lote BTC334509'
     end
   end
 
@@ -303,8 +340,8 @@ describe 'User views all registered batches' do
       visit root_path
       click_on 'Listar Lotes'
   
-      expect(page).to have_content('Lotes Aprovados')
-      within('#batches-in-progress') do
+      expect(page).to have_content 'Lotes Aprovados'
+      within('div#batches-in-progress') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
@@ -350,8 +387,8 @@ describe 'User views all registered batches' do
       visit root_path
       click_on 'Listar Lotes'
   
-      expect(page).to have_content('Lotes Aprovados')
-      within('#batches-waiting-start') do
+      expect(page).to have_content 'Lotes Aprovados'
+      within('div#batches-waiting-start') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
@@ -397,7 +434,7 @@ describe 'User views all registered batches' do
       visit root_path
       click_on 'Listar Lotes'
       
-      expect(page).to have_content('Lotes Aguardando Aprovação')
+      expect(page).to have_content 'Lotes Aguardando Aprovação'
       expect(page).to have_link 'Lote BTC334509'
     end
 
@@ -412,6 +449,25 @@ describe 'User views all registered batches' do
       click_on 'Listar Lotes'
   
       expect(page).to have_content 'Não existem lotes cadastrados/aguardando aprovação.'
+    end
+
+    it 'should not see expired batches' do
+      first_admin_user = User.create!(
+        name: 'John Doe', cpf: '41760209031',
+        email: 'john@leilaodogalpao.com.br', password: 'password123'
+      )
+      Batch.new(
+        code: 'BTC334509', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
+        min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
+        creator: first_admin_user
+      ).save!(validate: false)
+  
+      login_as(first_admin_user)
+      visit root_path
+      click_on 'Listar Lotes'
+  
+      expect(page).not_to have_content 'Lotes Expirados'
+      expect(page).not_to have_link 'Lote BTC334509'
     end
   end
 end

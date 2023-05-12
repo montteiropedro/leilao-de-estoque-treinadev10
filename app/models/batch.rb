@@ -21,8 +21,20 @@ class Batch < ApplicationRecord
     "#{self.creator.name} <#{self.creator.email}>"
   end
 
-  def auction_in_progress?
+  def waiting_start?
+    return true if Date.today < self.start_date
+
+    false
+  end
+
+  def in_progress?
     return true if (Date.today >= self.start_date) && (Date.today <= self.end_date)
+
+    false
+  end
+
+  def expired?
+    return true if Date.today > self.end_date
 
     false
   end
