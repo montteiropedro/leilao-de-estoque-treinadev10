@@ -11,6 +11,10 @@ class BatchesController < ApplicationController
     end
   end
 
+  def expired
+    @expired_batches = Batch.where('end_date < ?', Date.today).order(created_at: :desc)
+  end
+
   def show
     @batch = Batch.find(params[:id])
 
@@ -63,8 +67,12 @@ class BatchesController < ApplicationController
     end
   end
 
-  def expired
-    @expired_batches = Batch.where('end_date < ?', Date.today).order(created_at: :desc)
+  def cancel
+    @batch = Batch.find(params[:id])
+
+    if @batch.destroy
+      redirect_to expired_batches_path, notice: 'Lote cancelado com sucesso.'
+    end
   end
 
   private

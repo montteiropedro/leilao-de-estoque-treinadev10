@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     member do
       post 'approve'
       patch 'add_product'
+      delete 'cancel'
     end
   end
   resources :products, only: [:index, :show, :new, :create, :update] do

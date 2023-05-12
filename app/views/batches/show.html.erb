@@ -6,36 +6,38 @@
     </div>
   </div>
 
-  <% if @batch.approver.present? %>
-    <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-emerald-300 rounded'>
-      <%= t '.approver_description' %> <%= @batch.approver.name %>
-    </div>
-  <% end %>
+  <div class='flex gap-4'>
+    <% if @batch.approver.present? %>
+      <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-emerald-300 rounded'>
+        <%= t '.approver_description' %> <%= @batch.approver.name %>
+      </div>
+    <% end %>
 
-  <% if user_signed_in? && current_user.is_admin %>
-    <div id='admin-menu' class='flex gap-4'>
-      <% if @batch.expired? && @batch.bids.present? %>
-        <%= button_to false, class: "px-4 py-2 flex items-center gap-2 bg-amber-400 text-black hover:scale-105 transition-all rounded" do %>
-          <%= t '.close_batch_button_text' %>
-          <i class="fa-solid fa-money-bill-wave text-sm animate-pulse"></i>
-        <% end %>
-      <% elsif @batch.expired? && @batch.bids.blank? %>
-        <%= button_to false, class: "px-4 py-2 flex items-center gap-2 bg-red-400 text-black hover:scale-105 transition-all rounded" do %>
-          <%= t '.cancel_batch_button_text' %>
-          <i class="fa-solid fa-recycle text-sm animate-pulse"></i>
-        <% end %>
-      <% end %>
-
-      <% if @batch.approver.blank? && current_user != @batch.creator %>
-        <% if @batch.waiting_start? || @batch.in_progress? %>
-          <%= button_to approve_batch_path, class: "px-4 py-2 flex items-center gap-2 bg-black text-white hover:scale-105 transition-all rounded" do %>
-            <%= t '.approve_batch_button_text' %>
-            <i class="fa-regular fa-circle text-sm animate-pulse"></i>
+    <% if user_signed_in? && current_user.is_admin %>
+      <div id='admin-menu' class='flex gap-4'>
+        <% if @batch.expired? && @batch.bids.present? %>
+          <%= button_to false, class: "px-4 py-2 flex items-center gap-2 bg-amber-400 text-black hover:scale-105 transition-all rounded" do %>
+            <%= t '.close_batch_button_text' %>
+            <i class="fa-solid fa-money-bill-wave text-sm animate-pulse"></i>
+          <% end %>
+        <% elsif @batch.expired? && @batch.bids.blank? %>
+          <%= button_to cancel_batch_path(@batch), method: :delete, class: "px-4 py-2 flex items-center gap-2 bg-red-400 text-black hover:scale-105 transition-all rounded" do %>
+            <%= t '.cancel_batch_button_text' %>
+            <i class="fa-solid fa-recycle text-sm animate-pulse"></i>
           <% end %>
         <% end %>
-      <% end %>
-    </div>
-  <% end %>
+        
+        <% if @batch.approver.blank? && current_user != @batch.creator %>
+          <% if @batch.waiting_start? || @batch.in_progress? %>
+            <%= button_to approve_batch_path, class: "px-4 py-2 flex items-center gap-2 bg-black text-white hover:scale-105 transition-all rounded" do %>
+              <%= t '.approve_batch_button_text' %>
+              <i class="fa-regular fa-circle text-sm animate-pulse"></i>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>
 
 <div class='mb-10 flex flex-col gap-2'>
