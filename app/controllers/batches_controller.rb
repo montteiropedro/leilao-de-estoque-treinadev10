@@ -1,18 +1,19 @@
 class BatchesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :approve, :add_product, :expired, :won]
-  before_action :is_admin?, only: [:new, :create, :approve, :add_product, :expired]
+  before_action :authenticate_user!, only: [:new, :create, :approve, :close, :cancel, :add_product, :expired, :won, ]
+  before_action :is_admin?, only: [:new, :create, :approve, :close, :cancel, :add_product, :expired, ]
   
   def index
     @approved_batches_in_progress = Batch.where.not(approver: nil).and(Batch.where('start_date <= ? AND end_date >= ?', Date.today, Date.today)).order(created_at: :desc)
     @approved_batches_waiting_start = Batch.where.not(approver: nil).and(Batch.where('start_date > ?', Date.today)).order(created_at: :desc)
 
-    if user_signed_in? && current_user.is_admin
-      @awaiting_approval_batches = Batch.where(approver: nil).and(Batch.where('start_date >= ?', Date.today)).order(created_at: :desc)
-    end
+    return unless user_signed_in? && current_user.is_admin
+
+    @awaiting_approval_batches = Batch.where(approver: nil).and(Batch.where('end_date >= ?', Date.today)).order(created_at: :desc)
   end
 
   def expired
-    @expired_batches = Batch.where('end_date < ?', Date.today).order(created_at: :desc)
+    @expired_batches = Batch.where('end_date < ?', Date.today).and(Batch.where(buyer: nil)).order(created_at: :desc)
+    @closed_expired_batches = Batch.where('end_date < ?', Date.today).and(Batch.where.not(buyer: nil)).order(created_at: :desc)
   end
   
   def won
@@ -24,15 +25,17 @@ class BatchesController < ApplicationController
   def show
     @batch = Batch.find(params[:id])
 
-    if @batch.approver.blank? && (@batch.waiting_start? || @batch.in_progress?)
-      return redirect_to root_path unless user_signed_in? && current_user.is_admin
+    return redirect_to root_path if @batch.approver.blank? && !user_signed_in?
+    return redirect_to root_path if @batch.approver.blank? && (user_signed_in? && !current_user.is_admin)
+
+    if @batch.approver.present? && (@batch.in_progress? || @batch.expired?)
+      @bids = @batch.bids.order(value_in_centavos: :desc)
+    end
+
+    return unless user_signed_in? && current_user.is_admin
     
+    if @batch.approver.blank? && !@batch.expired?
       @products = Product.where(batch: nil).order(:name)
-    elsif @batch.expired?
-      return redirect_to root_path unless user_signed_in? && current_user.is_admin
-      @bids = @batch.bids.order(value_in_centavos: :desc)
-    elsif @batch.approver.present? && @batch.in_progress?
-      @bids = @batch.bids.order(value_in_centavos: :desc)
     end
   end
 
@@ -57,7 +60,7 @@ class BatchesController < ApplicationController
   def approve
     @batch = Batch.find(params[:id])
 
-    redirect_to @batch, notice: 'Lote aprovado com sucesso.' if @batch.update!(approver: current_user)
+    redirect_to @batch, notice: 'Lote aprovado com sucesso.' if @batch.update(approver: current_user)
   end
 
   def add_product
@@ -76,9 +79,15 @@ class BatchesController < ApplicationController
   def cancel
     @batch = Batch.find(params[:id])
 
-    if @batch.destroy
-      redirect_to expired_batches_path, notice: 'Lote cancelado com sucesso.'
-    end
+    redirect_to expired_batches_path, notice: 'Lote cancelado com sucesso.' if @batch.destroy
+  end
+
+  def close
+    @batch = Batch.find(params[:id])
+    @winning_bid = @batch.bids.order(value_in_centavos: :desc).first
+    @batch.buyer = @winning_bid.user
+
+    redirect_to expired_batches_path, notice: 'Lote encerrado com sucesso.' if @batch.save(validate: false)
   end
 
   private

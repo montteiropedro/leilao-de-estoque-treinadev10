@@ -275,25 +275,135 @@ describe 'User visits a product details page' do
   end
 
   context 'and is a admin' do
-    it 'should see the button to remove the product' do
-      admin_user = User.create!(
-        name: 'John Doe', cpf: '41760209031',
-        email: 'john@leilaodogalpao.com.br', password: 'password123'
-      )
-      product = Product.create!(
-        name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
-        weight: 5_000, width: 100, height: 50, depth: 10
-      )
-  
-      login_as(admin_user)
-      visit root_path
-      click_on 'Listar Produtos'
-      click_on 'TV 32 Polegadas'
-  
-      expect(page).to have_button 'Remover Produto'
+    context 'the button to delete the product' do
+      it 'should be displayed when the product is not linked with a batch' do
+        admin_user = User.create!(
+          name: 'John Doe', cpf: '41760209031',
+          email: 'john@leilaodogalpao.com.br', password: 'password123'
+        )
+        product = Product.create!(
+          name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
+          weight: 5_000, width: 100, height: 50, depth: 10
+        )
+    
+        login_as(admin_user)
+        visit root_path
+        click_on 'Listar Produtos'
+        click_on 'TV 32 Polegadas'
+    
+        expect(page).to have_button 'Deletar Produto'
+      end
+
+      context 'when the linked batch is awaiting approval' do
+        it 'and is not expired should be displayed' do
+          admin_user = User.create!(
+            name: 'John Doe', cpf: '41760209031',
+            email: 'john@leilaodogalpao.com.br', password: 'password123'
+          )
+          batch = Batch.create!(
+            code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
+            min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+            creator: admin_user
+          )
+          Product.create!(
+            name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
+            weight: 5_000, width: 100, height: 50, depth: 10,
+            batch: batch
+          )
+      
+          login_as(admin_user)
+          visit root_path
+          click_on 'Listar Produtos'
+          click_on 'TV 32 Polegadas'
+      
+          expect(page).to have_button 'Deletar Produto'
+        end
+
+        it 'and is expired should not be displayed' do
+          admin_user = User.create!(
+            name: 'John Doe', cpf: '41760209031',
+            email: 'john@leilaodogalpao.com.br', password: 'password123'
+          )
+          Batch.new(
+            code: 'COD123456', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
+            min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+            creator: admin_user
+          ).save!(validate: false)
+          Product.create!(
+            name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
+            weight: 5_000, width: 100, height: 50, depth: 10,
+            batch: Batch.last
+          )
+      
+          login_as(admin_user)
+          visit root_path
+          click_on 'Listar Produtos'
+          click_on 'TV 32 Polegadas'
+      
+          expect(page).not_to have_button 'Deletar Produto'
+        end
+      end
+
+      context 'when the linked batch is approved' do
+        it 'and is not expired should not be displayed' do
+          first_admin_user = User.create!(
+            name: 'John Doe', cpf: '41760209031',
+            email: 'john@leilaodogalpao.com.br', password: 'password123'
+          )
+          second_admin_user = User.create!(
+            name: 'Steve Gates', cpf: '35933681024',
+            email: 'steve@leilaodogalpao.com.br', password: 'password123'
+          )
+          batch = Batch.create!(
+            code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
+            min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+            creator: first_admin_user, approver: second_admin_user
+          )
+          Product.create!(
+            name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
+            weight: 5_000, width: 100, height: 50, depth: 10,
+            batch: batch
+          )
+      
+          login_as(first_admin_user)
+          visit root_path
+          click_on 'Listar Produtos'
+          click_on 'TV 32 Polegadas'
+      
+          expect(page).not_to have_button 'Deletar Produto'
+        end
+
+        it 'and is expired should not be displayed' do
+          first_admin_user = User.create!(
+            name: 'John Doe', cpf: '41760209031',
+            email: 'john@leilaodogalpao.com.br', password: 'password123'
+          )
+          second_admin_user = User.create!(
+            name: 'Steve Gates', cpf: '35933681024',
+            email: 'steve@leilaodogalpao.com.br', password: 'password123'
+          )
+          Batch.new(
+            code: 'COD123456', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
+            min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+            creator: first_admin_user, approver: second_admin_user
+          ).save!(validate: false)
+          Product.create!(
+            name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
+            weight: 5_000, width: 100, height: 50, depth: 10,
+            batch: Batch.last
+          )
+      
+          login_as(first_admin_user)
+          visit root_path
+          click_on 'Listar Produtos'
+          click_on 'TV 32 Polegadas'
+      
+          expect(page).not_to have_button 'Deletar Produto'
+        end
+      end
     end
 
-    it 'should see the button to link the product to a batch' do
+    it 'should see the form to link the product to a batch' do
       admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'

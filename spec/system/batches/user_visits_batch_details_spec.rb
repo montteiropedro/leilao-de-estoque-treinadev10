@@ -845,7 +845,7 @@ describe 'User visits a batch details page' do
       end
     end
 
-    it 'should see the button to add a product to the batch' do
+    it 'should see the form to add a product to the batch' do
       john_admin = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'

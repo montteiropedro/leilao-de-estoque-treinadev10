@@ -11,3 +11,18 @@
     <p class='text-neutral-300'><%= t '.expired_title_not_found_message' %></p>
   <% end %>
 </div>
+
+<h1 class='view-title'><%= t '.closed_expired_title' %></h1>
+
+<div id='batches-expired-closed' class='flex flex-col gap-4'>
+  <% if @closed_expired_batches.present? %>
+    <% @closed_expired_batches.each do |b| %>
+      <%= link_to batch_path(b), class: 'p-4 bg-secondary hover:scale-105 transition-all rounded' do %>
+        <%= t '.prefix' %> <%= b.code %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <p class='text-neutral-300'><%= t '.closed_expired_title_not_found_message' %></p>
+  <% end %>
+</div>
+

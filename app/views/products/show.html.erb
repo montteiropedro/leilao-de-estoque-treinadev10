@@ -5,7 +5,9 @@
   </div>
 
   <% if user_signed_in? && current_user.is_admin %>
-    <%= button_to t('.remove_product'), false, class: 'p-2 bg-red-400 text-white rounded' %>
+    <% if @product.batch.blank? || (@product.batch.approver.blank? && !@product.batch.expired?) %>
+      <%= button_to t('.remove_product'), false, class: 'p-2 bg-red-400 text-white rounded' %>
+    <% end %>
   <% end %>
 </div>
 
@@ -27,18 +29,28 @@
       <% if @product.batch.approver.present? %>
         <%= link_to @product.batch.code, @product.batch, class: 'underline hover:text-primary' %>
       <% else %>
-        <% if user_signed_in? && current_user.is_admin %>
-          <span>
-            <%= link_to @product.batch.code, @product.batch, class: 'underline hover:text-primary' %>
-            <em class='text-neutral-300'>&lt;<%= t '.awaiting_approval' %>&gt;</em>
-          </span>
 
+        <span>
           <% if user_signed_in? && current_user.is_admin %>
-            <%= button_to t('.unlink_batch_button_text'), unlink_batch_product_path, method: :patch, class: 'p-2 bg-black text-white rounded' %>
+            <%= link_to @product.batch.code, @product.batch, class: 'underline hover:text-primary' %>
+            
+            <% if @product.batch.expired? %>
+              <em class='text-neutral-300'>&lt;<%= t '.expired' %>&gt;</em>
+            <% else %>
+              <em class='text-neutral-300'>&lt;<%= t '.awaiting_approval' %>&gt;</em>
+              <%= button_to t('.unlink_batch_button_text'), unlink_batch_product_path, method: :patch, class: 'p-2 bg-black text-white rounded' %>
+            <% end %>
+          <% else %>
+            <%= @product.batch.code %>
+
+            <% if @product.batch.expired? %>
+              <em class='text-neutral-300'>&lt;<%= t '.expired' %>&gt;</em>
+            <% else %>
+              <em class='text-neutral-300'>&lt;<%= t '.awaiting_approval' %>&gt;</em>
+            <% end %>
           <% end %>
-        <% else %>
-          <span><%= @product.batch.code %> <em class='text-neutral-300'>&lt;<%= t '.awaiting_approval' %>&gt;</em></span>
-        <% end %>
+        </span>
+
       <% end %>
     <% else %>
       <%= t '.without_batch' %>

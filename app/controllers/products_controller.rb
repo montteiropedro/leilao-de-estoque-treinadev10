@@ -8,7 +8,7 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find(params[:id])
-    @batches = Batch.where(approver: nil).order(created_at: :desc)
+    @batches = Batch.where(approver: nil).and(Batch.where('end_date >= ?', Date.today)).order(created_at: :desc)
   end
 
   def new

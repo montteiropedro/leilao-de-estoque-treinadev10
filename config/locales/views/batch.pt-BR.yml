@@ -8,11 +8,13 @@ pt-BR:
       awaiting_approval_title: Lotes Aguardando Aprovação
       approved_progress_not_found_message: Não existem lotes aprovados em andamento.
       approved_waiting_not_found_message: Não existem lotes aprovados preparados para o futuro.
-      awaiting_approval_not_found_message: Não existem lotes cadastrados/aguardando aprovação.
+      awaiting_approval_not_found_message: Não existem lotes aguardando aprovação.
     expired:
       prefix: Lote
       expired_title: Lotes Expirados
       expired_title_not_found_message: Não existem lotes expirados.
+      closed_expired_title: Lotes Encerrados
+      closed_expired_title_not_found_message: Não existem lotes encerrados.
     won:
       prefix: Lote
       won_title: Lotes Vencidos
@@ -21,6 +23,7 @@ pt-BR:
       title: Lote
       creator_description: Administrado por
       approver_description: Aprovado por
+      buyer_description: Adquirido por
       code: Código
       start_date: Data de Início
       end_date: Data do Fim

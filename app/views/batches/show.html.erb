@@ -11,14 +11,21 @@
       <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-emerald-300 rounded'>
         <%= t '.approver_description' %> <%= @batch.approver.name %>
       </div>
+
+      <% if @batch.buyer.present? %>
+        <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-amber-300 rounded'>
+          <%= t '.buyer_description' %> <%= @batch.buyer.name %>
+          <i class="fa-solid fa-star text-sm text-amber-900"></i>
+        </div>
+      <% end %>
     <% end %>
 
     <% if user_signed_in? && current_user.is_admin %>
       <div id='admin-menu' class='flex gap-4'>
-        <% if @batch.expired? && @batch.bids.present? %>
-          <%= button_to false, class: "px-4 py-2 flex items-center gap-2 bg-amber-400 text-black hover:scale-105 transition-all rounded" do %>
+        <% if @batch.buyer.blank? && (@batch.expired? && @batch.bids.present?) %>
+          <%= button_to close_batch_path(@batch), method: :patch, class: "px-4 py-2 flex items-center gap-2 bg-amber-300 text-black hover:scale-105 transition-all rounded" do %>
             <%= t '.close_batch_button_text' %>
-            <i class="fa-solid fa-money-bill-wave text-sm animate-pulse"></i>
+            <i class="fa-solid fa-money-bill-transfer text-sm animate-pulse"></i>
           <% end %>
         <% elsif @batch.expired? && @batch.bids.blank? %>
           <%= button_to cancel_batch_path(@batch), method: :delete, class: "px-4 py-2 flex items-center gap-2 bg-red-400 text-black hover:scale-105 transition-all rounded" do %>
