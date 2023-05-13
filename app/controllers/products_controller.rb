@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :link_batch]
-  before_action :is_admin?, only: [:new, :create, :link_batch]
+  before_action :authenticate_user!, only: [:new, :create, :link_lot]
+  before_action :is_admin?, only: [:new, :create, :link_lot]
 
   def index
     @products = Product.order(created_at: :desc)
@@ -8,7 +8,7 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find(params[:id])
-    @batches = Batch.where(approver: nil).and(Batch.where('end_date >= ?', Date.today)).order(created_at: :desc)
+    @lots = Lot.where(approver: nil).and(Lot.where('end_date >= ?', Date.today)).order(created_at: :desc)
   end
 
   def new
@@ -28,24 +28,24 @@ class ProductsController < ApplicationController
     end
   end
 
-  def link_batch
-    return unless params[:batch_id]
+  def link_lot
+    return unless params[:lot_id]
 
     @product = Product.find(params[:id])
-    @batch = Batch.find(params[:batch_id])
+    @lot = Lot.find(params[:lot_id])
 
-    if @product.update!(batch: @batch)
+    if @product.update!(lot: @lot)
       redirect_to @product, notice: 'Lote vinculado com sucesso.'
     else
       render :show, status: :unprocessable_entity
     end
   end
 
-  def unlink_batch
+  def unlink_lot
     @product = Product.find(params[:id])
-    linked_batch = @product.batch
+    linked_lot = @product.lot
 
-    if linked_batch.approver.blank? && @product.update!(batch: nil)
+    if linked_lot.approver.blank? && @product.update!(lot: nil)
       redirect_to @product, notice: 'Lote desvinculado com sucesso.'
     else
       render :show, status: :unprocessable_entity

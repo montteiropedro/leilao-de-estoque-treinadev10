@@ -58,14 +58,14 @@ RSpec.describe Bid, type: :model do
       end
     end
 
-    context 'batch' do
+    context 'lot' do
       it 'should not be empty' do
-        bid = Bid.new(batch: nil)
+        bid = Bid.new(lot: nil)
 
         bid.valid?
 
-        expect(bid.errors.include? :batch).to eq true
-        expect(bid.errors[:batch].include? 'é obrigatório(a)').to eq true
+        expect(bid.errors.include? :lot).to eq true
+        expect(bid.errors[:lot].include? 'é obrigatório(a)').to eq true
       end
     end
   end

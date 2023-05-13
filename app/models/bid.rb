@@ -1,6 +1,6 @@
 class Bid < ApplicationRecord
   belongs_to :user
-  belongs_to :batch
+  belongs_to :lot
 
   validates :value_in_centavos, presence: true
   validates :value_in_centavos, numericality: { only_integer: true, greater_than: 0 }
@@ -13,16 +13,16 @@ class Bid < ApplicationRecord
 
   def is_bid_valid?
     return if self.value_in_centavos.blank?
-    return if self.batch.blank?
-    return errors.add(:batch, 'não esta no periodo de leilão') unless self.batch.in_progress?
+    return if self.lot.blank?
+    return errors.add(:lot, 'não esta no periodo de leilão') unless self.lot.in_progress?
 
-    if self.batch.bids.blank?
-      return if self.value_in_centavos > self.batch.min_bid_in_centavos
+    if self.lot.bids.blank?
+      return if self.value_in_centavos > self.lot.min_bid_in_centavos
 
-      errors.add(:value_in_centavos, "deve ser maior ou igual a #{self.batch.min_bid_in_centavos + 1}")
+      errors.add(:value_in_centavos, "deve ser maior ou igual a #{self.lot.min_bid_in_centavos + 1}")
     else
-      winning_bid = self.batch.bids.maximum(:value_in_centavos)
-      min_diff_between_bids = self.batch.min_diff_between_bids_in_centavos
+      winning_bid = self.lot.bids.maximum(:value_in_centavos)
+      min_diff_between_bids = self.lot.min_diff_between_bids_in_centavos
 
       return if self.value_in_centavos >= (winning_bid + min_diff_between_bids)
 

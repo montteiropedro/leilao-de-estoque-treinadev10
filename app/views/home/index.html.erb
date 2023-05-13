@@ -1,10 +1,10 @@
 <% if user_signed_in? && current_user.is_admin? %>
-  <div id='batch-menu' class='menu mx-auto mb-6 w-[532px] flex flex-col gap-2'>
+  <div id='lot-menu' class='menu mx-auto mb-6 w-[532px] flex flex-col gap-2'>
     <span class='text-primary text-lg font-semibold'>Lotes</span>
 
-    <%= link_to 'Listar Lotes Expirados', expired_batches_path, class: 'p-6 text-white text-lg bg-gradient-to-r from-black from-80% to-red-400 hover:scale-105 transition-all rounded' %>
-    <%= link_to 'Listar Lotes', batches_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
-    <%= link_to 'Cadastrar Lotes', new_batch_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
+    <%= link_to 'Listar Lotes Expirados', expired_lots_path, class: 'p-6 text-white text-lg bg-gradient-to-r from-black from-80% to-red-400 hover:scale-105 transition-all rounded' %>
+    <%= link_to 'Listar Lotes', lots_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
+    <%= link_to 'Cadastrar Lotes', new_lot_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
   </div>
 
   <div id='product-menu' class='menu mx-auto mb-6 w-[532px] flex flex-col gap-2'>
@@ -21,13 +21,13 @@
     <%= link_to 'Cadastrar Categorias', new_category_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
   </div>
 <% else %>
-  <div id='batch-menu' class='menu mx-auto mb-6 w-[532px] flex flex-col gap-2'>
+  <div id='lot-menu' class='menu mx-auto mb-6 w-[532px] flex flex-col gap-2'>
     <span class='text-primary text-lg font-semibold'>Lotes</span>
 
     <% if user_signed_in? && !current_user.is_admin %>
-      <%= link_to 'Listar Lotes Vencidos', won_batches_path, class: 'p-6 text-white text-lg bg-gradient-to-r from-black from-80% to-amber-400 hover:scale-105 transition-all rounded' %>
+      <%= link_to 'Listar Lotes Vencidos', won_lots_path, class: 'p-6 text-white text-lg bg-gradient-to-r from-black from-80% to-amber-400 hover:scale-105 transition-all rounded' %>
     <% end %>
-    <%= link_to 'Listar Lotes', batches_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
+    <%= link_to 'Listar Lotes', lots_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
   </div>
 
   <div id='product-menu' class='menu mx-auto mb-6 w-[532px] flex flex-col gap-2'>

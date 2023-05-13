@@ -2,12 +2,12 @@ class BidsController < ApplicationController
   before_action :authenticate_user!
   
   def create
-    batch = Batch.find(params[:batch_id])
+    lot = Lot.find(params[:lot_id])
     current_user_bid = params[:bid][:value_in_centavos]
-    bid = Bid.new(value_in_centavos: current_user_bid, user: current_user, batch: batch)
+    bid = Bid.new(value_in_centavos: current_user_bid, user: current_user, lot: lot)
 
     if bid.save
-      redirect_to batch, notice: 'Lance realizado com sucesso.'
+      redirect_to lot, notice: 'Lance realizado com sucesso.'
     else
       if bid.errors[:value_in_centavos]
         flash[:notice] = bid.errors.full_messages.last
@@ -15,7 +15,7 @@ class BidsController < ApplicationController
         flash[:notice] = 'Falha ao realizar o lance.'
       end
 
-      redirect_to batch
+      redirect_to lot
     end
   end
 end

@@ -12,7 +12,7 @@ describe 'User visits homepage' do
       visit root_path
 
       expect(page).to have_content 'Lotes'
-      expect(page).to have_link 'Listar Lotes', href: batches_path
+      expect(page).to have_link 'Listar Lotes', href: lots_path
     end
   end
 
@@ -41,7 +41,7 @@ describe 'User visits homepage' do
       visit root_path
 
       expect(page).to have_content 'Lotes'
-      expect(page).to have_link 'Listar Lotes', href: batches_path
+      expect(page).to have_link 'Listar Lotes', href: lots_path
     end
   end
 
@@ -69,11 +69,11 @@ describe 'User visits homepage' do
       login_as(admin_user)
       visit root_path
 
-      within('#batch-menu') do
+      within('#lot-menu') do
         expect(page).to have_content 'Lotes'
-        expect(page).to have_link 'Listar Lotes', href: batches_path
-        expect(page).to have_link 'Listar Lotes Expirados', href: expired_batches_path
-        expect(page).to have_link 'Cadastrar Lotes', href: new_batch_path
+        expect(page).to have_link 'Listar Lotes', href: lots_path
+        expect(page).to have_link 'Listar Lotes Expirados', href: expired_lots_path
+        expect(page).to have_link 'Cadastrar Lotes', href: new_lot_path
       end
       within('#product-menu') do
         expect(page).to have_content 'Produtos'

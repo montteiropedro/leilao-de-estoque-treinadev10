@@ -9,5 +9,5 @@ pt-BR:
         value_in_centavos: Lance
         user_id: Usuário
         user: Usuário
-        batch_id: Lote
-        batch: Lote
+        lot_id: Lote
+        lot: Lote

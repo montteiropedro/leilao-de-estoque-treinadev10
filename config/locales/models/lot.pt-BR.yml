@@ -1,11 +1,11 @@
 pt-BR:
   activerecord:
     models:
-      batch:
+      lot:
         one: Lote
         other: Lotes
     attributes:
-      batch:
+      lot:
         code: Código
         start_date: Data de Início
         end_date: Data do Fim

@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe 'Admin approves a batch' do
-  context 'when is not the batch creator' do
-    context 'and batch is expired' do
+describe 'Admin approves a lot' do
+  context 'when is not the lot creator' do
+    context 'and lot is expired' do
       it 'should not be sucessful' do
         admin_creator = User.create!(
           name: 'John Doe', cpf: '41760209031',
@@ -12,7 +12,7 @@ describe 'Admin approves a batch' do
           name: 'Steve Gates', cpf: '35933681024',
           email: 'steve@leilaodogalpao.com.br', password: 'password123'
         )
-        Batch.new(
+        Lot.new(
           code: 'COD123456', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
           min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
           creator: admin_creator
@@ -27,7 +27,7 @@ describe 'Admin approves a batch' do
       end
     end
 
-    context 'and batch is in progress' do
+    context 'and lot is in progress' do
       it 'should be sucessful' do
         admin_creator = User.create!(
           name: 'John Doe', cpf: '41760209031',
@@ -37,7 +37,7 @@ describe 'Admin approves a batch' do
           name: 'Steve Gates', cpf: '35933681024',
           email: 'steve@leilaodogalpao.com.br', password: 'password123'
         )
-        batch = Batch.create!(
+        lot = Lot.create!(
           code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.week,
           min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
           creator: admin_creator
@@ -54,7 +54,7 @@ describe 'Admin approves a batch' do
       end
     end
 
-    context 'and batch is waiting for start' do
+    context 'and lot is waiting for start' do
       it 'should be sucessful' do
         admin_creator = User.create!(
           name: 'John Doe', cpf: '41760209031',
@@ -64,7 +64,7 @@ describe 'Admin approves a batch' do
           name: 'Steve Gates', cpf: '35933681024',
           email: 'steve@leilaodogalpao.com.br', password: 'password123'
         )
-        batch = Batch.create!(
+        lot = Lot.create!(
           code: 'COD123456', start_date: Date.today + 1.week, end_date: Date.today + 2.week,
           min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
           creator: admin_creator
@@ -82,13 +82,13 @@ describe 'Admin approves a batch' do
     end
   end
 
-  context 'and is the batch creator' do
+  context 'and is the lot creator' do
     it 'should not be sucessful' do
       admin_creator = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
-      batch = Batch.create!(
+      lot = Lot.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: admin_creator

@@ -5,7 +5,7 @@
   </div>
 
   <% if user_signed_in? && current_user.is_admin %>
-    <% if @product.batch.blank? || (@product.batch.approver.blank? && !@product.batch.expired?) %>
+    <% if @product.lot.blank? || (@product.lot.approver.blank? && !@product.lot.expired?) %>
       <%= button_to t('.remove_product'), false, class: 'p-2 bg-red-400 text-white rounded' %>
     <% end %>
   <% end %>
@@ -23,27 +23,27 @@
   <span><strong><%= t '.depth' %>:</strong> <%= @product.depth %>cm</span>
 
   <div class='flex items-center gap-4'>
-    <strong><%= t '.batch' %>:</strong>
+    <strong><%= t '.lot' %>:</strong>
 
-    <% if @product.batch.present? %>
-      <% if @product.batch.approver.present? %>
-        <%= link_to @product.batch.code, @product.batch, class: 'underline hover:text-primary' %>
+    <% if @product.lot.present? %>
+      <% if @product.lot.approver.present? %>
+        <%= link_to @product.lot.code, @product.lot, class: 'underline hover:text-primary' %>
       <% else %>
 
         <span class='flex items-center gap-2'>
           <% if user_signed_in? && current_user.is_admin %>
-            <%= link_to @product.batch.code, @product.batch, class: 'underline hover:text-primary' %>
+            <%= link_to @product.lot.code, @product.lot, class: 'underline hover:text-primary' %>
             
-            <% if @product.batch.expired? %>
+            <% if @product.lot.expired? %>
               <em class='text-neutral-300'>&lt;<%= t '.expired' %>&gt;</em>
             <% else %>
               <em class='text-neutral-300'>&lt;<%= t '.awaiting_approval' %>&gt;</em>
-              <%= button_to t('.unlink_batch_button_text'), unlink_batch_product_path, method: :patch, class: 'p-2 bg-black text-white rounded' %>
+              <%= button_to t('.unlink_lot_button_text'), unlink_lot_product_path, method: :patch, class: 'p-2 bg-black text-white rounded' %>
             <% end %>
           <% else %>
-            <%= @product.batch.code %>
+            <%= @product.lot.code %>
 
-            <% if @product.batch.expired? %>
+            <% if @product.lot.expired? %>
               <em class='text-neutral-300'>&lt;<%= t '.expired' %>&gt;</em>
             <% else %>
               <em class='text-neutral-300'>&lt;<%= t '.awaiting_approval' %>&gt;</em>
@@ -53,12 +53,12 @@
 
       <% end %>
     <% else %>
-      <%= t '.without_batch' %>
+      <%= t '.without_lot' %>
 
       <% if user_signed_in? && current_user.is_admin %>
-        <%= form_with url: link_batch_product_path, method: :patch, id: 'link-batch', class: 'flex flex-row' do |f| %>
-          <%= f.collection_select :batch_id, @batches, :id, :get_description, prompt: t('.link_batch') %>
-          <%= f.submit t('.link_batch_button_text'), class: 'form-submit m-0' %>
+        <%= form_with url: link_lot_product_path, method: :patch, id: 'link-lot', class: 'flex flex-row' do |f| %>
+          <%= f.collection_select :lot_id, @lots, :id, :get_description, prompt: t('.link_lot') %>
+          <%= f.submit t('.link_lot_button_text'), class: 'form-submit m-0' %>
         <% end %>
       <% end %>
     <% end %>

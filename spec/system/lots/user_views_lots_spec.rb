@@ -1,17 +1,17 @@
 require 'rails_helper'
 
-describe 'User views all registered batches' do
+describe 'User views all registered lots' do
   it 'from menu' do
     visit root_path
-    within('#batch-menu') do
+    within('#lot-menu') do
       click_on 'Listar Lotes'
     end
 
-    expect(current_path).to eq batches_path
+    expect(current_path).to eq lots_path
   end
 
   context 'and is a visitant' do
-    it 'should see approved batches in progress' do
+    it 'should see approved lots in progress' do
       first_admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
@@ -20,7 +20,7 @@ describe 'User views all registered batches' do
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.create!(
+      Lot.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.week,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: first_admin_user, approver: second_admin_user
@@ -30,12 +30,12 @@ describe 'User views all registered batches' do
       click_on 'Listar Lotes'
   
       expect(page).to have_content 'Lotes Aprovados'
-      within('div#batches-in-progress') do
+      within('div#lots-in-progress') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
 
-    it 'should see a message when there is no approved batches in progress' do
+    it 'should see a message when there is no approved lots in progress' do
       first_admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
@@ -44,7 +44,7 @@ describe 'User views all registered batches' do
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.create!(
+      Lot.create!(
         code: 'COD123456', start_date: Date.today + 1.week, end_date: Date.today + 2.week,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: first_admin_user, approver: second_admin_user
@@ -56,7 +56,7 @@ describe 'User views all registered batches' do
       expect(page).to have_content 'Não existem lotes aprovados em andamento.'
     end
 
-    it 'should see approved batches waiting for start' do
+    it 'should see approved lots waiting for start' do
       first_admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
@@ -65,7 +65,7 @@ describe 'User views all registered batches' do
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.create!(
+      Lot.create!(
         code: 'COD123456', start_date: Date.today + 1.week, end_date: Date.today + 2.week,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: first_admin_user, approver: second_admin_user
@@ -75,12 +75,12 @@ describe 'User views all registered batches' do
       click_on 'Listar Lotes'
   
       expect(page).to have_content 'Lotes Aprovados'
-      within('div#batches-waiting-start') do
+      within('div#lots-waiting-start') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
 
-    it 'should see a message when there is no approved batches waiting for start' do
+    it 'should see a message when there is no approved lots waiting for start' do
       first_admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
@@ -89,7 +89,7 @@ describe 'User views all registered batches' do
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.create!(
+      Lot.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.week,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: first_admin_user, approver: second_admin_user
@@ -101,12 +101,12 @@ describe 'User views all registered batches' do
       expect(page).to have_content 'Não existem lotes aprovados preparados para o futuro.'
     end
     
-    it 'should not see batches awaiting approval' do
+    it 'should not see lots awaiting approval' do
       first_admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.create!(
+      Lot.create!(
         code: 'BTC334509', start_date: Date.today, end_date: Date.today + 1.day,
         min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
         creator: first_admin_user
@@ -119,19 +119,19 @@ describe 'User views all registered batches' do
       expect(page).not_to have_link 'Lote BTC334509'
     end
 
-    it 'should not see a message when there is no batches awaiting approval registered' do
+    it 'should not see a message when there is no lots awaiting approval registered' do
       visit root_path
       click_on 'Listar Lotes'
   
       expect(page).not_to have_content 'Não existem lotes cadastrados/aguardando aprovação.'
     end
 
-    it 'should not see expired batches' do
+    it 'should not see expired lots' do
       first_admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.new(
+      Lot.new(
         code: 'BTC334509', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
         min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
         creator: first_admin_user
@@ -146,7 +146,7 @@ describe 'User views all registered batches' do
   end
 
   context 'and is not a admin' do
-    it 'should see approved batches in progress' do
+    it 'should see approved lots in progress' do
       user = User.create!(
         name: 'Peter Parker', cpf: '73046259026',
         email: 'peter@email.com', password: 'password123'
@@ -159,7 +159,7 @@ describe 'User views all registered batches' do
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.create!(
+      Lot.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: first_admin_user, approver: second_admin_user
@@ -170,12 +170,12 @@ describe 'User views all registered batches' do
       click_on 'Listar Lotes'
       
       expect(page).to have_content 'Lotes Aprovados'
-      within('div#batches-in-progress') do
+      within('div#lots-in-progress') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
 
-    it 'should see a message when there is no approved batches in progress' do
+    it 'should see a message when there is no approved lots in progress' do
       user = User.create!(
         name: 'Peter Parker', cpf: '73046259026',
         email: 'peter@email.com', password: 'password123'
@@ -188,7 +188,7 @@ describe 'User views all registered batches' do
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.create!(
+      Lot.create!(
         code: 'COD123456', start_date: Date.today + 1.week, end_date: Date.today + 2.week,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: first_admin_user, approver: second_admin_user
@@ -201,7 +201,7 @@ describe 'User views all registered batches' do
       expect(page).to have_content 'Não existem lotes aprovados em andamento.'
     end
 
-    it 'should see approved batches waiting for start' do
+    it 'should see approved lots waiting for start' do
       user = User.create!(
         name: 'Peter Parker', cpf: '73046259026',
         email: 'peter@email.com', password: 'password123'
@@ -214,7 +214,7 @@ describe 'User views all registered batches' do
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.create!(
+      Lot.create!(
         code: 'COD123456', start_date: Date.today + 1.week, end_date: Date.today + 2.weeks,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: first_admin_user, approver: second_admin_user
@@ -225,12 +225,12 @@ describe 'User views all registered batches' do
       click_on 'Listar Lotes'
       
       expect(page).to have_content 'Lotes Aprovados'
-      within('div#batches-waiting-start') do
+      within('div#lots-waiting-start') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
 
-    it 'should see a message when there is no approved batches waiting for start' do
+    it 'should see a message when there is no approved lots waiting for start' do
       user = User.create!(
         name: 'Peter Parker', cpf: '73046259026',
         email: 'peter@email.com', password: 'password123'
@@ -243,7 +243,7 @@ describe 'User views all registered batches' do
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.create!(
+      Lot.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.week,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: first_admin_user, approver: second_admin_user
@@ -256,7 +256,7 @@ describe 'User views all registered batches' do
       expect(page).to have_content 'Não existem lotes aprovados preparados para o futuro.'
     end
     
-    it 'should not see batches awaiting approval' do
+    it 'should not see lots awaiting approval' do
       user = User.create!(
         name: 'Peter Parker', cpf: '73046259026',
         email: 'peter@email.com', password: 'password123'
@@ -269,7 +269,7 @@ describe 'User views all registered batches' do
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.create!(
+      Lot.create!(
         code: 'BTC334509', start_date: Date.today, end_date: Date.today + 1,
         min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
         creator: first_admin_user
@@ -283,7 +283,7 @@ describe 'User views all registered batches' do
       expect(page).not_to have_link 'Lote BTC334509'
     end
 
-    it 'should not see a message when there is no batches awaiting approval registered' do
+    it 'should not see a message when there is no lots awaiting approval registered' do
       user = User.create!(
         name: 'Peter Parker', cpf: '73046259026',
         email: 'peter@email.com', password: 'password123'
@@ -296,7 +296,7 @@ describe 'User views all registered batches' do
       expect(page).not_to have_content 'Não existem lotes cadastrados/aguardando aprovação.'
     end
 
-    it 'should not see expired batches' do
+    it 'should not see expired lots' do
       user = User.create!(
         name: 'Peter Parker', cpf: '73046259026',
         email: 'peter@email.com', password: 'password123'
@@ -305,7 +305,7 @@ describe 'User views all registered batches' do
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.new(
+      Lot.new(
         code: 'BTC334509', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
         min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
         creator: first_admin_user
@@ -321,17 +321,17 @@ describe 'User views all registered batches' do
   end
 
   context 'and is a admin' do
-    it 'should see batches awaiting approval that are not expired' do
+    it 'should see lots awaiting approval that are not expired' do
       admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.new(
+      Lot.new(
         code: 'COD123456', start_date: Date.today - 1.day, end_date: Date.today + 1.day,
         min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
         creator: admin_user
       ).save!(validate: false)
-      Batch.new(
+      Lot.new(
         code: 'BTC334509', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
         min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
         creator: admin_user
@@ -342,13 +342,13 @@ describe 'User views all registered batches' do
       click_on 'Listar Lotes'
       
       expect(page).to have_content 'Lotes Aguardando Aprovação'
-      within('div#batches-awaiting-approval') do
+      within('div#lots-awaiting-approval') do
         expect(page).to have_link 'Lote COD123456'
         expect(page).not_to have_link 'Lote BTC334509'
       end
     end
 
-    it 'should see a message when there is no batches awaiting approval registered' do
+    it 'should see a message when there is no lots awaiting approval registered' do
       first_admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
@@ -358,12 +358,12 @@ describe 'User views all registered batches' do
       visit root_path
       click_on 'Listar Lotes'
   
-      within('div#batches-awaiting-approval') do
+      within('div#lots-awaiting-approval') do
         expect(page).to have_content 'Não existem lotes aguardando aprovação.'
       end
     end
 
-    it 'should see approved batches in progress' do
+    it 'should see approved lots in progress' do
       first_admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
@@ -372,7 +372,7 @@ describe 'User views all registered batches' do
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.create!(
+      Lot.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: first_admin_user, approver: second_admin_user
@@ -383,12 +383,12 @@ describe 'User views all registered batches' do
       click_on 'Listar Lotes'
   
       expect(page).to have_content 'Lotes Aprovados'
-      within('div#batches-in-progress') do
+      within('div#lots-in-progress') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
 
-    it 'should see a message when there is no approved batches in progress' do
+    it 'should see a message when there is no approved lots in progress' do
       first_admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
@@ -397,7 +397,7 @@ describe 'User views all registered batches' do
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.create!(
+      Lot.create!(
         code: 'COD123456', start_date: Date.today + 1.week, end_date: Date.today + 2.week,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: first_admin_user, approver: second_admin_user
@@ -410,7 +410,7 @@ describe 'User views all registered batches' do
       expect(page).to have_content 'Não existem lotes aprovados em andamento.'
     end
 
-    it 'should see approved batches waiting for start' do
+    it 'should see approved lots waiting for start' do
       first_admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
@@ -419,7 +419,7 @@ describe 'User views all registered batches' do
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.create!(
+      Lot.create!(
         code: 'COD123456', start_date: Date.today + 1.week, end_date: Date.today + 2.weeks,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: first_admin_user, approver: second_admin_user
@@ -430,12 +430,12 @@ describe 'User views all registered batches' do
       click_on 'Listar Lotes'
   
       expect(page).to have_content 'Lotes Aprovados'
-      within('div#batches-waiting-start') do
+      within('div#lots-waiting-start') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
 
-    it 'should see a message when there is no approved batches waiting for start' do
+    it 'should see a message when there is no approved lots waiting for start' do
       first_admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
@@ -444,7 +444,7 @@ describe 'User views all registered batches' do
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.create!(
+      Lot.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.week,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: first_admin_user, approver: second_admin_user
@@ -457,12 +457,12 @@ describe 'User views all registered batches' do
       expect(page).to have_content 'Não existem lotes aprovados preparados para o futuro.'
     end
 
-    it 'should not see expired batches' do
+    it 'should not see expired lots' do
       first_admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
-      Batch.new(
+      Lot.new(
         code: 'BTC334509', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
         min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
         creator: first_admin_user

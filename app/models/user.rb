@@ -4,11 +4,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
-  has_many :created_batches, class_name: 'Batch', foreign_key: 'creator_id'
-  has_many :approved_batches, class_name: 'Batch', foreign_key: 'approver_id'
-  has_many :won_batches, class_name: 'Batch', foreign_key: 'buyer_id'
+  has_many :created_lots, class_name: 'Lot', foreign_key: 'creator_id'
+  has_many :approved_lots, class_name: 'Lot', foreign_key: 'approver_id'
+  has_many :won_lots, class_name: 'Lot', foreign_key: 'buyer_id'
   has_many :bids
-  has_many :batches, through: :bids
+  has_many :lots, through: :bids
 
   before_validation :set_admin
 

@@ -1,4 +1,4 @@
-class Batch < ApplicationRecord
+class Lot < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   belongs_to :approver, class_name: 'User', optional: true
   belongs_to :buyer, class_name: 'User', optional: true

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_12_214509) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_13_200204) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,7 +39,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_12_214509) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "batches", force: :cascade do |t|
+  create_table "bids", force: :cascade do |t|
+    t.integer "value_in_centavos", null: false
+    t.integer "user_id", null: false
+    t.integer "lot_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lot_id"], name: "index_bids_on_lot_id"
+    t.index ["user_id"], name: "index_bids_on_user_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_categories_on_name", unique: true
+  end
+
+  create_table "lots", force: :cascade do |t|
     t.string "code", null: false
     t.date "start_date", null: false
     t.date "end_date", null: false
@@ -50,27 +67,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_12_214509) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "buyer_id"
-    t.index ["approver_id"], name: "index_batches_on_approver_id"
-    t.index ["buyer_id"], name: "index_batches_on_buyer_id"
-    t.index ["code"], name: "index_batches_on_code", unique: true
-    t.index ["creator_id"], name: "index_batches_on_creator_id"
-  end
-
-  create_table "bids", force: :cascade do |t|
-    t.integer "value_in_centavos", null: false
-    t.integer "user_id", null: false
-    t.integer "batch_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["batch_id"], name: "index_bids_on_batch_id"
-    t.index ["user_id"], name: "index_bids_on_user_id"
-  end
-
-  create_table "categories", force: :cascade do |t|
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_categories_on_name", unique: true
+    t.index ["approver_id"], name: "index_lots_on_approver_id"
+    t.index ["buyer_id"], name: "index_lots_on_buyer_id"
+    t.index ["code"], name: "index_lots_on_code", unique: true
+    t.index ["creator_id"], name: "index_lots_on_creator_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -82,12 +82,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_12_214509) do
     t.integer "height"
     t.integer "depth"
     t.integer "category_id"
-    t.integer "batch_id"
+    t.integer "lot_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["batch_id"], name: "index_products_on_batch_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["code"], name: "index_products_on_code", unique: true
+    t.index ["lot_id"], name: "index_products_on_lot_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -108,11 +108,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_12_214509) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "batches", "users", column: "approver_id"
-  add_foreign_key "batches", "users", column: "buyer_id"
-  add_foreign_key "batches", "users", column: "creator_id"
-  add_foreign_key "bids", "batches"
+  add_foreign_key "bids", "lots"
   add_foreign_key "bids", "users"
-  add_foreign_key "products", "batches"
+  add_foreign_key "lots", "users", column: "approver_id"
+  add_foreign_key "lots", "users", column: "buyer_id"
+  add_foreign_key "lots", "users", column: "creator_id"
   add_foreign_key "products", "categories"
+  add_foreign_key "products", "lots"
 end

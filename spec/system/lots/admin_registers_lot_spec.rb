@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Admin registers a batch' do
+describe 'Admin registers a lot' do
   it 'from admin menu' do
     admin_user = User.create!(
       name: 'John Doe', cpf: '41760209031',
@@ -9,11 +9,11 @@ describe 'Admin registers a batch' do
 
     login_as(admin_user)
     visit root_path
-    within('#batch-menu') do
+    within('#lot-menu') do
       click_on 'Cadastrar Lotes'
     end
 
-    expect(current_path).to eq new_batch_path
+    expect(current_path).to eq new_lot_path
     expect(page).to have_content 'Cadastrar Novo Lote'
     expect(page).to have_field 'Código'
     expect(page).to have_field 'Data de Início'
@@ -39,7 +39,7 @@ describe 'Admin registers a batch' do
       fill_in 'Diferença Mínima Entre Lances', with: 5_000
       click_on 'Cadastrar'
 
-      expect(current_path).to eq batch_path(Batch.last)
+      expect(current_path).to eq lot_path(Lot.last)
       expect(page).to have_content 'Lote cadastrado com sucesso.'
     end
 
@@ -59,14 +59,14 @@ describe 'Admin registers a batch' do
       fill_in 'Diferença Mínima Entre Lances', with: ''
       click_on 'Cadastrar'
 
-      expect(current_path).to eq batches_path
+      expect(current_path).to eq lots_path
       expect(page).to have_content 'Falha ao cadastrar o lote.'
     end
   end
 
   context 'visitant' do
     it 'should be redirected to homepage' do
-      visit new_batch_path
+      visit new_lot_path
   
       expect(current_path).to eq new_user_session_path
     end
@@ -80,7 +80,7 @@ describe 'Admin registers a batch' do
       )
   
       login_as(user)
-      visit new_batch_path
+      visit new_lot_path
   
       expect(current_path).to eq root_path
     end

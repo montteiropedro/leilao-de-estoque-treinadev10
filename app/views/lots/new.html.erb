@@ -1,12 +1,12 @@
 <h1 class='view-title'><%= t '.title' %></h1>
 
-<%= form_with model: @batch, class: 'm-auto' do |f| %>
+<%= form_with model: @lot, class: 'm-auto' do |f| %>
   <div class='form-field'>
     <%= f.label :code %>
     <%= f.text_field :code, value: @code_suggestion %>
 
-    <% if @batch.errors[:code].any? %>
-      <span class='errors'><%= @batch.errors[:code].join(', ') %></span>
+    <% if @lot.errors[:code].any? %>
+      <span class='errors'><%= @lot.errors[:code].join(', ') %></span>
     <% end %>
   </div>
 
@@ -15,8 +15,8 @@
       <%= f.label :start_date %>
       <%= f.date_field :start_date %>
 
-      <% if @batch.errors[:start_date].any? %>
-        <span class='errors'><%= @batch.errors[:start_date].join(', ') %></span>
+      <% if @lot.errors[:start_date].any? %>
+        <span class='errors'><%= @lot.errors[:start_date].join(', ') %></span>
       <% end %>
     </div>
 
@@ -24,8 +24,8 @@
       <%= f.label :end_date %>
       <%= f.date_field :end_date %>
 
-      <% if @batch.errors[:end_date].any? %>
-        <span class='errors'><%= @batch.errors[:end_date].join(', ') %></span>
+      <% if @lot.errors[:end_date].any? %>
+        <span class='errors'><%= @lot.errors[:end_date].join(', ') %></span>
       <% end %>
     </div>
   </div>
@@ -35,8 +35,8 @@
       <%= f.label :min_bid_in_centavos %>
       <%= f.text_field :min_bid_in_centavos %>
 
-      <% if @batch.errors[:min_bid_in_centavos].any? %>
-        <span class='errors'><%= @batch.errors[:min_bid_in_centavos].join(', ') %></span>
+      <% if @lot.errors[:min_bid_in_centavos].any? %>
+        <span class='errors'><%= @lot.errors[:min_bid_in_centavos].join(', ') %></span>
       <% end %>
     </div>
 
@@ -44,8 +44,8 @@
       <%= f.label :min_diff_between_bids_in_centavos %>
       <%= f.text_field :min_diff_between_bids_in_centavos %>
 
-      <% if @batch.errors[:min_diff_between_bids_in_centavos].any? %>
-        <span class='errors'><%= @batch.errors[:min_diff_between_bids_in_centavos].join(', ') %></span>
+      <% if @lot.errors[:min_diff_between_bids_in_centavos].any? %>
+        <span class='errors'><%= @lot.errors[:min_diff_between_bids_in_centavos].join(', ') %></span>
       <% end %>
     </div>
   </div>

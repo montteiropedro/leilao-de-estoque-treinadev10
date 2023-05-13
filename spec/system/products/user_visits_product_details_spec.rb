@@ -51,7 +51,7 @@ describe 'User visits a product details page' do
       expect(page).not_to have_button 'Remover Produto'
     end
 
-    it 'should not see the button to link the product to a batch' do
+    it 'should not see the button to link the product to a lot' do
       product = Product.create!(
         name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
         weight: 5_000, width: 100, height: 50, depth: 10
@@ -61,16 +61,16 @@ describe 'User visits a product details page' do
       click_on 'Listar Produtos'
       click_on 'TV 32 Polegadas'
   
-      expect(page).not_to have_field 'batch_id'
+      expect(page).not_to have_field 'lot_id'
       expect(page).not_to have_button 'Vincular'
     end
 
-    it 'should not see the button to unlink the product from a batch' do
+    it 'should not see the button to unlink the product from a lot' do
       admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
-      batch = Batch.create!(
+      lot = Lot.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: admin_user
@@ -78,7 +78,7 @@ describe 'User visits a product details page' do
       product = Product.create!(
         name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
         weight: 5_000, width: 100, height: 50, depth: 10,
-        batch: batch
+        lot: lot
       )
   
       visit root_path
@@ -88,7 +88,7 @@ describe 'User visits a product details page' do
       expect(page).not_to have_button 'Remover Vínculo'
     end
 
-    context 'and the product is connected to a batch' do
+    context 'and the product is connected to a lot' do
       it 'should show a link to it if approved' do
         john_admin = User.create!(
           name: 'John Doe', cpf: '41760209031',
@@ -98,7 +98,7 @@ describe 'User visits a product details page' do
           name: 'Steve Gates', cpf: '35933681024',
           email: 'steve@leilaodogalpao.com.br', password: 'password123'
         )
-        batch = Batch.create!(
+        lot = Lot.create!(
           code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
           min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
           creator: john_admin, approver: steve_admin
@@ -106,7 +106,7 @@ describe 'User visits a product details page' do
         product = Product.create!(
           name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
           weight: 5_000, width: 100, height: 50, depth: 10,
-          batch: batch
+          lot: lot
         )
     
         visit root_path
@@ -122,7 +122,7 @@ describe 'User visits a product details page' do
           name: 'John Doe', cpf: '41760209031',
           email: 'john@leilaodogalpao.com.br', password: 'password123'
         )
-        batch = Batch.create!(
+        lot = Lot.create!(
           code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
           min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
           creator: john_admin
@@ -130,7 +130,7 @@ describe 'User visits a product details page' do
         product = Product.create!(
           name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
           weight: 5_000, width: 100, height: 50, depth: 10,
-          batch: batch
+          lot: lot
         )
     
         visit root_path
@@ -162,7 +162,7 @@ describe 'User visits a product details page' do
       expect(page).not_to have_button 'Remover Produto'
     end
 
-    it 'should not see the button to link the product to a batch' do
+    it 'should not see the button to link the product to a lot' do
       user = User.create!(
         name: 'Peter Parker', cpf: '73046259026',
         email: 'peter@email.com', password: 'password123'
@@ -177,11 +177,11 @@ describe 'User visits a product details page' do
       click_on 'Listar Produtos'
       click_on 'TV 32 Polegadas'
   
-      expect(page).not_to have_field 'batch_id'
+      expect(page).not_to have_field 'lot_id'
       expect(page).not_to have_button 'Vincular'
     end
 
-    it 'should not see the button to unlink the product from a batch' do
+    it 'should not see the button to unlink the product from a lot' do
       user = User.create!(
         name: 'Peter Parker', cpf: '73046259026',
         email: 'peter@email.com', password: 'password123'
@@ -190,7 +190,7 @@ describe 'User visits a product details page' do
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
-      batch = Batch.create!(
+      lot = Lot.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: admin_user
@@ -198,7 +198,7 @@ describe 'User visits a product details page' do
       product = Product.create!(
         name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
         weight: 5_000, width: 100, height: 50, depth: 10,
-        batch: batch
+        lot: lot
       )
   
       login_as(user)
@@ -209,7 +209,7 @@ describe 'User visits a product details page' do
       expect(page).not_to have_button 'Remover Vínculo'
     end
 
-    context 'and the product is connected to a batch' do
+    context 'and the product is connected to a lot' do
       it 'should show a link to it if approved' do
         peter = User.create!(
           name: 'Peter Parker', cpf: '73046259026',
@@ -223,7 +223,7 @@ describe 'User visits a product details page' do
           name: 'Steve Gates', cpf: '35933681024',
           email: 'steve@leilaodogalpao.com.br', password: 'password123'
         )
-        batch = Batch.create!(
+        lot = Lot.create!(
           code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
           min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
           creator: john_admin, approver: steve_admin
@@ -231,7 +231,7 @@ describe 'User visits a product details page' do
         product = Product.create!(
           name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
           weight: 5_000, width: 100, height: 50, depth: 10,
-          batch: batch
+          lot: lot
         )
     
         login_as(peter)
@@ -252,7 +252,7 @@ describe 'User visits a product details page' do
           name: 'John Doe', cpf: '41760209031',
           email: 'john@leilaodogalpao.com.br', password: 'password123'
         )
-        batch = Batch.create!(
+        lot = Lot.create!(
           code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
           min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
           creator: john_admin
@@ -260,7 +260,7 @@ describe 'User visits a product details page' do
         product = Product.create!(
           name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
           weight: 5_000, width: 100, height: 50, depth: 10,
-          batch: batch
+          lot: lot
         )
     
         login_as(peter)
@@ -276,7 +276,7 @@ describe 'User visits a product details page' do
 
   context 'and is a admin' do
     context 'the button to delete the product' do
-      it 'should be displayed when the product is not linked with a batch' do
+      it 'should be displayed when the product is not linked with a lot' do
         admin_user = User.create!(
           name: 'John Doe', cpf: '41760209031',
           email: 'john@leilaodogalpao.com.br', password: 'password123'
@@ -294,13 +294,13 @@ describe 'User visits a product details page' do
         expect(page).to have_button 'Deletar Produto'
       end
 
-      context 'when the linked batch is awaiting approval' do
+      context 'when the linked lot is awaiting approval' do
         it 'and is not expired should be displayed' do
           admin_user = User.create!(
             name: 'John Doe', cpf: '41760209031',
             email: 'john@leilaodogalpao.com.br', password: 'password123'
           )
-          batch = Batch.create!(
+          lot = Lot.create!(
             code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
             min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
             creator: admin_user
@@ -308,7 +308,7 @@ describe 'User visits a product details page' do
           Product.create!(
             name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
             weight: 5_000, width: 100, height: 50, depth: 10,
-            batch: batch
+            lot: lot
           )
       
           login_as(admin_user)
@@ -324,7 +324,7 @@ describe 'User visits a product details page' do
             name: 'John Doe', cpf: '41760209031',
             email: 'john@leilaodogalpao.com.br', password: 'password123'
           )
-          Batch.new(
+          Lot.new(
             code: 'COD123456', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
             min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
             creator: admin_user
@@ -332,7 +332,7 @@ describe 'User visits a product details page' do
           Product.create!(
             name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
             weight: 5_000, width: 100, height: 50, depth: 10,
-            batch: Batch.last
+            lot: Lot.last
           )
       
           login_as(admin_user)
@@ -344,7 +344,7 @@ describe 'User visits a product details page' do
         end
       end
 
-      context 'when the linked batch is approved' do
+      context 'when the linked lot is approved' do
         it 'and is not expired should not be displayed' do
           first_admin_user = User.create!(
             name: 'John Doe', cpf: '41760209031',
@@ -354,7 +354,7 @@ describe 'User visits a product details page' do
             name: 'Steve Gates', cpf: '35933681024',
             email: 'steve@leilaodogalpao.com.br', password: 'password123'
           )
-          batch = Batch.create!(
+          lot = Lot.create!(
             code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
             min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
             creator: first_admin_user, approver: second_admin_user
@@ -362,7 +362,7 @@ describe 'User visits a product details page' do
           Product.create!(
             name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
             weight: 5_000, width: 100, height: 50, depth: 10,
-            batch: batch
+            lot: lot
           )
       
           login_as(first_admin_user)
@@ -382,7 +382,7 @@ describe 'User visits a product details page' do
             name: 'Steve Gates', cpf: '35933681024',
             email: 'steve@leilaodogalpao.com.br', password: 'password123'
           )
-          Batch.new(
+          Lot.new(
             code: 'COD123456', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
             min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
             creator: first_admin_user, approver: second_admin_user
@@ -390,7 +390,7 @@ describe 'User visits a product details page' do
           Product.create!(
             name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
             weight: 5_000, width: 100, height: 50, depth: 10,
-            batch: Batch.last
+            lot: Lot.last
           )
       
           login_as(first_admin_user)
@@ -403,12 +403,12 @@ describe 'User visits a product details page' do
       end
     end
 
-    it 'should see the form to link the product to a batch' do
+    it 'should see the form to link the product to a lot' do
       admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
-      batch = Batch.create!(
+      lot = Lot.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: admin_user
@@ -423,16 +423,16 @@ describe 'User visits a product details page' do
       click_on 'Listar Produtos'
       click_on 'TV 32 Polegadas'
   
-      expect(page).to have_field 'batch_id'
+      expect(page).to have_field 'lot_id'
       expect(page).to have_button 'Vincular'
     end
 
-    it 'should see the button to unlink the product from a batch' do
+    it 'should see the button to unlink the product from a lot' do
       admin_user = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
-      batch = Batch.create!(
+      lot = Lot.create!(
         code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
         creator: admin_user
@@ -440,7 +440,7 @@ describe 'User visits a product details page' do
       product = Product.create!(
         name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
         weight: 5_000, width: 100, height: 50, depth: 10,
-        batch: batch
+        lot: lot
       )
   
       login_as(admin_user)
@@ -451,7 +451,7 @@ describe 'User visits a product details page' do
       expect(page).to have_button 'Remover Vínculo'
     end
 
-    context 'and the product is connected to a batch' do
+    context 'and the product is connected to a lot' do
       it 'should show a link to it if approved' do
         john_admin = User.create!(
           name: 'John Doe', cpf: '41760209031',
@@ -461,7 +461,7 @@ describe 'User visits a product details page' do
           name: 'Steve Gates', cpf: '35933681024',
           email: 'steve@leilaodogalpao.com.br', password: 'password123'
         )
-        batch = Batch.create!(
+        lot = Lot.create!(
           code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
           min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
           creator: john_admin, approver: steve_admin
@@ -469,7 +469,7 @@ describe 'User visits a product details page' do
         product = Product.create!(
           name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
           weight: 5_000, width: 100, height: 50, depth: 10,
-          batch: batch
+          lot: lot
         )
     
         login_as(john_admin)
@@ -486,7 +486,7 @@ describe 'User visits a product details page' do
           name: 'John Doe', cpf: '41760209031',
           email: 'john@leilaodogalpao.com.br', password: 'password123'
         )
-        batch = Batch.create!(
+        lot = Lot.create!(
           code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
           min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
           creator: john_admin
@@ -494,7 +494,7 @@ describe 'User visits a product details page' do
         product = Product.create!(
           name: 'TV 32 Polegadas', description: 'Televisão Samsung de 32 Polegadas.',
           weight: 5_000, width: 100, height: 50, depth: 10,
-          batch: batch
+          lot: lot
         )
     
         login_as(john_admin)

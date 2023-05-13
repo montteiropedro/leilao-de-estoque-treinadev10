@@ -2,10 +2,10 @@
 
 <div class='flex flex-col gap-4'>
   <% if @products.any? %>
-    <% @products.each do |p| %>
-      <%= link_to product_path(p), class: 'p-4 flex flex-col gap-2 bg-secondary hover:scale-105 transition-all rounded' do %>
-        <span class='text-white'><%= p.name %></span>
-        <span class='text-white text-xs italic'><%= p.code %></span>
+    <% @products.each do |product| %>
+      <%= link_to product_path(product), class: 'p-4 flex flex-col gap-2 bg-secondary hover:scale-105 transition-all rounded' do %>
+        <span class='text-white'><%= product.name %></span>
+        <span class='text-white text-xs italic'><%= product.code %></span>
       <% end %>
     <% end %>
   <% else %>
