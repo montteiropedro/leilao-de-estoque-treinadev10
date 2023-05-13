@@ -59,8 +59,9 @@ class BatchesController < ApplicationController
 
   def approve
     @batch = Batch.find(params[:id])
+    @batch.approver = current_user
 
-    redirect_to @batch, notice: 'Lote aprovado com sucesso.' if @batch.update(approver: current_user)
+    redirect_to @batch, notice: 'Lote aprovado com sucesso.' if @batch.save(validate: false)
   end
 
   def add_product
