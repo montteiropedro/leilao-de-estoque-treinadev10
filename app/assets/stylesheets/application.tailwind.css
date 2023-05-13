@@ -33,6 +33,11 @@
 }
 
 @layer components {
+  .alert,
+  .notice {
+    @apply absolute z-10 right-2 p-4 bg-neutral-400 bg-opacity-70 opacity-0 animate-fade rounded;
+  }
+
   .btn-user-menu {
     @apply px-4 py-2 border-2 hover:bg-neutral-200 transition-all rounded;
   }

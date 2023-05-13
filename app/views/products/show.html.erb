@@ -30,7 +30,7 @@
         <%= link_to @product.batch.code, @product.batch, class: 'underline hover:text-primary' %>
       <% else %>
 
-        <span>
+        <span class='flex items-center gap-2'>
           <% if user_signed_in? && current_user.is_admin %>
             <%= link_to @product.batch.code, @product.batch, class: 'underline hover:text-primary' %>
             

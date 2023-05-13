@@ -38,9 +38,12 @@
     </header>
 
     <main class="container m-auto py-6">
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
-      
+      <% if flash[:notice] %>
+        <div class="notice"><%= notice %></div>
+      <% elsif flash[:alert] %>
+        <div class="alert"><%= alert %></div>
+      <% end %>
+
       <%= yield %>
     </main>
   </body>

@@ -20,6 +20,15 @@ module.exports = {
       colors: {
         primary: '#00B600',
         secondary: '#A3A3A3',
+      },
+      animation: {
+        fade: 'fadeOut 5s ease-in-out',
+      },
+      keyframes: {
+        fadeOut: {
+          '0%': { opacity: 100 },
+          '100%': { opacity: 0 },
+        }
       }
     },
   },
