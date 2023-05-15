@@ -30,7 +30,7 @@ describe 'User views all registered lots' do
       click_on 'Listar Lotes'
   
       expect(page).to have_content 'Lotes Aprovados'
-      within('div#lots-in-progress') do
+      within('section#lots-in-progress') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
@@ -75,7 +75,7 @@ describe 'User views all registered lots' do
       click_on 'Listar Lotes'
   
       expect(page).to have_content 'Lotes Aprovados'
-      within('div#lots-waiting-start') do
+      within('section#lots-waiting-start') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
@@ -170,7 +170,7 @@ describe 'User views all registered lots' do
       click_on 'Listar Lotes'
       
       expect(page).to have_content 'Lotes Aprovados'
-      within('div#lots-in-progress') do
+      within('section#lots-in-progress') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
@@ -225,7 +225,7 @@ describe 'User views all registered lots' do
       click_on 'Listar Lotes'
       
       expect(page).to have_content 'Lotes Aprovados'
-      within('div#lots-waiting-start') do
+      within('section#lots-waiting-start') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
@@ -342,7 +342,7 @@ describe 'User views all registered lots' do
       click_on 'Listar Lotes'
       
       expect(page).to have_content 'Lotes Aguardando Aprovação'
-      within('div#lots-awaiting-approval') do
+      within('section#lots-awaiting-approval') do
         expect(page).to have_link 'Lote COD123456'
         expect(page).not_to have_link 'Lote BTC334509'
       end
@@ -358,7 +358,7 @@ describe 'User views all registered lots' do
       visit root_path
       click_on 'Listar Lotes'
   
-      within('div#lots-awaiting-approval') do
+      within('section#lots-awaiting-approval') do
         expect(page).to have_content 'Não existem lotes aguardando aprovação.'
       end
     end
@@ -383,7 +383,7 @@ describe 'User views all registered lots' do
       click_on 'Listar Lotes'
   
       expect(page).to have_content 'Lotes Aprovados'
-      within('div#lots-in-progress') do
+      within('section#lots-in-progress') do
         expect(page).to have_link 'Lote COD123456'
       end
     end
@@ -430,7 +430,7 @@ describe 'User views all registered lots' do
       click_on 'Listar Lotes'
   
       expect(page).to have_content 'Lotes Aprovados'
-      within('div#lots-waiting-start') do
+      within('section#lots-waiting-start') do
         expect(page).to have_link 'Lote COD123456'
       end
     end

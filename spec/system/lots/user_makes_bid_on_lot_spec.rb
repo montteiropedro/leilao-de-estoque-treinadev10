@@ -24,7 +24,7 @@ describe 'User makes a bid on a lot' do
       login_as(user)
       visit root_path
       click_on 'Listar Lotes'
-      within('div#lots-in-progress') do
+      within('section#lots-in-progress') do
         click_on 'COD123456'
       end
       fill_in 'Faça seu lance', with: 10_001
@@ -58,7 +58,7 @@ describe 'User makes a bid on a lot' do
         login_as(user)
         visit root_path
         click_on 'Listar Lotes'
-        within('div#lots-in-progress') do
+        within('section#lots-in-progress') do
           click_on 'COD123456'
         end
         fill_in 'Faça seu lance', with: 100
@@ -94,7 +94,7 @@ describe 'User makes a bid on a lot' do
         login_as(user)
         visit root_path
         click_on 'Listar Lotes'
-        within('div#lots-in-progress') do
+        within('section#lots-in-progress') do
           click_on 'COD123456'
         end
         fill_in 'Faça seu lance', with: 100

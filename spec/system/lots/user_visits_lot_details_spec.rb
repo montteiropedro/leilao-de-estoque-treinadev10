@@ -142,7 +142,7 @@ describe 'User visits a lot details page' do
         end
       end
 
-      context 'the bids session' do
+      context 'the bids section' do
         it 'should not be displayed when lot is waiting to start' do
           first_admin_user = User.create!(
             name: 'John Doe', cpf: '41760209031',
@@ -160,7 +160,7 @@ describe 'User visits a lot details page' do
     
           visit root_path
           click_on 'Listar Lotes'
-          within('div#lots-waiting-start') do
+          within('section#lots-waiting-start') do
             click_on 'COD123456'
           end
     
@@ -186,11 +186,11 @@ describe 'User visits a lot details page' do
     
           visit root_path
           click_on 'Listar Lotes'
-          within('div#lots-in-progress') do
+          within('section#lots-in-progress') do
             click_on 'COD123456'
           end
     
-          within('div#bids-session') do
+          within('section#bids') do
             expect(page).to have_css 'h2', text: 'Lances'
             expect(page).to have_content 'Último lance: 0 centavos'
             expect(page).not_to have_field 'Faça seu lance'
@@ -320,7 +320,7 @@ describe 'User visits a lot details page' do
         end
       end
 
-      context 'the bids session' do
+      context 'the bids section' do
         it 'should not be displayed when lot is waiting to start' do
           user = User.create!(
             name: 'Peter Parker', cpf: '73046259026',
@@ -343,7 +343,7 @@ describe 'User visits a lot details page' do
           login_as(user)
           visit root_path
           click_on 'Listar Lotes'
-          within('div#lots-waiting-start') do
+          within('section#lots-waiting-start') do
             click_on 'COD123456'
           end
     
@@ -374,11 +374,11 @@ describe 'User visits a lot details page' do
           login_as(user)
           visit root_path
           click_on 'Listar Lotes'
-          within('div#lots-in-progress') do
+          within('section#lots-in-progress') do
             click_on 'COD123456'
           end
     
-          within('div#bids-session') do
+          within('section#bids') do
             expect(page).to have_css 'h2', text: 'Lances'
             expect(page).to have_content 'Último lance: 0 centavos'
             within('form') do
@@ -573,7 +573,7 @@ describe 'User visits a lot details page' do
         end
       end
 
-      context 'the bids session' do
+      context 'the bids section' do
         it 'should not be displayed when lot is waiting to start' do
           first_admin_user = User.create!(
             name: 'John Doe', cpf: '41760209031',
@@ -592,7 +592,7 @@ describe 'User visits a lot details page' do
           login_as(first_admin_user)
           visit root_path
           click_on 'Listar Lotes'
-          within('div#lots-waiting-start') do
+          within('section#lots-waiting-start') do
             click_on 'COD123456'
           end
     
@@ -619,11 +619,11 @@ describe 'User visits a lot details page' do
           login_as(first_admin_user)
           visit root_path
           click_on 'Listar Lotes'
-          within('div#lots-in-progress') do
+          within('section#lots-in-progress') do
             click_on 'COD123456'
           end
     
-          within('div#bids-session') do
+          within('section#bids') do
             expect(page).to have_css 'h2', text: 'Lances'
             expect(page).to have_content 'Último lance: 0 centavos'
             expect(page).not_to have_field 'Faça seu lance'
@@ -649,11 +649,11 @@ describe 'User visits a lot details page' do
           login_as(first_admin_user)
           visit root_path
           click_on 'Listar Lotes Expirados'
-          within('div#lots-expired') do
+          within('section#lots-expired') do
             click_on 'COD123456'
           end
     
-          within('div#bids-session') do
+          within('section#bids') do
             expect(page).to have_css 'h2', text: 'Lances'
             expect(page).to have_content 'Último lance: 0 centavos'
             expect(page).not_to have_field 'Faça seu lance'
@@ -678,7 +678,7 @@ describe 'User visits a lot details page' do
         login_as(admin_user)
         visit root_path
         click_on 'Listar Lotes'
-        within('div#lots-awaiting-approval') do
+        within('section#lots-awaiting-approval') do
           click_on 'Lote COD123456'
         end
         

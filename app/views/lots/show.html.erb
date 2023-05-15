@@ -1,61 +1,63 @@
-<div class='my-6 flex items-center justify-between'>
-  <div>
-    <h1 class='view-title my-0'><%= t '.title' %> <%= @lot.code %></h1>
-    <div class='flex flex-col'>
-      <span><%= t '.creator_description' %> <%= @lot.get_creator_description %></span>
-    </div>
-  </div>
-
-  <div class='flex gap-4'>
-    <% if @lot.approver.present? %>
-      <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-emerald-300 rounded'>
-        <%= t '.approver_description' %> <%= @lot.approver.name %>
+<section id ='lot-infos'>
+  <div class='my-6 flex items-center justify-between'>
+    <div>
+      <h1 class='view-title my-0'><%= t '.title' %> <%= @lot.code %></h1>
+      <div class='flex flex-col'>
+        <span><%= t '.creator_description' %> <%= @lot.get_creator_description %></span>
       </div>
-
-      <% if @lot.buyer.present? %>
-        <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-amber-300 rounded'>
-          <%= t '.buyer_description' %> <%= @lot.buyer.name %>
-          <i class="fa-solid fa-star text-sm text-amber-900"></i>
+    </div>
+  
+    <div class='flex gap-4'>
+      <% if @lot.approver.present? %>
+        <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-emerald-300 rounded'>
+          <%= t '.approver_description' %> <%= @lot.approver.name %>
         </div>
-      <% end %>
-    <% end %>
-
-    <% if user_signed_in? && current_user.is_admin %>
-      <div id='admin-menu' class='flex gap-4'>
-        <% if @lot.buyer.blank? && (@lot.expired? && @lot.bids.present?) %>
-          <%= button_to close_lot_path(@lot), method: :patch, class: "px-4 py-2 flex items-center gap-2 bg-amber-300 text-black hover:scale-105 transition-all rounded" do %>
-            <%= t '.close_lot_button_text' %>
-            <i class="fa-solid fa-money-bill-transfer text-sm animate-pulse"></i>
-          <% end %>
-        <% elsif @lot.expired? && @lot.bids.blank? %>
-          <%= button_to cancel_lot_path(@lot), method: :delete, class: "px-4 py-2 flex items-center gap-2 bg-red-400 text-black hover:scale-105 transition-all rounded" do %>
-            <%= t '.cancel_lot_button_text' %>
-            <i class="fa-solid fa-recycle text-sm animate-pulse"></i>
-          <% end %>
+  
+        <% if @lot.buyer.present? %>
+          <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-amber-300 rounded'>
+            <%= t '.buyer_description' %> <%= @lot.buyer.name %>
+            <i class="fa-solid fa-star text-sm text-amber-900"></i>
+          </div>
         <% end %>
-        
-        <% if @lot.approver.blank? && current_user != @lot.creator %>
-          <% if @lot.waiting_start? || @lot.in_progress? %>
-            <%= button_to approve_lot_path, class: "px-4 py-2 flex items-center gap-2 bg-black text-white hover:scale-105 transition-all rounded" do %>
-              <%= t '.approve_lot_button_text' %>
-              <i class="fa-regular fa-circle text-sm animate-pulse"></i>
+      <% end %>
+  
+      <% if user_signed_in? && current_user.is_admin %>
+        <div id='admin-menu' class='flex gap-4'>
+          <% if @lot.buyer.blank? && (@lot.expired? && @lot.bids.present?) %>
+            <%= button_to close_lot_path(@lot), method: :patch, class: "px-4 py-2 flex items-center gap-2 bg-amber-300 text-black hover:scale-105 transition-all rounded" do %>
+              <%= t '.close_lot_button_text' %>
+              <i class="fa-solid fa-money-bill-transfer text-sm animate-pulse"></i>
+            <% end %>
+          <% elsif @lot.expired? && @lot.bids.blank? %>
+            <%= button_to cancel_lot_path(@lot), method: :delete, class: "px-4 py-2 flex items-center gap-2 bg-red-400 text-black hover:scale-105 transition-all rounded" do %>
+              <%= t '.cancel_lot_button_text' %>
+              <i class="fa-solid fa-recycle text-sm animate-pulse"></i>
             <% end %>
           <% end %>
-        <% end %>
-      </div>
-    <% end %>
+  
+          <% if @lot.approver.blank? && current_user != @lot.creator %>
+            <% if @lot.waiting_start? || @lot.in_progress? %>
+              <%= button_to approve_lot_path, class: "px-4 py-2 flex items-center gap-2 bg-black text-white hover:scale-105 transition-all rounded" do %>
+                <%= t '.approve_lot_button_text' %>
+                <i class="fa-regular fa-circle text-sm animate-pulse"></i>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>
-
-<div class='mb-10 flex flex-col gap-2'>
-  <span><strong><%= t '.start_date' %>:</strong> <%= l(@lot.start_date) %></span>
-  <span><strong><%= t '.end_date' %>:</strong> <%= l(@lot.end_date) %></span>
-  <span><strong><%= t '.min_bid_in_centavos' %>:</strong> <%= @lot.min_bid_in_centavos %> centavos</span>
-  <span><strong><%= t '.min_diff_between_bids_in_centavos' %>:</strong> <%= @lot.min_diff_between_bids_in_centavos %> centavos</span>
-</div>
+  
+  <div class='mb-10 flex flex-col gap-2'>
+    <span><strong><%= t '.start_date' %>:</strong> <%= l(@lot.start_date) %></span>
+    <span><strong><%= t '.end_date' %>:</strong> <%= l(@lot.end_date) %></span>
+    <span><strong><%= t '.min_bid_in_centavos' %>:</strong> <%= @lot.min_bid_in_centavos %> centavos</span>
+    <span><strong><%= t '.min_diff_between_bids_in_centavos' %>:</strong> <%= @lot.min_diff_between_bids_in_centavos %> centavos</span>
+  </div>
+</section>
 
 <% if @lot.approver.present? && (@lot.in_progress? || @lot.expired?) %>
-  <div id='bids-session' class='mb-10 flex flex-col gap-2'>
+  <section id='bids' class='mb-10 flex flex-col gap-2'>
     <h2 class='view-subtitle'><%= t '.bids' %></h2>
     
       <div class='flex items-center justify-between'>
@@ -75,10 +77,10 @@
           <% end %>
         <% end %>
       </div>
-  </div>
+  </section>
 <% end %>
 
-<div id='items-session' class='mb-8 flex flex-col gap-4'>
+<section id='items' class='mb-8 flex flex-col gap-4'>
   <div class='flex items-center justify-between'>
     <h2 class='view-subtitle'><%= t '.linked_products' %></h2>
 
@@ -102,4 +104,4 @@
   <% else %>
     <p class='text-neutral-300'><%= t '.not_found_message' %></p>
   <% end %>
-</div>
+</section>

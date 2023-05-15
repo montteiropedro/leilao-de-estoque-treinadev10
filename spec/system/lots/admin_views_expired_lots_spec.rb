@@ -46,11 +46,11 @@ describe 'Admin views expired lots' do
       click_on 'Listar Lotes Expirados'
   
       expect(page).to have_content 'Lotes Expirados'
-      within('div#lots-expired') do
+      within('section#lots-expired') do
         expect(page).to have_link 'Lote BTC334509'
       end
       expect(page).to have_content 'Lotes Encerrados'
-      within('div#lots-expired-closed') do
+      within('section#lots-expired-closed') do
         expect(page).to have_link 'ETH801026'
       end
     end
@@ -70,10 +70,10 @@ describe 'Admin views expired lots' do
       visit root_path
       click_on 'Listar Lotes Expirados'
   
-      within('div#lots-expired') do
+      within('section#lots-expired') do
         expect(page).to have_content 'Não existem lotes expirados.'
       end
-      within('div#lots-expired-closed') do
+      within('section#lots-expired-closed') do
         expect(page).to have_content 'Não existem lotes encerrados.'
       end
     end

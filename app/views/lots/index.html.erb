@@ -1,7 +1,7 @@
 <% if user_signed_in? && current_user.is_admin %>
-  <h1 class='view-title'><%= t '.awaiting_approval_title' %></h1>
+  <section id='lots-awaiting-approval' class='flex flex-col gap-4'>
+    <h1 class='view-title'><%= t '.awaiting_approval_title' %></h1>
 
-  <div id='lots-awaiting-approval' class='flex flex-col gap-4'>
     <% if @awaiting_approval_lots.present? %>
       <% @awaiting_approval_lots.each do |lot| %>
         <%= link_to lot_path(lot), class: 'p-4 bg-secondary hover:scale-105 transition-all rounded' do %>
@@ -11,13 +11,13 @@
     <% else %>
       <p class='text-neutral-300'><%= t '.awaiting_approval_not_found_message' %></p>
     <% end %>
-  </div>
+  </section>
 <% end %>
 
 <h1 class='view-title'><%= t '.approved_title' %></h1>
 
 <div class='flex gap-12'>
-  <div id='lots-in-progress' class='w-1/2 flex flex-col gap-4'>
+  <section id='lots-in-progress' class='w-1/2 flex flex-col gap-4'>
     <h2 class='view-subtitle'><%= t '.approved_progress_subtitle' %></h2>
     
     <% if @approved_lots_in_progress.present? %>
@@ -31,7 +31,7 @@
     <% end %>
   </div>
 
-  <div id='lots-waiting-start' class='w-1/2 flex flex-col gap-4'>
+  <section id='lots-waiting-start' class='w-1/2 flex flex-col gap-4'>
     <h2 class='view-subtitle'><%= t '.approved_waiting_subtitle' %></h2>
   
     <% if @approved_lots_waiting_start.present? %>

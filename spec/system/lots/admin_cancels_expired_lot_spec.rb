@@ -20,7 +20,7 @@ describe 'Admin cancels a expired lot' do
     
     expect(current_path).to eq expired_lots_path
     expect(page).to have_content 'Lote cancelado com sucesso.'
-    within('div#lots-expired') do
+    within('section#lots-expired') do
       expect(page).not_to have_content 'Lote COD123456'
     end
   end
