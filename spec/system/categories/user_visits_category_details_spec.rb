@@ -24,8 +24,8 @@ describe 'User visits a categoy details page' do
     click_on 'Listar Categorias'
     click_on 'Eletrônicos'
 
+    expect(current_path).to eq category_path(category)
     expect(page).to have_content 'Eletrônicos'
-    expect(page).to have_content 'Produtos Vinculados'
   end
 
   context 'and is a visitant' do
