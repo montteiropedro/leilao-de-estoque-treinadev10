@@ -3,9 +3,23 @@
 <div class='flex flex-col gap-4'>
   <% if @products.any? %>
     <% @products.each do |product| %>
-      <%= link_to product_path(product), class: 'p-4 flex flex-col gap-2 bg-secondary hover:scale-105 transition-all rounded' do %>
-        <span class='text-white'><%= product.name %></span>
-        <span class='text-white text-xs italic'><%= product.code %></span>
+      <%= link_to product_path(product), class: 'p-4 flex justify-between bg-secondary hover:scale-105 transition-all rounded' do %>
+        <div class='flex flex-col gap-2'>
+          <span class='text-white'><%= product.name %></span>
+          <span class='text-white text-xs italic'><%= product.code %></span>
+        </div>
+
+        <% if product.available? %>
+          <% status_color = 'bg-emerald-300' %>
+        <% elsif product.unavailable? %>
+          <% status_color = 'bg-neutral-300' %>
+        <% else %>
+          <% status_color = 'bg-amber-300' %>
+        <% end %>
+
+        <div class='px-4 py-2 w-[122px] flex items-center justify-center self-center text-black text-sm font-semibold <%= status_color %> rounded'>
+          <%= t product.status %>
+        </div>
       <% end %>
     <% end %>
   <% else %>

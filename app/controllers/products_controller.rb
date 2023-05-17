@@ -34,7 +34,8 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
     @lot = Lot.find(params[:lot_id])
 
-    if @product.update!(lot: @lot)
+    if @lot.approver.blank? && @product.update(lot: @lot)
+      @product.unavailable!
       redirect_to @product, notice: 'Lote vinculado com sucesso.'
     else
       render :show, status: :unprocessable_entity
@@ -45,7 +46,8 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
     linked_lot = @product.lot
 
-    if linked_lot.approver.blank? && @product.update!(lot: nil)
+    if linked_lot.approver.blank? && @product.update(lot: nil)
+      @product.available!
       redirect_to @product, notice: 'Lote desvinculado com sucesso.'
     else
       render :show, status: :unprocessable_entity

@@ -94,7 +94,7 @@ RSpec.describe Product, type: :model do
     end
   end
 
-  describe '#set_alphanumeric_code' do
+  describe '.set_alphanumeric_code' do
     context 'return a alphanumeric random code' do
       it 'should be made automatically' do
         product = Product.new
@@ -134,6 +134,58 @@ RSpec.describe Product, type: :model do
         after_update_code = product.code
 
         expect(initial_code).to eq after_update_code
+      end
+    end
+  end
+
+  describe '.set_status' do
+    context 'when the product is not linked to a lot' do
+      it 'should return available' do
+        product = Product.new
+
+        product.valid?
+
+        expect(product.status).to eq 'available'
+      end
+    end
+
+    context 'when the product is linked to a lot' do
+      it 'should return unavailable if the lot does not have a buyer' do
+        user_admin = User.create!(
+          name: 'John Doe', cpf: '41760209031',
+          email: 'john@leilaodogalpao.com.br', password: 'password123'
+        )
+        lot = Lot.create!(
+          code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.month,
+          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+          creator: user_admin
+        )
+        product = Product.new(lot: lot)
+  
+        product.valid?
+  
+        expect(product.status).to eq 'unavailable'
+      end
+
+      it 'should return sold if the lot have a buyer' do
+        user = User.create!(
+          name: 'Peter Parker', cpf: '73046259026',
+          email: 'peter@email.com', password: 'password123'
+        )
+        user_admin = User.create!(
+          name: 'John Doe', cpf: '41760209031',
+          email: 'john@leilaodogalpao.com.br', password: 'password123'
+        )
+        Lot.new(
+          code: 'COD123456', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
+          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+          creator: user_admin, buyer: user
+        ).save!(validate: false)
+        product = Product.new(lot: Lot.last)
+  
+        product.valid?
+  
+        expect(product.status).to eq 'sold'
       end
     end
   end

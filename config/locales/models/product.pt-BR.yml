@@ -1,4 +1,7 @@
 pt-BR:
+  available: Disponível
+  unavailable: Indisponível
+  sold: Vendido
   activerecord:
     models:
       product:
@@ -17,3 +20,4 @@ pt-BR:
         lot_id: Lote
         lot: Lote
         image: Foto
+        status: Disponibilidade

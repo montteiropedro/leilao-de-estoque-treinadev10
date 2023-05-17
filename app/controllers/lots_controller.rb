@@ -79,16 +79,22 @@ class LotsController < ApplicationController
 
   def cancel
     @lot = Lot.find(params[:id])
+    @lot.products.each(&:available!)
 
-    redirect_to expired_lots_path, notice: 'Lote cancelado com sucesso.' if @lot.destroy
+    return unless @lot.destroy
+
+    redirect_to expired_lots_path, notice: 'Lote cancelado com sucesso.'
   end
 
   def close
     @lot = Lot.find(params[:id])
     @winning_bid = @lot.bids.order(value_in_centavos: :desc).first
     @lot.buyer = @winning_bid.user
+    @lot.products.each(&:sold!)
 
-    redirect_to expired_lots_path, notice: 'Lote encerrado com sucesso.' if @lot.save(validate: false)
+    return unless @lot.save(validate: false)
+
+    redirect_to expired_lots_path, notice: 'Lote encerrado com sucesso.'
   end
 
   private
