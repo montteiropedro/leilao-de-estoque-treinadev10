@@ -11,8 +11,8 @@ pt-BR:
       awaiting_approval_not_found_message: Não existem lotes aguardando aprovação.
     expired:
       prefix: Lote
-      expired_title: Lotes Expirados
-      expired_title_not_found_message: Não existem lotes expirados.
+      expired_title: Lotes Expirados Aguardando Avaliação
+      expired_title_not_found_message: Não existem lotes expirados aguardando avaliação.
       closed_expired_title: Lotes Encerrados
       closed_expired_title_not_found_message: Não existem lotes encerrados.
     won:
