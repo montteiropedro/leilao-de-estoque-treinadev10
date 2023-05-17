@@ -9,14 +9,15 @@
   
     <div class='flex gap-4'>
       <% if @lot.approver.present? %>
-        <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-emerald-300 rounded'>
+        <div class='px-4 py-2 flex items-center gap-2 text-emerald-900 text-sm font-semibold bg-emerald-300 rounded'>
           <%= t '.approver_description' %> <%= @lot.approver.name %>
+          <i class="fa-solid fa-circle-check"></i>
         </div>
   
         <% if @lot.buyer.present? %>
-          <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-amber-300 rounded'>
+          <div class='px-4 py-2 flex items-center gap-2 text-amber-900 text-sm font-semibold bg-amber-300 rounded'>
             <%= t '.buyer_description' %> <%= @lot.buyer.name %>
-            <i class="fa-solid fa-star text-sm text-amber-900"></i>
+            <i class="fa-solid fa-star"></i>
           </div>
         <% end %>
       <% end %>
@@ -61,7 +62,7 @@
     <h2 class='view-subtitle'><%= t '.bids' %></h2>
     
       <div class='flex items-center justify-between'>
-        <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-emerald-300 hover:animate-pulse rounded'>
+        <div class='px-4 py-2 flex items-center gap-2 text-black bg-emerald-300 hover:animate-pulse rounded'>
           <% if @bids.present? %>
             <%= t '.current_winning_bid' %>:
 
