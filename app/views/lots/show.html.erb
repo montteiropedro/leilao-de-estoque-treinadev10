@@ -51,8 +51,8 @@
   <div class='mb-10 flex flex-col gap-2'>
     <span><strong><%= t '.start_date' %>:</strong> <%= l(@lot.start_date) %></span>
     <span><strong><%= t '.end_date' %>:</strong> <%= l(@lot.end_date) %></span>
-    <span><strong><%= t '.min_bid_in_centavos' %>:</strong> <%= @lot.min_bid_in_centavos %> centavos</span>
-    <span><strong><%= t '.min_diff_between_bids_in_centavos' %>:</strong> <%= @lot.min_diff_between_bids_in_centavos %> centavos</span>
+    <span><strong><%= t '.min_bid_in_centavos' %>:</strong> <%= centavos_to_reais(@lot.min_bid_in_centavos, with_unit: true) %></span>
+    <span><strong><%= t '.min_diff_between_bids_in_centavos' %>:</strong> <%= centavos_to_reais(@lot.min_diff_between_bids_in_centavos, with_unit: true) %></span>
   </div>
 </section>
 
@@ -62,17 +62,21 @@
     
       <div class='flex items-center justify-between'>
         <div class='px-4 py-2 flex items-center gap-2 text-black text-sm bg-emerald-300 hover:animate-pulse rounded'>
-          <%= t '.current_winning_bid' %>:
           <% if @bids.present? %>
-            <%= @bids.first.value_in_centavos %> centavos
+            <%= t '.current_winning_bid' %>:
+
+            <span class='font-semibold'>
+              <i id='money-sign' class='fa-solid fa-brazilian-real-sign'></i>
+              <%= centavos_to_reais(@bids.first.value_in_centavos, with_unit: false) %>
+            </span>
           <% else %>
             <%= t '.no_bid_value' %>
           <% end %>
         </div>
         
         <% if !@lot.expired? && (user_signed_in? && !current_user.is_admin) %>
-          <%= form_with scope: :bid, url: lot_bids_path(@lot), class: 'flex flex-row' do |f| %>
-            <%= f.number_field :value_in_centavos, placeholder: 'Faça seu lance' %>
+          <%= form_with url: lot_bids_path(@lot), class: 'flex flex-row' do |f| %>
+            <%= f.number_field :value_in_reais, placeholder: 'Lance em reais' %>
             <%= f.submit t('.make_bid_button_text'), class: 'form-submit m-0' %>
           <% end %>
         <% end %>

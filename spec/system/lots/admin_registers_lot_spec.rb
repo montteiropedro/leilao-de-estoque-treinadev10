@@ -19,7 +19,9 @@ describe 'Admin registers a lot' do
     expect(page).to have_field 'Data de Início'
     expect(page).to have_field 'Data do Fim'
     expect(page).to have_field 'Lance Mínimo'
+    expect(page).to have_css 'input[placeholder="Valor em reais"]#lot_min_bid_in_reais'
     expect(page).to have_field 'Diferença Mínima Entre Lances'
+    expect(page).to have_css 'input[placeholder="Valor em reais"]#lot_min_diff_between_bids_in_reais'
   end
 
   context 'admin user' do
@@ -35,8 +37,8 @@ describe 'Admin registers a lot' do
       fill_in 'Código', with: 'COD123456'
       fill_in 'Data de Início', with: '10/10/2023'
       fill_in 'Data do Fim', with: '01/12/2023'
-      fill_in 'Lance Mínimo', with: 10_000
-      fill_in 'Diferença Mínima Entre Lances', with: 5_000
+      fill_in 'Lance Mínimo', with: 100
+      fill_in 'Diferença Mínima Entre Lances', with: 50
       click_on 'Cadastrar'
 
       expect(current_path).to eq lot_path(Lot.last)

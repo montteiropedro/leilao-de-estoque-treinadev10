@@ -100,6 +100,12 @@ class LotsController < ApplicationController
   private
 
   def lot_params
-    params.require(:lot).permit(:code, :start_date, :end_date, :min_bid_in_centavos, :min_diff_between_bids_in_centavos)
+    non_monetary_params = params.require(:lot).permit(:code, :start_date, :end_date)
+    monetary_params = {
+      min_bid_in_centavos: reais_to_centavos(params[:lot][:min_bid_in_reais]),
+      min_diff_between_bids_in_centavos: reais_to_centavos(params[:lot][:min_diff_between_bids_in_reais])
+    }
+
+    non_monetary_params.merge(monetary_params)
   end
 end

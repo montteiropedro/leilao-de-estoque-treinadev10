@@ -10,4 +10,6 @@ pt-BR:
         start_date: Data de Início
         end_date: Data do Fim
         min_bid_in_centavos: Lance Mínimo
+        min_bid_in_reais: Lance Mínimo
         min_diff_between_bids_in_centavos: Diferença Mínima Entre Lances
+        min_diff_between_bids_in_reais: Diferença Mínima Entre Lances

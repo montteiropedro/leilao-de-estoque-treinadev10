@@ -27,12 +27,12 @@ describe 'User makes a bid on a lot' do
       within('section#lots-in-progress') do
         click_on 'COD123456'
       end
-      fill_in 'Faça seu lance', with: 10_001
+      fill_in 'Lance em reais', with: 101
       click_on 'Fazer Lance'
 
       expect(current_path).to eq lot_path(lot)
       expect(page).to have_content 'Lance realizado com sucesso.'
-      expect(page).to have_content 'Último lance: 10001 centavos'
+      expect(page).to have_content 'Último lance: 101,00'
     end
 
     context 'and lot has no bid yet' do
@@ -61,12 +61,12 @@ describe 'User makes a bid on a lot' do
         within('section#lots-in-progress') do
           click_on 'COD123456'
         end
-        fill_in 'Faça seu lance', with: 100
+        fill_in 'Lance em reais', with: 100
         click_on 'Fazer Lance'
   
         expect(current_path).to eq lot_path(lot)
-        expect(page).to have_content 'Lance deve ser maior ou igual a 10001'
-        expect(page).to have_content 'Último lance: 0 centavos'
+        expect(page).to have_content 'Lance deve ser maior ou igual a R$ 101,00'
+        expect(page).to have_content 'O lote ainda não recebeu um lance.'
       end
     end
     
@@ -97,12 +97,13 @@ describe 'User makes a bid on a lot' do
         within('section#lots-in-progress') do
           click_on 'COD123456'
         end
-        fill_in 'Faça seu lance', with: 100
+        fill_in 'Lance em reais', with: 100
         click_on 'Fazer Lance'
   
         expect(current_path).to eq lot_path(lot)
-        expect(page).to have_content 'Lance deve ser maior ou igual a 25000'
-        expect(page).to have_content 'Último lance: 20000 centavos'
+        expect(page).to have_content 'Lance deve ser maior ou igual a R$ 250,00'
+        expect(page).to have_css '#money-sign'
+        expect(page).to have_content 'Último lance: 200,00'
       end
     end
   end

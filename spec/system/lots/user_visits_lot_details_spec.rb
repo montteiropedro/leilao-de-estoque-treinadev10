@@ -42,8 +42,8 @@ describe 'User visits a lot details page' do
     expect(page).to have_content 'Administrado por John Doe <john@leilaodogalpao.com.br>'
     expect(page).to have_content "Data de Início: #{lot.start_date.strftime('%d/%m/%Y')}"
     expect(page).to have_content "Data do Fim: #{lot.end_date.strftime('%d/%m/%Y')}"
-    expect(page).to have_content 'Lance Mínimo: 10000 centavos'
-    expect(page).to have_content 'Diferença Mínima Entre Lances: 5000 centavos'
+    expect(page).to have_content 'Lance Mínimo: R$ 100,00'
+    expect(page).to have_content 'Diferença Mínima Entre Lances: R$ 50,00'
   end
 
   it 'should show products linked to it' do
@@ -165,7 +165,7 @@ describe 'User visits a lot details page' do
           end
     
           expect(page).not_to have_css 'h2', text: 'Lances'
-          expect(page).not_to have_field 'Faça seu lance'
+          expect(page).not_to have_field 'Lance em reais'
           expect(page).not_to have_button 'Fazer Lance'
         end
 
@@ -192,8 +192,8 @@ describe 'User visits a lot details page' do
     
           within('section#bids') do
             expect(page).to have_css 'h2', text: 'Lances'
-            expect(page).to have_content 'Último lance: 0 centavos'
-            expect(page).not_to have_field 'Faça seu lance'
+            expect(page).to have_content 'O lote ainda não recebeu um lance.'
+            expect(page).not_to have_field 'Lance em reais'
             expect(page).not_to have_button 'Fazer Lance'
           end
         end
@@ -348,7 +348,7 @@ describe 'User visits a lot details page' do
           end
     
           expect(page).not_to have_css 'h2', text: 'Lances'
-          expect(page).not_to have_field 'Faça seu lance'
+          expect(page).not_to have_field 'Lance em reais'
           expect(page).not_to have_button 'Fazer Lance'
         end
 
@@ -380,9 +380,9 @@ describe 'User visits a lot details page' do
     
           within('section#bids') do
             expect(page).to have_css 'h2', text: 'Lances'
-            expect(page).to have_content 'Último lance: 0 centavos'
+            expect(page).to have_content 'O lote ainda não recebeu um lance.'
             within('form') do
-              expect(page).to have_field 'Faça seu lance'
+              expect(page).to have_field 'Lance em reais'
               expect(page).to have_button 'Fazer Lance'
             end
           end
@@ -597,7 +597,7 @@ describe 'User visits a lot details page' do
           end
     
           expect(page).not_to have_css 'h2', text: 'Lances'
-          expect(page).not_to have_field 'Faça seu lance'
+          expect(page).not_to have_field 'Lance em reais'
           expect(page).not_to have_button 'Fazer Lance'
         end
 
@@ -625,8 +625,8 @@ describe 'User visits a lot details page' do
     
           within('section#bids') do
             expect(page).to have_css 'h2', text: 'Lances'
-            expect(page).to have_content 'Último lance: 0 centavos'
-            expect(page).not_to have_field 'Faça seu lance'
+            expect(page).to have_content 'O lote ainda não recebeu um lance.'
+            expect(page).not_to have_field 'Lance em reais'
             expect(page).not_to have_button 'Fazer Lance'
           end
         end
@@ -655,8 +655,8 @@ describe 'User visits a lot details page' do
     
           within('section#bids') do
             expect(page).to have_css 'h2', text: 'Lances'
-            expect(page).to have_content 'Último lance: 0 centavos'
-            expect(page).not_to have_field 'Faça seu lance'
+            expect(page).to have_content 'O lote ainda não recebeu um lance.'
+            expect(page).not_to have_field 'Lance em reais'
             expect(page).not_to have_button 'Fazer Lance'
           end
         end
