@@ -1,6 +1,6 @@
 <h2 class='view-title text-primary'><%= t '.sign_in' %></h2>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'm-auto' }) do |f| %>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'm-auto max-w-[562px] flex flex-col' }) do |f| %>
   <div class="field form-field">
     <%= f.label :email %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
