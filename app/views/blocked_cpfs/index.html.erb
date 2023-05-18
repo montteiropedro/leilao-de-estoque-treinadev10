@@ -1,0 +1,26 @@
+<h1 class='view-title'><%= t '.title' %></h1>
+
+<div class='flex gap-12'>
+  <section id="block-cpf" class='w-2/5 flex flex-col gap-4'>
+    <h2 class='view-subtitle'><%= t '.block_cpf_subtitle' %></h2>
+
+    <%= form_with url: blocked_cpfs_path, class: '' do |f| %>
+      <%= f.text_field :cpf, placeholder: t('.cpf_placeholder') %>
+      <%= f.submit t('.submit'), class: 'form-submit' %>
+    <% end %>
+  </section>
+
+  <section id="blocked-cpfs" class='w-3/5 flex flex-col gap-4'>
+    <h2 class='view-subtitle'><%= t '.blocked_cpf_subtitle' %></h2>
+    
+    <% if @blocked_cpfs.present? %>
+      <% @blocked_cpfs.each do |cpf| %>
+        <%= link_to false, class: 'p-4 bg-secondary hover:scale-105 transition-all rounded' do %>
+          <%= format_cpf(cpf.cpf) %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <p class='text-neutral-300'><%= t '.not_found_message' %></p>
+    <% end %>
+  </section>
+</div>

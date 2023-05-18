@@ -1,0 +1,9 @@
+pt-BR:
+  blocked_cpfs:
+    index:
+      title: Bloquear CPF / Listar CPFs Bloqueados
+      block_cpf_subtitle: Bloquear CPF
+      cpf_placeholder: Digite o CPF sem pontuações
+      submit: Bloquear
+      blocked_cpf_subtitle: CPFs Bloqueados
+      not_found_message: Não existem CPFs bloqueados.

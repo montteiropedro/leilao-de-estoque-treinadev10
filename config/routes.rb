@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   
   root "home#index"
+  resources :blocked_cpfs, only: [:index, :create, :destroy]
   resources :lots, only: [:index, :show, :new, :create] do
     resources :bids, only: [:create]
     collection do

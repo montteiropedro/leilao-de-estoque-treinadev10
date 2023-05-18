@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_16_155208) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_18_134010) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -47,6 +47,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_16_155208) do
     t.datetime "updated_at", null: false
     t.index ["lot_id"], name: "index_bids_on_lot_id"
     t.index ["user_id"], name: "index_bids_on_user_id"
+  end
+
+  create_table "blocked_cpfs", force: :cascade do |t|
+    t.string "cpf", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cpf"], name: "index_blocked_cpfs_on_cpf", unique: true
   end
 
   create_table "categories", force: :cascade do |t|

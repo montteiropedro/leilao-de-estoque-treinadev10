@@ -16,10 +16,16 @@
   <body class="bg-primary">
     <header class="py-6 bg-white">
       <nav class="container m-auto flex items-center justify-between gap-4">
-        <%= link_to root_path, class: "flex items-center" do %>
-          <i class="fa-solid fa-warehouse text-xl"></i>
-          <h1 class="px-4 py-2 text-xl font-bold">Leilão do Estoque</h1>
-        <% end %>
+        <div class='flex gap-4'>
+          <%= link_to root_path, class: "flex items-center" do %>
+            <i class="fa-solid fa-warehouse text-xl"></i>
+            <h1 class="px-4 py-2 text-xl font-bold">Leilão do Estoque</h1>
+          <% end %>
+          
+          <% if user_signed_in? && current_user.is_admin %>
+            <%= link_to "Bloquear CPF", blocked_cpfs_path, class: "btn-user-menu" %>
+          <% end %>
+        </div>
 
         <div id="user-menu" class="flex items-center gap-4">
           <% if user_signed_in? %>

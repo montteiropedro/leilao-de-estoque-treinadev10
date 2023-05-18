@@ -1,0 +1,9 @@
+pt-BR:
+  activerecord:
+    models:
+      blocked_cpf:
+        one: CPF Bloqueado
+        other: CPFs Bloqueados
+    attributes:
+      blocked_cpf:
+        cpf: CPF

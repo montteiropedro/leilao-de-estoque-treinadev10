@@ -6,4 +6,10 @@ module ApplicationHelper
       number_to_currency(amount / 100, unit: '', separator: ',', delimiter: '.')
     end
   end
+
+  def format_cpf(text)
+    cpf = text.match(/(\d{3})(\d{3})(\d{3})(\d{2})/)
+
+    "#{cpf[1]}.#{cpf[2]}.#{cpf[3]}-#{cpf[4]}"
+  end
 end
