@@ -1,9 +1,13 @@
 class CpfValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     return if value.blank?
-    return if cpf_is_valid?(value)
-
-    record.errors.add(attribute, options[:message] || 'não é válido')
+    
+    if BlockedCpf.find_by(cpf: value)
+      record.errors.add(attribute, options[:message] || 'bloqueado')
+    else
+      return if cpf_is_valid?(value)
+      record.errors.add(attribute, options[:message] || 'não é válido')
+    end
   end
 
   private

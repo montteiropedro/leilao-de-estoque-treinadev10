@@ -59,7 +59,7 @@ describe 'User visits sign up page' do
       end
     end
   
-    it 'should not be successful with incorrect data' do
+    it 'should be unsuccessful with incorrect data' do
       visit root_path
       click_on 'Inscrever-se'
       within('form') do
@@ -73,6 +73,20 @@ describe 'User visits sign up page' do
   
       expect(current_path).to eq user_registration_path
       expect(page).to have_content 'Não foi possível salvar usuário:'
+    end
+
+    it 'should be unsuccessful with a blocked CPF' do
+      BlockedCpf.create!(cpf: '73046259026')
+
+      visit new_user_registration_path
+      within('form') do
+        fill_in 'CPF', with: '73046259026'
+        click_on 'Cadastrar'
+      end
+  
+      expect(current_path).to eq user_registration_path
+      expect(page).to have_content 'Não foi possível salvar usuário:'
+      expect(page).to have_content 'CPF bloqueado'
     end
   end
 end
