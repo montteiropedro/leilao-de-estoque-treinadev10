@@ -26,10 +26,6 @@
   textarea {
     @apply text-black;
   }
-
-  form {
-    @apply max-w-[562px] flex flex-col;
-  }
 }
 
 @layer components {

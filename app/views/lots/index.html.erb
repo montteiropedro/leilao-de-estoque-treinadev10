@@ -1,3 +1,8 @@
+<%= form_with url: search_lots_path, method: :get, id: 'search-lots', class: 'flex items-center' do |f| %>
+  <%= f.text_field :query, placeholder: 'Pesquisar lote pelo código ou produto vinculado' %>
+  <%= f.submit 'Pesquisar', class: 'w-min form-submit' %>
+<% end %>
+
 <% if user_signed_in? && current_user.is_admin %>
   <section id='lots-awaiting-approval' class='flex flex-col gap-4'>
     <h1 class='view-title'><%= t '.awaiting_approval_title' %></h1>

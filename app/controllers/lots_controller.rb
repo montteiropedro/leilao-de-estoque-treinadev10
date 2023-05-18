@@ -3,12 +3,7 @@ class LotsController < ApplicationController
   before_action :is_admin?, only: [:new, :create, :approve, :close, :cancel, :add_product, :expired]
   
   def index
-    @approved_lots_in_progress = Lot.where.not(approver: nil).and(Lot.where('start_date <= ? AND end_date >= ?', Date.today, Date.today)).order(created_at: :desc)
-    @approved_lots_waiting_start = Lot.where.not(approver: nil).and(Lot.where('start_date > ?', Date.today)).order(created_at: :desc)
-
-    return unless user_signed_in? && current_user.is_admin
-
-    @awaiting_approval_lots = Lot.where(approver: nil).and(Lot.where('end_date >= ?', Date.today)).order(created_at: :desc)
+    load_index_lots
   end
 
   def expired
@@ -97,6 +92,35 @@ class LotsController < ApplicationController
     redirect_to expired_lots_path, notice: 'Lote encerrado com sucesso.'
   end
 
+  def search
+    if params[:query].blank?
+      load_index_lots
+      return render template: 'lots/index'
+    end
+
+    @found_by_code = Lot.where('code LIKE ?', "%#{params[:query]}%")
+    @found_by_product = Product.where('name LIKE ?', "%#{params[:query]}%").map(&:lot).compact
+
+    @results = (@found_by_code + @found_by_product).uniq
+
+    @approved_lots_in_progress = []
+    @approved_lots_waiting_start = []
+    @awaiting_approval_lots = [] if user_signed_in? && current_user.is_admin
+
+    @results.each do |lot|
+      if lot.approver.present?
+        @approved_lots_in_progress << lot if (lot.start_date <= Date.today) && (lot.end_date >= Date.today)
+        @approved_lots_waiting_start << lot if lot.start_date > Date.today
+      else
+        next unless user_signed_in? && current_user.is_admin
+
+        @awaiting_approval_lots << lot if lot.end_date >= Date.today
+      end
+    end
+
+    render template: 'lots/index'
+  end
+
   private
 
   def lot_params
@@ -107,5 +131,14 @@ class LotsController < ApplicationController
     }
 
     non_monetary_params.merge(monetary_params)
+  end
+
+  def load_index_lots
+    @approved_lots_in_progress = Lot.where.not(approver: nil).and(Lot.where('start_date <= ? AND end_date >= ?', Date.today, Date.today)).order(created_at: :desc)
+    @approved_lots_waiting_start = Lot.where.not(approver: nil).and(Lot.where('start_date > ?', Date.today)).order(created_at: :desc)
+
+    return unless user_signed_in? && current_user.is_admin
+
+    @awaiting_approval_lots = Lot.where(approver: nil).and(Lot.where('end_date >= ?', Date.today)).order(created_at: :desc)
   end
 end

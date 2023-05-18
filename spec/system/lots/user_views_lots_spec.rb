@@ -10,6 +10,25 @@ describe 'User views all registered lots' do
     expect(current_path).to eq lots_path
   end
 
+  it 'should see a search bar to search for products linked to it at the listing page' do
+    admin_user = User.create!(
+      name: 'John Doe', cpf: '41760209031',
+      email: 'john@leilaodogalpao.com.br', password: 'password123'
+    )
+    lot = Lot.create!(
+      code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.day,
+      min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+      creator: admin_user
+    )
+
+    visit lots_path
+
+    within('form#search-lots') do
+      expect(page).to have_field 'Pesquisar lote pelo código ou produto vinculado'
+      expect(page).to have_button 'Pesquisar'
+    end
+  end
+
   context 'and is a visitant' do
     it 'should see approved lots in progress' do
       first_admin_user = User.create!(

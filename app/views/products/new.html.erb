@@ -1,6 +1,6 @@
 <h1 class='view-title'><%= t '.title' %></h1>
 
-<%= form_with model: @product, class: 'm-auto' do |f| %>
+<%= form_with model: @product, class: 'm-auto max-w-[562px] flex flex-col' do |f| %>
   <div class='form-field'>
     <%= f.label :name %>
     <%= f.text_field :name %>

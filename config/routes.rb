@@ -4,8 +4,11 @@ Rails.application.routes.draw do
   root "home#index"
   resources :lots, only: [:index, :show, :new, :create] do
     resources :bids, only: [:create]
-    get 'expired', on: :collection
-    get 'won', on: :collection
+    collection do
+      get 'expired'
+      get 'won'
+      get 'search'
+    end
     member do
       post 'approve'
       patch 'close'
