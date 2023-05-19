@@ -4,14 +4,27 @@
 3.2.2
 
 ## Dependências e configurações do projeto
-As dependências deste projeto podem ser baixadas e configuradas automaticamente através do comando abaixo:
+As dependências deste projeto, migrations e configurações da database podem ser baixadas/executadas/configuradas automaticamente através do comando abaixo:
 ```
 bin/setup
 ```
+Caso você queira que sua database de desenvolvimento seja populada forma rápida basta executar um seeding rodando o seguinte comando:
+```
+bin/rails db:seed
+```
+
+## Rode os casos de teste com o RSpec
+Neste projeto estamos utilizando do RSpec em conjunto com o Capybara, para rodar os testes basta executar o seguinte comando:
+```
+rspec
+```
 
 ## Principais gems do projeto
+- [Ruby on Rails](https://rubyonrails.org)
 - [Devise](https://github.com/heartcombo/devise)
 - [Tailwind CSS](https://tailwindcss.com)
+- [RSpec Rails](https://github.com/rspec/rspec-rails)
+- [Capybara](https://github.com/teamcapybara/capybara)
 
 ## Execute o projeto localmente em sua máquina
 Como o CSS deste projeto está sendo gerado através do [Tailwind CSS](https://tailwindcss.com/docs/guides/ruby-on-rails), é necessário, para ver as mudanças de estilo feitas durante o desenvolvimento, executar o projeto pelo comando abaixo:
@@ -24,10 +37,8 @@ bin/dev
 Ao clicar na imagem você será redirecionado para o link dela e poderá visualiza-lá melhor (zoom disponível pelo navegador).
 
 <p align="center">
-  <a href="https://i.imgur.com/y1zvQmv.png" target="_blank" rel="noopener noreferrer"><img src="https://i.imgur.com/y1zvQmv.png" height="350"/></a>
+  <a href="https://i.imgur.com/yGAndN7.png" target="_blank" rel="noopener noreferrer"><img src="https://i.imgur.com/yGAndN7.png" height="350"/></a>
 </a>
 
 ## Tópicos a Cobrir
-* Database (Configuração, Seeds, etc)
-* Como Rodar os Casos de Teste
 * Instruções para o Deployment
