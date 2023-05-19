@@ -16,13 +16,13 @@ pt-BR:
     expired:
       prefix: Lote
       expired_title: Lotes Expirados Aguardando Avaliação
-      expired_title_not_found_message: Não existem lotes expirados aguardando avaliação.
+      expired_not_found_message: Não existem lotes expirados aguardando avaliação.
       closed_expired_title: Lotes Encerrados
-      closed_expired_title_not_found_message: Não existem lotes encerrados.
+      closed_expired_not_found_message: Não existem lotes encerrados.
     won:
       prefix: Lote
       won_title: Lotes Vencidos
-      won_title_not_found_message: Não existem lotes nos quais você foi o vencedor.
+      not_found_messages: Não existem lotes nos quais você foi o vencedor.
     show:
       title: Lote
       creator_description: Administrado por
