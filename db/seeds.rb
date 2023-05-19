@@ -1,4 +1,4 @@
-# Users and Admins
+# Users/Admins and Blocked CPFs
 
 john_admin = User.create!(
   name: 'John Doe', cpf: '41760209031',
@@ -15,41 +15,50 @@ peter = User.create!(
   email: 'peter@email.com', password: 'password123'
 )
 
+User.create!(
+  name: 'Joseph Joestar', cpf: '50341179086',
+  email: 'joseph@email.com', password: 'password123'
+)
+BlockedCpf.create!(cpf: '50341179086')
+
+BlockedCpf.create!(cpf: '98960586013')
+BlockedCpf.create!(cpf: '85120464068')
+
 # Lots
 
 approved_lot = Lot.create!(
-  code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.month,
+  code: 'COD123456', start_date: Date.today, end_date: 1.month.from_now,
   min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
   creator: john_admin, approver: steve_admin
 )
 
 expired_approved_lot = Lot.new(
-  code: 'KDA334509', start_date: Date.today - 2.weeks, end_date: Date.today - 1.week,
+  code: 'KDA334509', start_date: 2.weeks.ago, end_date: 1.week.from_now,
   min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 3_000,
   creator: john_admin, approver: steve_admin
 )
 expired_approved_lot.save!(validate: false)
 
 Lot.new(
-  code: 'BTC334509', start_date: Date.today - 1.day, end_date: Date.today + 2.weeks,
+  code: 'BTC334509', start_date: 1.day.ago, end_date: 2.weeks.from_now,
   min_bid_in_centavos: 15_000, min_diff_between_bids_in_centavos: 10_000,
   creator: john_admin
 ).save!(validate: false)
 
 Lot.create!(
-  code: 'SSH202312', start_date: Date.today, end_date: Date.today + 2.weeks,
+  code: 'SSH202312', start_date: Date.today, end_date: 2.weeks.from_now,
   min_bid_in_centavos: 50_000, min_diff_between_bids_in_centavos: 5_000,
   creator: steve_admin
 )
 
 Lot.new(
-  code: 'ZUZ202305', start_date: Date.today - 1.weeks, end_date: Date.today - 3.days,
+  code: 'ZUZ202305', start_date: 1.weeks.ago, end_date: 3.days.ago,
   min_bid_in_centavos: 35_000, min_diff_between_bids_in_centavos: 5_000,
   creator: steve_admin
 ).save!(validate: false)
 
 Lot.new(
-  code: 'KRT992546', start_date: Date.today - 3.days, end_date: Date.today + 1.week,
+  code: 'KRT992546', start_date: 3.days.ago, end_date: 1.week.from_now,
   min_bid_in_centavos: 35_000, min_diff_between_bids_in_centavos: 5_000,
   creator: steve_admin
 ).save!(validate: false)
@@ -57,7 +66,7 @@ Lot.new(
 # Bids + Sold Lot
 
 sold_lot = Lot.new(
-  code: 'AKZ230513', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
+  code: 'AKZ230513', start_date: 1.week.ago, end_date: 3.day.ago,
   min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
   creator: john_admin, approver: steve_admin, buyer: peter
 )
