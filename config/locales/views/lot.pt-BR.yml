@@ -12,6 +12,8 @@ pt-BR:
     favorite:
       prefix: Lote
       favorite_title: Lotes Favoritos
+      expired_text: Expirado
+      sold_text: Vendido
       not_found_message: Você não adicionou nenhum lote aos favoritos ainda.
     expired:
       prefix: Lote

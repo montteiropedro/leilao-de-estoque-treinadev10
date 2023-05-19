@@ -52,6 +52,64 @@ describe 'User views his/her favorite lots' do
     end
   end
 
+  it 'and should see a expired tag when a favorite lot is expired' do
+    user = User.create!(
+      name: 'Peter Parker', cpf: '73046259026',
+      email: 'peter@email.com', password: 'password123'
+    )
+    admin_user_a = User.create!(
+      name: 'John Doe', cpf: '41760209031',
+      email: 'john@leilaodogalpao.com.br', password: 'password123'
+    )
+    admin_user_b = User.create!(
+      name: 'Steve Gates', cpf: '35933681024',
+      email: 'steve@leilaodogalpao.com.br', password: 'password123'
+    )
+    lot = Lot.create!(
+      code: 'COD123456', start_date: Date.today, end_date: 3.days.from_now,
+      min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+      creator: admin_user_a, approver: admin_user_b
+    )
+    user.favorite_lots << lot
+
+    travel_to 1.week.from_now do
+      login_as user
+      visit root_path
+      click_on 'Lotes Favoritos'
+    end
+
+    expect(page).to have_content 'Expirado'
+  end
+
+  it 'and should see a sold tag when a favorite lot is sold' do
+    user = User.create!(
+      name: 'Peter Parker', cpf: '73046259026',
+      email: 'peter@email.com', password: 'password123'
+    )
+    admin_user_a = User.create!(
+      name: 'John Doe', cpf: '41760209031',
+      email: 'john@leilaodogalpao.com.br', password: 'password123'
+    )
+    admin_user_b = User.create!(
+      name: 'Steve Gates', cpf: '35933681024',
+      email: 'steve@leilaodogalpao.com.br', password: 'password123'
+    )
+    lot = Lot.create!(
+      code: 'COD123456', start_date: Date.today, end_date: 3.days.from_now,
+      min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+      creator: admin_user_a, approver: admin_user_b, buyer: user
+    )
+    user.favorite_lots << lot
+
+    travel_to 1.week.from_now do
+      login_as user
+      visit root_path
+      click_on 'Lotes Favoritos'
+    end
+
+    expect(page).to have_content 'Vendido'
+  end
+
   it 'and should see a message when there is no favorite lots' do
     user = User.create!(
       name: 'Peter Parker', cpf: '73046259026',

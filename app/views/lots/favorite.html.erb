@@ -3,8 +3,21 @@
 <section id='lots-favorite' class='flex flex-col gap-4'>
   <% if @favorite_lots.present? %>
     <% @favorite_lots.each do |lot| %>
-      <%= link_to lot_path(lot), class: 'p-4 bg-secondary hover:scale-105 transition-all rounded' do %>
-        <%= t '.prefix' %> <%= lot.code %>
+      <%= link_to lot_path(lot), class: 'p-4 flex items-center justify-between bg-secondary hover:scale-105 transition-all rounded' do %>
+        <div class='flex flex-col gap-2'>
+          <span><%= t '.prefix' %> <%= lot.code %></span>
+          <span class='text-xs italic'><%= lot.get_creator_description %></span>
+        </div>
+
+        <% if lot.expired? && !lot.sold? %>
+          <div class='px-4 py-2 w-[122px] flex items-center justify-center self-center text-black text-sm font-semibold bg-red-400 rounded'>
+            <%= t '.expired_text' %>
+          </div>
+        <% elsif lot.sold? %>
+          <div class='px-4 py-2 w-[122px] flex items-center justify-center self-center text-black text-sm font-semibold bg-amber-300 rounded'>
+            <%= t '.sold_text' %>
+          </div>
+        <% end %>
       <% end %>
     <% end %>
   <% else %>

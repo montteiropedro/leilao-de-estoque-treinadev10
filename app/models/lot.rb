@@ -40,6 +40,12 @@ class Lot < ApplicationRecord
     false
   end
 
+  def sold?
+    return true if self.expired? && self.buyer.present?
+
+    false
+  end
+
   def self.generate_code_suggestion
     random_string = Array.new(3) { ('A'..'Z').to_a.shuffle.sample }.join
     random_number_string = Array.new(6) { rand(1..9) }.join
