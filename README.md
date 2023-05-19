@@ -62,7 +62,7 @@ Nesse caso sua database estará populada com muitos dados. Os mais importantes d
   | peter@email.com.br          | password123 | Não    | Não            |
   | joseph@email.com.br         | password123 | Não    | Sim            |
 
-#### CPFs Bloqueados não vinculados a um usuário já existente
+#### CPFs Bloqueados não vinculados a um usuário
 
   | CPF         |
   |-------------|
