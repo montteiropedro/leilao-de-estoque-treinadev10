@@ -18,6 +18,10 @@ Neste projeto estamos utilizando do RSpec em conjunto com o Capybara, para rodar
 ```
 rspec
 ```
+Se ao rodar o comando `rspec` você ver um erro do tipo `ActiveRecord::EnvironmentMismatchError` no terminal, você pode rodar o comando a seguir para fazer tudo voltar aos trilhos:
+```
+bin/rails db:reset
+```
 
 ## Principais gems do projeto
 - [Ruby on Rails](https://rubyonrails.org)
