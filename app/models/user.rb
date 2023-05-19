@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :won_lots, class_name: 'Lot', foreign_key: 'buyer_id'
   has_many :bids
   has_many :lots, through: :bids
+  has_and_belongs_to_many :favorite_lots, class_name: 'Lot'
 
   before_validation :set_admin
 

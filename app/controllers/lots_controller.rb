@@ -1,9 +1,33 @@
 class LotsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :approve, :close, :cancel, :add_product, :expired, :won]
+  before_action :authenticate_user!, except: [:index, :show, :search]
   before_action :is_admin?, only: [:new, :create, :approve, :close, :cancel, :add_product, :expired]
   
   def index
     load_index_lots
+  end
+
+  def favorite
+    @favorite_lots = current_user.favorite_lots
+  end
+
+  def create_favorite
+    @lot = Lot.find(params[:id])
+
+    if current_user.favorite_lots << @lot
+      redirect_to @lot, notice: 'Lote adicionado aos favoritos.'
+    else
+      redirect_to @lot, notice: 'Falha ao adicionar o lote aos favoritos.'
+    end
+  end
+
+  def remove_favorite
+    @lot = Lot.find(params[:id])
+
+    if current_user.favorite_lots.destroy(@lot)
+      redirect_to @lot, notice: 'Lote removido dos favoritos.'
+    else
+      redirect_to @lot, notice: 'Falha ao remover o lote dos favoritos.'
+    end
   end
 
   def expired

@@ -7,7 +7,19 @@
       </div>
     </div>
   
-    <div class='flex gap-4'>
+    <div class='flex gap-4 items-center'>
+      <% if user_signed_in? %>
+        <% if !current_user.favorite_lots.exists?(@lot.id) %>
+          <%= button_to create_favorite_lot_path(@lot), id: 'add-to-favorite' do %>
+            <i class='fa-regular fa-heart text-xl text-red-400'></i>
+          <% end %>
+        <% else %>
+          <%= link_to remove_favorite_lot_path(@lot), data: { turbo_method: :delete }, id: 'remove-from-favorite' do %>
+            <i class='fa-solid fa-heart text-xl text-red-400 animate-heart'></i>
+          <% end %>
+        <% end %>
+      <% end %>
+
       <% if @lot.approver.present? %>
         <div class='px-4 py-2 flex items-center gap-2 text-emerald-900 text-sm font-semibold bg-emerald-300 rounded'>
           <%= t '.approver_description' %> <%= @lot.approver.name %>

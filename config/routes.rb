@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :lots, only: [:index, :show, :new, :create] do
     resources :bids, only: [:create]
     collection do
+      get 'favorite'
       get 'expired'
       get 'won'
       get 'search'
@@ -15,6 +16,8 @@ Rails.application.routes.draw do
       patch 'close'
       delete 'cancel'
       patch 'add_product'
+      post 'create_favorite'
+      delete 'remove_favorite'
     end
   end
   resources :products, only: [:index, :show, :new, :create, :update] do

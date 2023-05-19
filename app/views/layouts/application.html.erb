@@ -22,8 +22,12 @@
             <h1 class="px-4 py-2 text-xl font-bold">Leilão do Estoque</h1>
           <% end %>
           
-          <% if user_signed_in? && user_is_admin? %>
-            <%= link_to "Bloquear CPF", blocked_cpfs_path, class: "btn-user-menu" %>
+          <% if user_signed_in? %>
+            <% if user_is_admin? %>
+              <%= link_to "Bloquear CPF", blocked_cpfs_path, class: "btn-user-menu" %>
+            <% end %>
+
+            <%= link_to "Lotes Favoritos", favorite_lots_path, class: "btn-user-menu" %>
           <% end %>
         </div>
 

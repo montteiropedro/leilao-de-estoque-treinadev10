@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_18_134010) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_19_180041) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -78,6 +78,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_18_134010) do
     t.index ["buyer_id"], name: "index_lots_on_buyer_id"
     t.index ["code"], name: "index_lots_on_code", unique: true
     t.index ["creator_id"], name: "index_lots_on_creator_id"
+  end
+
+  create_table "lots_users", id: false, force: :cascade do |t|
+    t.integer "lot_id", null: false
+    t.integer "user_id", null: false
   end
 
   create_table "products", force: :cascade do |t|
