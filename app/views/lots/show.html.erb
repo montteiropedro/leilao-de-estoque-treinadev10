@@ -22,7 +22,7 @@
         <% end %>
       <% end %>
   
-      <% if user_signed_in? && current_user.is_admin %>
+      <% if user_signed_in? && user_is_admin? %>
         <div id='admin-menu' class='flex gap-4'>
           <% if @lot.buyer.blank? && (@lot.expired? && @lot.bids.present?) %>
             <%= button_to close_lot_path(@lot), method: :patch, class: "px-4 py-2 flex items-center gap-2 bg-amber-300 text-black hover:scale-105 transition-all rounded" do %>
@@ -61,27 +61,33 @@
   <section id='bids' class='mb-10 flex flex-col gap-2'>
     <h2 class='view-subtitle'><%= t '.bids' %></h2>
     
-      <div class='flex items-center justify-between'>
-        <div class='px-4 py-2 flex items-center gap-2 text-black bg-emerald-300 hover:animate-pulse rounded'>
-          <% if @bids.present? %>
-            <%= t '.current_winning_bid' %>:
+    <div class='flex items-center justify-between'>
+      <div class='px-4 py-2 flex items-center gap-2 text-black bg-emerald-300 hover:animate-pulse rounded'>
+        <% if @bids.present? %>
+          <%= t '.current_winning_bid' %>:
 
-            <span class='font-semibold'>
-              <i id='money-sign' class='fa-solid fa-brazilian-real-sign'></i>
-              <%= centavos_to_reais(@bids.first.value_in_centavos, with_unit: false) %>
-            </span>
-          <% else %>
-            <%= t '.no_bid_value' %>
-          <% end %>
-        </div>
-        
-        <% if !@lot.expired? && (user_signed_in? && !current_user.is_admin) %>
+          <span class='font-semibold'>
+            <i id='money-sign' class='fa-solid fa-brazilian-real-sign'></i>
+            <%= centavos_to_reais(@bids.first.value_in_centavos, with_unit: false) %>
+          </span>
+        <% else %>
+          <%= t '.no_bid_value' %>
+        <% end %>
+      </div>
+      
+      <% if user_signed_in? %>
+        <% if !@lot.expired? && user_can_make_a_bid? %>
           <%= form_with url: lot_bids_path(@lot), class: 'flex flex-row' do |f| %>
             <%= f.number_field :value_in_reais, placeholder: 'Lance em reais' %>
             <%= f.submit t('.make_bid_button_text'), class: 'form-submit m-0' %>
           <% end %>
+        <% elsif !@lot.expired? && !user_can_make_a_bid? %>
+          <div class='px-4 py-2 flex items-center gap-2 text-black font-semibold bg-red-400 rounded'>
+            <%= t '.bid_blocked_message' %>
+          </div>
         <% end %>
-      </div>
+      <% end %>        
+    </div>
   </section>
 <% end %>
 
@@ -89,7 +95,7 @@
   <div class='flex items-center justify-between'>
     <h2 class='view-subtitle'><%= t '.linked_products' %></h2>
 
-    <% if user_signed_in? && current_user.is_admin %>
+    <% if user_signed_in? && user_is_admin? %>
       <% if @lot.approver.blank? && (@lot.waiting_start? || @lot.in_progress?) %>
         <%= form_with url: add_product_lot_path, method: :patch, class: 'flex flex-row' do |f| %>
           <%= f.collection_select :product_id, @products, :id, :name, prompt: t('.add_product') %>

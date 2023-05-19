@@ -22,15 +22,18 @@
             <h1 class="px-4 py-2 text-xl font-bold">Leilão do Estoque</h1>
           <% end %>
           
-          <% if user_signed_in? && current_user.is_admin %>
+          <% if user_signed_in? && user_is_admin? %>
             <%= link_to "Bloquear CPF", blocked_cpfs_path, class: "btn-user-menu" %>
           <% end %>
         </div>
 
         <div id="user-menu" class="flex items-center gap-4">
           <% if user_signed_in? %>
-            <% if current_user.is_admin %>
-              <span class="p-2 text-white text-xs uppercase bg-black rounded">ADMIN</span>
+            <% if user_is_admin? %>
+              <span class="p-2 text-white text-xs font-semibold uppercase bg-black rounded">ADMIN</span>
+            <% end %>
+            <% if user_cpf_blocked? %>
+              <span class="p-2 text-red-900 text-xs font-semibold uppercase bg-red-400 animate-pulse rounded">Sua conta está suspensa</span>
             <% end %>
 
             <span class="italic"><%= current_user.name %></span>

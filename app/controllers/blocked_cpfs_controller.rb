@@ -17,5 +17,12 @@ class BlockedCpfsController < ApplicationController
   end
 
   def destroy
+    blocked_cpf = BlockedCpf.find(params[:id])
+
+    if blocked_cpf.destroy
+      redirect_to blocked_cpfs_path, notice: 'CPF desbloqueado com sucesso.'
+    else
+      redirect_to blocked_cpfs_path, notice: 'Falha ao desbloquear o CPF.'
+    end
   end
 end

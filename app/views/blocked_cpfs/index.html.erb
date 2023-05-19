@@ -15,9 +15,10 @@
     
     <% if @blocked_cpfs.present? %>
       <% @blocked_cpfs.each do |cpf| %>
-        <%= link_to false, class: 'p-4 bg-secondary hover:scale-105 transition-all rounded' do %>
+        <div class='p-4 flex items-center justify-between bg-secondary rounded'>
           <%= format_cpf(cpf.cpf) %>
-        <% end %>
+          <%= link_to "Desbloquear", blocked_cpf_path(cpf), data: { turbo_method: :delete }, class: "px-4 py-2 bg-red-400 text-black font-semibold hover:scale-105 transition-all rounded" %>
+        </div>
       <% end %>
     <% else %>
       <p class='text-neutral-300'><%= t '.not_found_message' %></p>

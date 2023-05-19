@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-describe 'User views won lots' do
+describe 'User views lots where he is the winner' do
   it 'from menu' do
     user = User.create!(
       name: 'Peter Parker', cpf: '73046259026',
       email: 'peter@email.com', password: 'password123'
     )
 
-    login_as(user)
+    login_as user
     visit root_path
     within('div#lot-menu') do
       click_on 'Listar Lotes Vencidos'
@@ -29,18 +29,20 @@ describe 'User views won lots' do
       name: 'Steve Gates', cpf: '35933681024',
       email: 'steve@leilaodogalpao.com.br', password: 'password123'
     )
-    Lot.new(
-      code: 'BTC334509', start_date: Date.today - 1.week, end_date: Date.today - 1.day,
+    Lot.create!(
+      code: 'BTC334509', start_date: Date.today, end_date: 3.days.from_now,
       min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
       creator: first_admin_user, approver: second_admin_user, buyer: user
-    ).save!(validate: false)
+    )
 
-    login_as(user)
-    visit root_path
-    click_on 'Listar Lotes Vencidos'
+    travel_to 1.week.from_now do
+      login_as user
+      visit root_path
+      click_on 'Listar Lotes Vencidos'
+    end
 
     expect(page).to have_content 'Lotes Vencidos'
-    within('div#lots-won') do
+    within('section#lots-won') do
       expect(page).to have_link 'Lote BTC334509'
     end
   end
@@ -59,7 +61,7 @@ describe 'User views won lots' do
       email: 'steve@leilaodogalpao.com.br', password: 'password123'
     )
 
-    login_as(user)
+    login_as user
     visit root_path
     click_on 'Listar Lotes Vencidos'
 
@@ -73,7 +75,7 @@ describe 'User views won lots' do
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
   
-      login_as(admin_user)
+      login_as admin_user
       visit won_lots_path
   
       expect(current_path).not_to eq won_lots_path

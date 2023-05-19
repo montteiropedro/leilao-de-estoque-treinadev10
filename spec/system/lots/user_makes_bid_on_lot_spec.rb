@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe 'User makes a bid on a lot' do
+describe 'User tries to make a bid on a lot' do
   context 'when is not a admin' do
-    it 'should be able to make a bid with a valid value' do
+    it 'should be successful with a valid value' do
       user = User.create!(
         name: 'Peter Parker', cpf: '73046259026',
         email: 'peter@email.com', password: 'password123'
@@ -34,7 +34,7 @@ describe 'User makes a bid on a lot' do
       expect(page).to have_content 'Lance realizado com sucesso.'
       expect(page).to have_content 'Último lance: 101,00'
     end
-
+    
     context 'and lot has no bid yet' do
       it 'should not be able to make a bid with a invalid value' do
         user = User.create!(

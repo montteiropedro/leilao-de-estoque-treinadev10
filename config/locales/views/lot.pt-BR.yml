@@ -40,6 +40,7 @@ pt-BR:
       current_winning_bid: Último lance
       no_bid_value: 'O lote ainda não recebeu um lance.' 
       make_bid_button_text: Fazer Lance
+      bid_blocked_message: Sua conta não permite fazer lances.
     new:
       title: Cadastrar Novo Lote
       value_placeholder: Valor em reais

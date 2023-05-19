@@ -287,6 +287,42 @@ describe 'User visits a approved lot details page' do
           end
         end
       end
+
+      it 'should be displayed with a message when user CPF is blocked and lot is in progress' do
+        user = User.create!(
+          name: 'Peter Parker', cpf: '73046259026',
+          email: 'peter@email.com', password: 'password123'
+        )
+        admin_user_a = User.create!(
+          name: 'John Doe', cpf: '41760209031',
+          email: 'john@leilaodogalpao.com.br', password: 'password123'
+        )
+        admin_user_b = User.create!(
+          name: 'Steve Gates', cpf: '35933681024',
+          email: 'steve@leilaodogalpao.com.br', password: 'password123'
+        )
+        Lot.create!(
+          code: 'COD123456', start_date: Date.today, end_date: 3.days.from_now,
+          min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
+          creator: admin_user_a, approver: admin_user_b
+        )
+        BlockedCpf.create!(cpf: '73046259026')
+  
+        login_as user
+        visit root_path
+        click_on 'Listar Lotes'
+        within('section#lots-in-progress') do
+          click_on 'COD123456'
+        end
+  
+        within('section#bids') do
+          expect(page).to have_css 'h2', text: 'Lances'
+          expect(page).to have_content 'O lote ainda não recebeu um lance.'
+          expect(page).to have_content 'Sua conta não permite fazer lances.'
+          expect(page).not_to have_field 'Lance em reais'
+          expect(page).not_to have_button 'Fazer Lance'
+        end
+      end
     end
 
     it 'should not see the form to add a product to the lot' do

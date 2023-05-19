@@ -9,11 +9,10 @@ class Bid < ApplicationRecord
 
   private
 
-  # todo: fazer uma verificação para ver se o lote está aprovado, lotes só podem receber um lance se estiverem aprovados
-
   def is_bid_valid?
-    return if self.value_in_centavos.blank?
-    return if self.lot.blank?
+    return unless self.value_in_centavos.present?
+    return unless self.lot.present?
+    return errors.add(:lot, 'não aprovado') unless self.lot.approver.present?
     return errors.add(:lot, 'não esta no periodo de leilão') unless self.lot.in_progress?
 
     if self.lot.bids.blank?
@@ -34,8 +33,12 @@ class Bid < ApplicationRecord
   end
 
   def is_user_allowed_to_make_a_bid?
-    if self.user.present? && self.user.is_admin
+    if self.user.present? && BlockedCpf.find_by(cpf: self.user.cpf)
+      errors.add(:user, 'com CPF bloqueado não podem fazer lances')
+    elsif self.user.present? && self.user.is_admin
       errors.add(:user, 'administradores não podem fazer lances')
+    elsif self.user.present? && self.user.is_admin
+      errors.add(:user, 'administradores não podem fazer')
     end
   end
 end

@@ -1,6 +1,6 @@
 <h1 class='view-title'><%= t '.won_title' %></h1>
 
-<div id='lots-won' class='flex flex-col gap-4'>
+<section id='lots-won' class='flex flex-col gap-4'>
   <% if @won_lots.present? %>
     <% @won_lots.each do |lot| %>
       <%= link_to lot_path(lot), class: 'p-4 bg-secondary hover:scale-105 transition-all rounded' do %>
@@ -10,4 +10,4 @@
   <% else %>
     <p class='text-neutral-300'><%= t '.won_title_not_found_message' %></p>
   <% end %>
-</div>
+</section>

@@ -8,7 +8,10 @@ describe 'Admin tries to blocks a CPF' do
     )
 
     login_as admin_user
-    visit blocked_cpfs_path
+    visit root_path
+    within('nav') do
+      click_on 'Bloquear CPF'
+    end
 
     fill_in 'cpf', with: '63420176031'
     click_on 'Bloquear'
@@ -27,7 +30,10 @@ describe 'Admin tries to blocks a CPF' do
     blocked_cpf_a = BlockedCpf.create!(cpf: '63420176031')
 
     login_as admin_user
-    visit blocked_cpfs_path
+    visit root_path
+    within('nav') do
+      click_on 'Bloquear CPF'
+    end
 
     fill_in 'cpf', with: '63420176031'
     click_on 'Bloquear'
@@ -45,7 +51,10 @@ describe 'Admin tries to blocks a CPF' do
     )
 
     login_as admin_user
-    visit blocked_cpfs_path
+    visit root_path
+    within('nav') do
+      click_on 'Bloquear CPF'
+    end
 
     fill_in 'cpf', with: '123456'
     click_on 'Bloquear'

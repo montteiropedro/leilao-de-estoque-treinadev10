@@ -1,4 +1,4 @@
-<% if user_signed_in? && current_user.is_admin? %>
+<% if user_signed_in? && user_is_admin? %>
   <div id='lot-menu' class='menu mx-auto mb-6 w-[532px] flex flex-col gap-2'>
     <span class='text-primary text-lg font-semibold'>Lotes</span>
 
@@ -24,7 +24,7 @@
   <div id='lot-menu' class='menu mx-auto mb-6 w-[532px] flex flex-col gap-2'>
     <span class='text-primary text-lg font-semibold'>Lotes</span>
 
-    <% if user_signed_in? && !current_user.is_admin %>
+    <% if user_signed_in? && !user_is_admin? %>
       <%= link_to 'Listar Lotes Vencidos', won_lots_path, class: 'p-6 text-white text-lg bg-gradient-to-r from-black from-80% to-amber-400 hover:scale-105 transition-all rounded' %>
     <% end %>
     <%= link_to 'Listar Lotes', lots_path, class: 'p-6 text-white text-lg bg-secondary hover:scale-105 transition-all rounded' %>
