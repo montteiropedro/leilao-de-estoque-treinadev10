@@ -1,6 +1,7 @@
 class CpfValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     return if value.blank?
+    return if User.find_by(cpf: value)
     
     if BlockedCpf.find_by(cpf: value)
       record.errors.add(attribute, options[:message] || 'bloqueado')
