@@ -1,0 +1,9 @@
+pt-BR:
+  devise:
+    registrations:
+      new:
+        name_placeholder: John Doe
+        cpf_placeholder: Digite o CPF sem pontuações
+        email_placeholder: john@email.com
+        characters_minimum: "Mínimo de %{number} caracteres"
+
