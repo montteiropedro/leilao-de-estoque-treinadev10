@@ -6,6 +6,12 @@ class Lot < ApplicationRecord
   has_many :bids
   has_many :users, through: :bids
 
+  scope :in_progress, -> { where.not(approver: nil).and(where('start_date <= ? AND end_date >= ?', Date.today, Date.today)).order(created_at: :desc) }
+  scope :waiting_start, -> { where.not(approver: nil).and(where('start_date > ?', Date.today)).order(created_at: :desc) }
+  scope :awaiting_approval, -> { where(approver: nil).and(where('end_date >= ?', Date.today)).order(created_at: :desc) }
+  scope :expired, -> { where('end_date < ?', Date.today).and(where(buyer: nil)).order(created_at: :desc) }
+  scope :closed_expired, -> { where('end_date < ?', Date.today).and(where.not(buyer: nil)).order(created_at: :desc) }
+
   validates :code, :start_date, :end_date, :min_bid_in_centavos, :min_diff_between_bids_in_centavos, presence: true
   validates :code, uniqueness: true
   validates :code, format: { with: /\A[A-Z]{3}[0-9]{6}\z/, message: 'deve iniciar com 3 letras maiúsculas e terminar com 6 números' }

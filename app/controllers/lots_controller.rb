@@ -3,7 +3,7 @@ class LotsController < ApplicationController
   before_action :is_admin?, only: [:new, :create, :approve, :close, :cancel, :add_product, :expired]
   
   def index
-    load_index_lots
+    fetch_lots
   end
 
   def favorite
@@ -31,8 +31,8 @@ class LotsController < ApplicationController
   end
 
   def expired
-    @expired_lots = Lot.where('end_date < ?', Date.today).and(Lot.where(buyer: nil)).order(created_at: :desc)
-    @closed_expired_lots = Lot.where('end_date < ?', Date.today).and(Lot.where.not(buyer: nil)).order(created_at: :desc)
+    @expired_lots = Lot.expired
+    @closed_expired_lots = Lot.closed_expired
   end
   
   def won
@@ -118,7 +118,7 @@ class LotsController < ApplicationController
 
   def search
     if params[:query].blank?
-      load_index_lots
+      fetch_lots
       return render template: 'lots/index'
     end
 
@@ -133,12 +133,12 @@ class LotsController < ApplicationController
 
     @results.each do |lot|
       if lot.approver.present?
-        @approved_lots_in_progress << lot if (lot.start_date <= Date.today) && (lot.end_date >= Date.today)
-        @approved_lots_waiting_start << lot if lot.start_date > Date.today
+        @approved_lots_in_progress << lot if lot.in_progress?
+        @approved_lots_waiting_start << lot if lot.waiting_start?
       else
         next unless user_signed_in? && current_user.is_admin
 
-        @awaiting_approval_lots << lot if lot.end_date >= Date.today
+        @awaiting_approval_lots << lot if !lot.expired?
       end
     end
 
@@ -157,12 +157,12 @@ class LotsController < ApplicationController
     non_monetary_params.merge(monetary_params)
   end
 
-  def load_index_lots
-    @approved_lots_in_progress = Lot.where.not(approver: nil).and(Lot.where('start_date <= ? AND end_date >= ?', Date.today, Date.today)).order(created_at: :desc)
-    @approved_lots_waiting_start = Lot.where.not(approver: nil).and(Lot.where('start_date > ?', Date.today)).order(created_at: :desc)
+  def fetch_lots
+    @approved_lots_in_progress = Lot.in_progress
+    @approved_lots_waiting_start = Lot.waiting_start
 
     return unless user_signed_in? && current_user.is_admin
 
-    @awaiting_approval_lots = Lot.where(approver: nil).and(Lot.where('end_date >= ?', Date.today)).order(created_at: :desc)
+    @awaiting_approval_lots = Lot.awaiting_approval
   end
 end
