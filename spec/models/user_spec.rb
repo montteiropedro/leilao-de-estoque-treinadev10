@@ -135,14 +135,14 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#can_make_a_bid?' do
+  describe '#can_make_bid?' do
     it 'should return true when user is not a admin' do
       user = User.create!(
         name: 'Peter Parker', cpf: '73046259026',
         email: 'peter@email.com', password: 'mypass45678'
       )
 
-      result = user.can_make_a_bid?
+      result = user.can_make_bid?
 
       expect(result).to eq true
     end
@@ -153,7 +153,7 @@ RSpec.describe User, type: :model do
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
 
-      result = admin.can_make_a_bid?
+      result = admin.can_make_bid?
 
       expect(result).to eq false
     end

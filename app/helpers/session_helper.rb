@@ -11,7 +11,7 @@ module SessionHelper
     true
   end
 
-  def user_can_make_a_bid?
+  def user_can_make_bid?
     return false if user_cpf_blocked? || user_is_admin?
 
     true

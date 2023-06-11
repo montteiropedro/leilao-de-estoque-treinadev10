@@ -57,7 +57,7 @@
 
       <% if user_signed_in? && current_user.is_admin %>
         <%= form_with url: link_lot_product_path, method: :patch, id: 'link-lot', class: 'flex flex-row' do |f| %>
-          <%= f.collection_select :lot_id, @lots, :id, :get_description, prompt: t('.link_lot') %>
+          <%= f.collection_select :lot_id, @lots, :id, :description, prompt: t('.link_lot') %>
           <%= f.submit t('.link_lot_button_text'), class: 'form-submit m-0' %>
         <% end %>
       <% end %>

@@ -4,41 +4,40 @@ class Bid < ApplicationRecord
 
   validates :value_in_centavos, presence: true
   validates :value_in_centavos, numericality: { only_integer: true, greater_than: 0 }
-  validate :is_bid_valid?
-  validate :is_user_allowed_to_make_a_bid?
+  validate :valid_bid?
+  validate :user_can_make_bid?
 
   private
 
-  def is_bid_valid?
-    return unless self.value_in_centavos.present?
-    return unless self.lot.present?
-    return errors.add(:lot, 'não aprovado') unless self.lot.approver.present?
-    return errors.add(:lot, 'não esta no periodo de leilão') unless self.lot.in_progress?
+  def valid_bid?
+    return if value_in_centavos.blank?
+    return if lot.blank?
+    return errors.add(:lot, 'não aprovado') if lot.approver.blank?
+    return errors.add(:lot, 'não esta no periodo de leilão') unless lot.in_progress?
 
-    if self.lot.bids.blank?
-      return if self.value_in_centavos >= (self.lot.min_bid_in_centavos + 100)
+    if lot.bids.blank?
+      return if value_in_centavos >= (lot.min_bid_in_centavos + 100)
 
       errors.add(
         :value_in_centavos,
-        "deve ser maior ou igual a R$ #{(self.lot.min_bid_in_centavos + 100) / 100},00"
+        "deve ser maior ou igual a R$ #{(lot.min_bid_in_centavos + 100) / 100},00"
       )
     else
-      winning_bid = self.lot.bids.maximum(:value_in_centavos)
-      min_diff_between_bids = self.lot.min_diff_between_bids_in_centavos
+      winning_bid = lot.bids.maximum(:value_in_centavos)
+      min_diff_between_bids = lot.min_diff_between_bids_in_centavos
 
-      return if self.value_in_centavos >= (winning_bid + min_diff_between_bids)
+      return if value_in_centavos >= (winning_bid + min_diff_between_bids)
 
       errors.add(:value_in_centavos, "deve ser maior ou igual a R$ #{(winning_bid + min_diff_between_bids) / 100},00")
     end
   end
 
-  def is_user_allowed_to_make_a_bid?
-    if self.user.present? && BlockedCpf.find_by(cpf: self.user.cpf)
-      errors.add(:user, 'com CPF bloqueado não podem fazer lances')
-    elsif self.user.present? && self.user.is_admin
-      errors.add(:user, 'administradores não podem fazer lances')
-    elsif self.user.present? && self.user.is_admin
-      errors.add(:user, 'administradores não podem fazer')
+  def user_can_make_bid?
+    if user.present?
+      return errors.add(:user, 'com CPF bloqueado não podem fazer lances') if user.cpf_blocked?
+      return errors.add(:user, 'administradores não podem fazer lances') if user.is_admin
+    else
+      return errors.add(:user, 'administradores não podem fazer') if user.present? && user.is_admin
     end
   end
 end
