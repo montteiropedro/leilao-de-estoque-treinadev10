@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-describe 'User views all registered products' do
-  it 'from menu' do
+describe 'Usuário visita a tela de listagem de produtos' do
+  it 'partindo do menu de produtos' do
     visit root_path
-    within('#product-menu') do
+    within '#product-menu' do
       click_on 'Listar Produtos'
     end
 
@@ -11,8 +11,8 @@ describe 'User views all registered products' do
     expect(page).to have_content('Produtos')
   end
 
-  context 'when successful' do
-    it 'should see a link to the product details page' do
+  context 'e quando existem produtos cadastrados na aplicação' do
+    it 'deve ser exibido um link para a página de detalhe de cada produto' do
       Product.create!(
         name: 'TV 32 Polegadas', weight: 5_000,
         width: 100, height: 50, depth: 10
@@ -29,30 +29,29 @@ describe 'User views all registered products' do
       expect(page).to have_link 'Quadro'
     end
 
-    it 'should see the product disponibility status' do
+    it 'deve ser exibida uma tag com a disponibilidade de cada produto' do
       user = User.create!(
         name: 'Peter Parker', cpf: '73046259026',
         email: 'peter@email.com', password: 'password123'
       )
-      first_admin_user = User.create!(
+      admin_user_a = User.create!(
         name: 'John Doe', cpf: '41760209031',
         email: 'john@leilaodogalpao.com.br', password: 'password123'
       )
-      second_admin_user = User.create!(
+      admin_user_b = User.create!(
         name: 'Steve Gates', cpf: '35933681024',
         email: 'steve@leilaodogalpao.com.br', password: 'password123'
       )
       approved_lot = Lot.create!(
-        code: 'COD123456', start_date: Date.today, end_date: Date.today + 1.month,
+        code: 'COD123456', start_date: Date.current, end_date: 1.month.from_now,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 5_000,
-        creator: first_admin_user, approver: second_admin_user
+        creator: admin_user_a, approver: admin_user_b
       )
-      sold_lot = Lot.new(
-        code: 'KDA334509', start_date: Date.today - 2.weeks, end_date: Date.today - 1.week,
+      sold_lot = Lot.create!(
+        code: 'KDA334509', start_date: Date.current, end_date: 1.day.from_now,
         min_bid_in_centavos: 10_000, min_diff_between_bids_in_centavos: 3_000,
-        creator: first_admin_user, approver: second_admin_user, buyer: user
+        creator: admin_user_a, approver: admin_user_b, buyer: user
       )
-      sold_lot.save!(validate: false)
 
       Product.create!(
         name: 'TV 32 Polegadas', weight: 5_000,
@@ -69,8 +68,10 @@ describe 'User views all registered products' do
         lot: sold_lot
       )
 
-      visit root_path
-      click_on 'Listar Produtos'
+      travel_to 1.week.from_now do
+        visit root_path
+        click_on 'Listar Produtos'
+      end
 
       expect(page).to have_content 'Disponível'
       expect(page).to have_content 'Indisponível'
@@ -78,12 +79,12 @@ describe 'User views all registered products' do
     end
   end
 
-  
+  context 'e quando não existem produtos cadastrados na aplicação' do
+    it 'deve vêr uma mensagem' do
+      visit root_path
+      click_on 'Listar Produtos'
 
-  it 'and should see a message when there is no product registered' do
-    visit root_path
-    click_on 'Listar Produtos'
-
-    expect(page).to have_content 'Não existem produtos cadastrados.'
+      expect(page).to have_content 'Não existem produtos cadastrados.'
+    end
   end
 end
