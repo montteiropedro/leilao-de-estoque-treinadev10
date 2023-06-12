@@ -33,11 +33,9 @@ class Bid < ApplicationRecord
   end
 
   def user_can_make_bid?
-    if user.present?
-      return errors.add(:user, 'com CPF bloqueado não podem fazer lances') if user.cpf_blocked?
-      return errors.add(:user, 'administradores não podem fazer lances') if user.is_admin
-    else
-      return errors.add(:user, 'administradores não podem fazer') if user.present? && user.is_admin
-    end
+    return if user.blank?
+
+    return errors.add(:user, 'com CPF bloqueado não podem fazer lances') if user.cpf_blocked?
+    return errors.add(:user, 'administradores não podem fazer lances') if user.is_admin
   end
 end
