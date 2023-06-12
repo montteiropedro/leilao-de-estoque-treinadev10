@@ -9,7 +9,7 @@ describe 'Administrador tenta bloquear um CPF' do
 
     login_as admin_user
     visit root_path
-    click_on 'Bloquear CPF'
+    click_on 'Bloquear / Desbloquear CPF'
 
     fill_in 'cpf', with: '63420176031'
     click_on 'Bloquear'
@@ -29,7 +29,7 @@ describe 'Administrador tenta bloquear um CPF' do
 
     login_as admin_user
     visit root_path
-    click_on 'Bloquear CPF'
+    click_on 'Bloquear / Desbloquear CPF'
     fill_in 'cpf', with: '63420176031'
     click_on 'Bloquear'
 
@@ -47,7 +47,7 @@ describe 'Administrador tenta bloquear um CPF' do
 
     login_as admin_user
     visit root_path
-    click_on 'Bloquear CPF'
+    click_on 'Bloquear / Desbloquear CPF'
     fill_in 'cpf', with: '123456'
     click_on 'Bloquear'
 

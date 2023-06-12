@@ -26,7 +26,7 @@ describe 'Administrador visita a tela de bloqueio/desbloqueio de CPFs' do
 
       login_as admin_user
       visit root_path
-      click_on 'Bloquear CPF'
+      click_on 'Bloquear / Desbloquear CPF'
 
       within '#block-cpf' do
         expect(page).to have_css 'h2', text: 'Bloquear CPF'

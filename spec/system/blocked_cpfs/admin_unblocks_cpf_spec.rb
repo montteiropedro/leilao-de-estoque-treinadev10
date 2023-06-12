@@ -10,7 +10,7 @@ describe 'Administrador desbloqueia um CPF' do
 
     login_as admin_user
     visit root_path
-    click_on 'Bloquear CPF'
+    click_on 'Bloquear / Desbloquear CPF'
     within '#blocked-cpfs' do
       click_on 'Desbloquear'
     end

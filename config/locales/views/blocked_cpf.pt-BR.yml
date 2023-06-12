@@ -1,7 +1,7 @@
 pt-BR:
   blocked_cpfs:
     index:
-      title: Bloquear CPF / Listar CPFs Bloqueados
+      title: Bloquear / Desbloquear CPF
       block_cpf_subtitle: Bloquear CPF
       cpf_placeholder: Digite o CPF sem pontuações
       submit: Bloquear
