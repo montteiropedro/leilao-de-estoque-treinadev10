@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-describe 'User views all registered categories' do
-  it 'from menu' do
+describe 'Usuário visita a tela de listagem de categorias de produtos' do
+  it 'partindo do menu de categorias' do
     visit root_path
-    within('#category-menu') do
+    within '#category-menu' do
       click_on 'Listar Categorias'
     end
 
@@ -11,21 +11,23 @@ describe 'User views all registered categories' do
     expect(page).to have_content('Categorias')
   end
 
-  it 'should be successful' do
-    Category.create!(name: 'Eletrônicos')
-    Category.create!(name: 'Utensílios Domésticos')
+  context 'e quando existem categorias cadastradas na aplicação' do
+    it 'deve ser exibido um link para a página de detalhes de cada categoria' do
+      Category.create!(name: 'Eletrônicos')
+      Category.create!(name: 'Utensílios Domésticos')
 
-    visit root_path
-    click_on 'Listar Categorias'
+      visit categories_path
 
-    expect(page).to have_link 'Eletrônicos'
-    expect(page).to have_link 'Utensílios Domésticos'
+      expect(page).to have_link 'Eletrônicos'
+      expect(page).to have_link 'Utensílios Domésticos'
+    end
   end
 
-  it 'and should see a message when there is no category registered' do
-    visit root_path
-    click_on 'Listar Categorias'
+  context 'e quando não existem categorias cadastradas na aplicação' do
+    it 'deve vêr uma mensagem' do
+      visit categories_path
 
-    expect(page).to have_content 'Não existem categorias cadastradas.'
+      expect(page).to have_content 'Não existem categorias cadastradas.'
+    end
   end
 end
